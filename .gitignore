@@ -1,0 +1,20 @@
+# Ambiente virtual
+venv/
+ENV/
+env/
+
+# Variáveis de ambiente e chaves secretas (NUNCA envie para o GitHub)
+.env
+
+# Banco de dados local e caches do Python
+automatch.db
+__pycache__/
+*.pyc
+
+# Arquivos temporários e uploads de usuários
+static/uploads/*
+!static/uploads/.gitkeep
+
+# Arquivos do sistema operacional / VS Code
+.vscode/
+.DS_Store

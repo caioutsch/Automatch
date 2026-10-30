@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoMatch - Descubra o Carro Certo Para Você</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body style="background-color: #F9FAFB;">
+
+    <div class="quiz-container">
+        <!-- Logo e Botão Voltar -->
+        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
+            <div class="logo">
+                <div class="logo-icon"><i class="ph ph-arrow-up-right"></i></div>
+                <h2>AutoMatch</h2>
+            </div>
+            <a href="{{ url_for('visao_geral') }}" class="nav-link" style="font-weight: 600;"><i class="ph ph-x"></i> Sair do assistente</a>
+        </header>
+
+        <div class="quiz-card-wrapper" id="quizCardWrapper">
+            
+            <!-- Barra de Progresso -->
+            <div class="quiz-progress-bar" id="progressBarContainer">
+                <div class="quiz-progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- ETAPA 1: ORÇAMENTO -->
+            <div class="quiz-step active" id="step1">
+                <span class="quiz-step-label">ETAPA 1 DE 4</span>
+                <h2>Qual é o seu limite de orçamento estimado?</h2>
+                
+                <div class="quiz-options-grid">
+                    <div class="quiz-option-card" onclick="selecionarOpcao('orcamento', 90000, this)">
+                        <i class="ph ph-wallet"></i>
+                        <h4>Até R$ 90.000</h4>
+                        <p>Foco em ótimo custo de aquisição e modelos seminovos/de entrada.</p>
+                    </div>
+
+                    <div class="quiz-option-card" onclick="selecionarOpcao('orcamento', 130000, this)">
+                        <i class="ph ph-coins"></i>
+                        <h4>Até R$ 130.000</h4>
+                        <p>Equilíbrio ideal entre tecnologia, segurança e economia.</p>
+                    </div>
+
+                    <div class="quiz-option-card" onclick="selecionarOpcao('orcamento', 180000, this)">
+                        <i class="ph ph-bank"></i>
+                        <h4>Até R$ 180.000</h4>
+                        <p>Acesso a SUVs modernos, motorização turbo e pacotes de assistência.</p>
+                    </div>
+
+                    <div class="quiz-option-card" onclick="selecionarOpcao('orcamento', 999000, this)">
+                        <i class="ph ph-sparkle"></i>
+                        <h4>Acima de R$ 180.000</h4>
+                        <p>Máximo conforto, recursos avançados e conectividade completa.</p>
+                    </div>
+                </div>
+
+                <div class="quiz-actions">
+                    <span></span>
+                    <button class="btn-yellow-cta" onclick="proximaEtapa(2)" id="btnNext1" disabled style="opacity: 0.5;">
+                        Avançar <i class="ph ph-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ETAPA 2: USO PRINCIPAL -->
+            <div class="quiz-step" id="step2">
+                <span class="quiz-step-label">ETAPA 2 DE 4</span>
+                <h2>Como será o uso principal do veículo no seu dia a dia?</h2>
+                
+                <div class="quiz-options-grid">
+                    <div class="quiz-option-card" onclick="selecionarOpcao('uso', 'urbano', this)">
+                        <i class="ph ph-buildings"></i>
+                        <h4>Urbano e Trabalho</h4>
+                        <p>Trânsito de cidade, facilidade para estacionar e menor consumo de combustível.</p>
+                    </div>
+
+                    <div class="quiz-option-card" onclick="selecionarOpcao('uso', 'familia', this)">
+                        <i class="ph ph-users-three"></i>
+                        <h4>Família e Viagens</h4>
+                        <p>Espaço interno generoso, porta-malas grande e conforto em trajetos longos.</p>
+                    </div>
+
+                    <div class="quiz-option-card" onclick="selecionarOpcao('uso', 'performance', this)">
+                        <i class="ph ph-gauge"></i>
+                        <h4>Estilo e Desempenho</h4>
+                        <p>Respostas rápidas no acelerador, motor forte e design marcante.</p>
+                    </div>
+                </div>
+
+                <div class="quiz-actions">
+                    <button class="btn-outline-cta" style="color:#111; border-color:#ccc;" onclick="etapaAnterior(1)">
+                        <i class="ph ph-arrow-left"></i> Voltar
+                    </button>
+                    <button class="btn-yellow-cta" onclick="proximaEtapa(3)" id="btnNext2" disabled style="opacity: 0.5;">
+                        Avançar <i class="ph ph-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ETAPA 3: PRIORIDADE Nº 1 -->
+            <div class="quiz-step" id="step3">
+                <span class="quiz-step-label">ETAPA 3 DE 4</span>
+                <h2>Qual é a sua prioridade número um ao escolher?</h2>
+                
+                <div class="quiz-options-grid">
+                    <div class="quiz-option-card" onclick="selecionarOpcao('prioridade', 'economia', this)">
+                        <i class="ph ph-gas-pump"></i>
+                        <h4>Baixo Consumo</h4>
+                        <p>Fazer mais quilômetros por litro para economizar no posto.</p>
+                    </div>
+
+                    <div class="quiz-option-card" onclick="selecionarOpcao('prioridade', 'espaco', this)">
+                        <i class="ph ph-package"></i>
+                        <h4>Maior Porta-malas</h4>
+                        <p>Volume de carga de sobra para malas, compras e equipamentos.</p>
+                    </div>
+
+                    <div class="quiz-option-card" onclick="selecionarOpcao('prioridade', 'potencia', this)">
+                        <i class="ph ph-lightning"></i>
+                        <h4>Potência e Torque</h4>
+                        <p>Ultrapassagens seguras e aceleração de 0 a 100 km/h rápida.</p>
+                    </div>
+
+                    <div class="quiz-option-card" onclick="selecionarOpcao('prioridade', 'custo_total', this)">
+                        <i class="ph ph-chart-line-down"></i>
+                        <h4>Menor Custo em 3 Anos</h4>
+                        <p>Previsibilidade com IPVA, manutenção e menor depreciação.</p>
+                    </div>
+                </div>
+
+                <div class="quiz-actions">
+                    <button class="btn-outline-cta" style="color:#111; border-color:#ccc;" onclick="etapaAnterior(2)">
+                        <i class="ph ph-arrow-left"></i> Voltar
+                    </button>
+                    <button class="btn-yellow-cta" onclick="proximaEtapa(4)" id="btnNext3" disabled style="opacity: 0.5;">
+                        Avançar <i class="ph ph-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ETAPA 4: CATEGORIA PREFERIDA -->
+            <div class="quiz-step" id="step4">
+                <span class="quiz-step-label">ETAPA 4 DE 4</span>
+                <h2>Você tem alguma preferência de carroçaria?</h2>
+                
+                <div class="quiz-options-grid">
+                    <div class="quiz-option-card" onclick="selecionarOpcao('categoria', 'suv compacto', this)">
+                        <i class="ph ph-car-profile"></i>
+                        <h4>SUV Compacto</h4>
+                        <p>Posição alta de dirigir e versatilidade.</p>
+                    </div>
+
+                    <div class="quiz-option-card" onclick="selecionarOpcao('categoria', 'hatch', this)">
+                        <i class="ph ph-car"></i>
+                        <h4>Hatchback</h4>
+                        <p>Ágil, fácil de manobrar e prático.</p>
+                    </div>
+
+                    <div class="quiz-option-card" onclick="selecionarOpcao('categoria', 'sedã', this)">
+                        <i class="ph ph-car-simple"></i>
+                        <h4>Sedã</h4>
+                        <p>Elegância e grande porta-malas traseiro.</p>
+                    </div>
+
+                    <div class="quiz-option-card" onclick="selecionarOpcao('categoria', 'qualquer', this)">
+                        <i class="ph ph-sparkle"></i>
+                        <h4>Sem preferência</h4>
+                        <p>Mostrar a melhor opção independente da carroçaria.</p>
+                    </div>
+                </div>
+
+                <div class="quiz-actions">
+                    <button class="btn-outline-cta" style="color:#111; border-color:#ccc;" onclick="etapaAnterior(3)">
+                        <i class="ph ph-arrow-left"></i> Voltar
+                    </button>
+                    <button class="btn-yellow-cta" onclick="calcularERexibirResultados()">
+                        <i class="ph ph-check-circle"></i> Ver meu Match
+                    </button>
+                </div>
+            </div>
+
+            <!-- RESULTADOS FINAIS (OCULTO INICIALMENTE) -->
+            <div class="quiz-step" id="stepResults">
+                <div class="results-header-banner">
+                    <span class="match-score-badge"><i class="ph-fill ph-sparkle"></i> SEU TOP 5 AUTOMATCH</span>
+                    <h2>Encontramos os carros certos para você!</h2>
+                    <p>Analisamos todos os modelos do catálogo com base no seu orçamento e prioridades.</p>
+                </div>
+
+                <div class="cars-grid" id="resultsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
+                    <!-- Preenchido dinamicamente via JS -->
+                </div>
+
+                <div style="text-align: center; margin-top: 32px;">
+                    <button class="btn-outline-cta" style="color:#111; border-color:#ccc;" onclick="location.reload()">
+                        <i class="ph ph-arrow-counter-clockwise"></i> Refazer o questionário
+                    </button>
+                    <a href="/" class="btn-yellow-cta" style="margin-left: 12px;">
+                        Ver todo o catálogo <i class="ph ph-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Script de Dados do Flask -->
+    <script id="carros-data" type="application/json">
+        {{ carros|tojson|safe }}
+    </script>
+
+    <!-- ALGORITMO DE MATCH E NAVEGAÇÃO DO QUIZ -->
+    <script>
+        const TODOS_OS_CARROS = JSON.parse(document.getElementById('carros-data').textContent);
+        
+        let respostas = {
+            orcamento: null,
+            uso: null,
+            prioridade: null,
+            categoria: null
+        };
+
+        function selecionarOpcao(campo, valor, elemento) {
+            respostas[campo] = valor;
+
+            // Remove a seleção visual anterior da mesma etapa
+            const parent = elemento.parentElement;
+            parent.querySelectorAll('.quiz-option-card').forEach(card => card.classList.remove('selected'));
+            
+            // Marca o atual
+            elemento.classList.add('selected');
+
+            // Habilita o botão de avançar da etapa
+            if (campo === 'orcamento') habilitarBotao('btnNext1');
+            if (campo === 'uso') habilitarBotao('btnNext2');
+            if (campo === 'prioridade') habilitarBotao('btnNext3');
+        }
+
+        function habilitarBotao(id) {
+            const btn = document.getElementById(id);
+            if (btn) {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+            }
+        }
+
+        function proximaEtapa(numEtapa) {
+            document.querySelectorAll('.quiz-step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step${numEtapa}`).classList.add('active');
+            
+            // Atualiza barra de progresso
+            const porcentagens = { 1: '25%', 2: '50%', 3: '75%', 4: '100%' };
+            document.getElementById('progressFill').style.width = porcentagens[numEtapa];
+        }
+
+        function etapaAnterior(numEtapa) {
+            proximaEtapa(numEtapa);
+        }
+
+        function calcularERexibirResultados() {
+            // Esconde barra de progresso
+            document.getElementById('progressBarContainer').style.display = 'none';
+            document.querySelectorAll('.quiz-step').forEach(s => s.classList.remove('active'));
+            
+            const resultsStep = document.getElementById('stepResults');
+            resultsStep.classList.add('active');
+
+            // ALGORITMO DE PONTUAÇÃO DO MATCH
+            const carrosComScore = TODOS_OS_CARROS.map(carro => {
+                let pontos = 50; // Base inicial
+
+                // 1. Orçamento
+                if (carro.preco_estimado <= respostas.orcamento) {
+                    pontos += 25;
+                } else if (carro.preco_estimado <= respostas.orcamento * 1.1) {
+                    pontos += 10; // Próximo da margem
+                } else {
+                    pontos -= 20;
+                }
+
+                // 2. Categoria
+                if (respostas.categoria === 'qualquer' || carro.categoria.toLowerCase() === respostas.categoria) {
+                    pontos += 15;
+                }
+
+                // 3. Prioridades
+                if (respostas.prioridade === 'economia') {
+                    pontos += (carro.consumo_praticidade.urbano_gasolina_kml || 0) * 1.5;
+                } else if (respostas.prioridade === 'espaco') {
+                    pontos += (carro.consumo_praticidade.porta_malas_litros || 0) / 20;
+                } else if (respostas.prioridade === 'potencia') {
+                    pontos += (carro.desempenho.potencia_cv || 0) / 10;
+                } else if (respostas.prioridade === 'custo_total') {
+                    pontos += (200000 - (carro.custos_3_anos_ou_36k_km.custo_total || 0)) / 5000;
+                }
+
+                // Limita a porcentagem até 99%
+                const matchPorcentagem = Math.min(Math.max(Math.round(pontos), 60), 99);
+
+                return {
+                    ...carro,
+                    matchPorcentagem
+                };
+            });
+
+            // Ordena pelo maior score e pega os TOP 5
+            carrosComScore.sort((a, b) => b.matchPorcentagem - a.matchPorcentagem);
+            const top5 = carrosComScore.slice(0, 5);
+
+            // Renderiza na tela
+            const resultsGrid = document.getElementById('resultsGrid');
+            resultsGrid.innerHTML = '';
+
+            top5.forEach(carro => {
+                const card = document.createElement('div');
+                card.className = 'car-card';
+                card.style.display = 'flex';
+                card.innerHTML = `
+                    <div class="car-card-header">
+                        <span class="tag-match">${carro.matchPorcentagem}% de match</span>
+                        <button class="btn-favorite"><i class="ph ph-heart"></i></button>
+                    </div>
+                    
+                    <div class="car-image-container">
+                        <img src="/static/images/${carro.media.imagem_principal}" 
+                             alt="${carro.modelo}" 
+                             class="car-thumbnail"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="car-image-placeholder" style="display: none;">
+                            <i class="ph ph-car"></i>
+                        </div>
+                    </div>
+
+                    <div class="car-card-body">
+                        <div class="car-title">
+                            <h3>${carro.marca} ${carro.modelo}</h3>
+                            <p>${carro.versao} · ${carro.ano}</p>
+                        </div>
+
+                        <div class="car-specs">
+                            <span><i class="ph ph-lightning"></i> ${carro.desempenho.potencia_cv} cv</span>
+                            <span><i class="ph ph-gas-pump"></i> ${carro.consumo_praticidade.urbano_gasolina_kml} km/l</span>
+                        </div>
+
+                        <div class="car-card-footer">
+                            <div class="price-container">
+                                <span class="price-label">Preço estimado</span>
+                                <span class="price-value">R$ ${carro.preco_estimado.toLocaleString('pt-BR')}</span>
+                            </div>
+                            <a href="/carro/${carro.id}" class="btn-add" title="Ver Detalhes"><i class="ph ph-arrow-right"></i></a>
+                        </div>
+                    </div>
+                `;
+                resultsGrid.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>

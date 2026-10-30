@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoMatch - Diagnóstico Completo de Perfil</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .quiz-form-group {
+            margin-bottom: 24px;
+        }
+        .quiz-form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+        .quiz-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            outline: none;
+            background-color: #FAFAFA;
+            transition: all 0.2s;
+        }
+        .quiz-select:focus {
+            border-color: #111111;
+            background-color: #FFFFFF;
+        }
+        .scale-selector {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        .scale-btn {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: #FAFAFA;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .scale-btn.selected {
+            background: #FFFDE7;
+            border-color: #111111;
+            color: #111111;
+        }
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+        .checkbox-card {
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px 16px;
+            cursor: pointer;
+            background: #FAFAFA;
+            font-size: 0.88rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            user-select: none;
+            transition: all 0.2s;
+        }
+        .checkbox-card.selected {
+            border-color: #111111;
+            background: #FFFDE7;
+        }
+    </style>
+</head>
+<body style="background-color: #F9FAFB;">
+
+    <div class="quiz-container" style="max-width: 860px;">
+        <!-- Header -->
+        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <div class="logo">
+                <div class="logo-icon"><i class="ph ph-arrow-up-right"></i></div>
+                <h2>AutoMatch</h2>
+            </div>
+            <a href="{{ url_for('visao_geral') }}" class="nav-link" style="font-weight: 600;"><i class="ph ph-x"></i> Sair do assistente</a>
+        </header>
+
+        <div class="quiz-card-wrapper">
+            
+            <!-- Barra de Progresso -->
+            <div class="quiz-progress-bar" id="progressBarContainer">
+                <div class="quiz-progress-fill" id="progressFill" style="width: 25%;"></div>
+            </div>
+
+            <!-- ETAPA 1: PERFIL DE COMPRA, LOCALIZAÇÃO & ORÇAMENTO -->
+            <div class="quiz-step active" id="step1">
+                <span class="quiz-step-label">ETAPA 1 DE 4 · PERFIL, LOCALIZAÇÃO & ORÇAMENTO</span>
+                <h2>Sua localização e orçamento</h2>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="quiz-form-group">
+                        <label>Em qual estado (UF) você reside?</label>
+                        <select class="quiz-select" onchange="respostas.estadoUf = this.value">
+                            <option value="SP">São Paulo (SP)</option>
+                            <option value="MG" selected>Minas Gerais (MG)</option>
+                            <option value="RJ">Rio de Janeiro (RJ)</option>
+                            <option value="PR">Paraná (PR)</option>
+                            <option value="RS">Rio Grande do Sul (RS)</option>
+                            <option value="SC">Santa Catarina (SC)</option>
+                            <option value="BA">Bahia (BA)</option>
+                            <option value="PE">Pernambuco (PE)</option>
+                            <option value="CE">Ceará (CE)</option>
+                            <option value="DF">Distrito Federal (DF)</option>
+                            <option value="GO">Goiás (GO)</option>
+                            <option value="ES">Espírito Santo (ES)</option>
+                            <option value="OUTROS">Outro estado</option>
+                        </select>
+                    </div>
+
+                    <div class="quiz-form-group">
+                        <label>É o seu primeiro carro?</label>
+                        <select class="quiz-select" onchange="respostas.primeiroCarro = this.value">
+                            <option value="nao">Não, já tive outros veículos</option>
+                            <option value="sim">Sim, será meu primeiro carro</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="quiz-form-group">
+                        <label>Condição do veículo</label>
+                        <select class="quiz-select" onchange="respostas.condicao = this.value">
+                            <option value="qualquer">Tanto faz (Novo ou Seminovo)</option>
+                            <option value="novo">Apenas Carro Novo (0km)</option>
+                            <option value="seminovo">Seminovo / Usado</option>
+                        </select>
+                    </div>
+
+                    <div class="quiz-form-group">
+                        <label>Faixa de orçamento para compra</label>
+                        <select class="quiz-select" onchange="respostas.orcamento = parseFloat(this.value)">
+                            <option value="40000">R$ 20.000 a R$ 40.000</option>
+                            <option value="60000">R$ 40.000 a R$ 60.000</option>
+                            <option value="80000" selected>R$ 60.000 a R$ 80.000</option>
+                            <option value="100000">R$ 80.000 a R$ 100.000</option>
+                            <option value="130000">R$ 100.000 a R$ 130.000</option>
+                            <option value="180000">R$ 130.000 a R$ 180.000</option>
+                            <option value="999000">Acima de R$ 180.000</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="quiz-form-group">
+                        <label>Forma de pagamento pretendida</label>
+                        <select class="quiz-select" onchange="respostas.pagamento = this.value">
+                            <option value="avista">À vista</option>
+                            <option value="financiamento">Financiamento</option>
+                            <option value="consorcio">Consórcio / Troca</option>
+                        </select>
+                    </div>
+
+                    <div class="quiz-form-group">
+                        <label>Tempo que pretende ficar com o carro</label>
+                        <select class="quiz-select" onchange="respostas.tempoPosse = this.value">
+                            <option value="1_2">1 a 2 anos</option>
+                            <option value="3_5" selected>3 a 5 anos</option>
+                            <option value="5_mais">Mais de 5 anos</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="quiz-actions">
+                    <span></span>
+                    <button class="btn-yellow-cta" onclick="proximaEtapa(2)">
+                        Avançar <i class="ph ph-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ETAPA 2: ROTINA, USO E ESPAÇO -->
+            <div class="quiz-step" id="step2">
+                <span class="quiz-step-label">ETAPA 2 DE 4 · ROTINA & ESPAÇO</span>
+                <h2>Como o carro entrará na sua rotina?</h2>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="quiz-form-group">
+                        <label>Limite mensal para manter o carro (Sem a parcela)</label>
+                        <select class="quiz-select" onchange="respostas.limiteMensal = parseFloat(this.value)">
+                            <option value="500">Até R$ 500 / mês</option>
+                            <option value="900" selected>R$ 500 a R$ 900 / mês</option>
+                            <option value="1500">R$ 900 a R$ 1.500 / mês</option>
+                            <option value="9999">Sem restrição rigorosa</option>
+                        </select>
+                    </div>
+
+                    <div class="quiz-form-group">
+                        <label>Onde rodará a maior parte do tempo?</label>
+                        <select class="quiz-select" onchange="respostas.localUso = this.value">
+                            <option value="cidade">Cidade (Trânsito urbano)</option>
+                            <option value="estrada">Estrada / Rodovia</option>
+                            <option value="misto">Misto (50% cidade / 50% estrada)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="quiz-form-group">
+                        <label>Quilometragem mensal estimada</label>
+                        <select class="quiz-select" onchange="respostas.kmMensal = parseFloat(this.value)">
+                            <option value="500">Pouco uso (Até 500 km/mês)</option>
+                            <option value="1200" selected>Uso moderado (500 a 1.200 km/mês)</option>
+                            <option value="2500">Uso severo (Mais de 1.500 km/mês)</option>
+                        </select>
+                    </div>
+
+                    <div class="quiz-form-group">
+                        <label>Ocupantes diários no veículo</label>
+                        <select class="quiz-select" onchange="respostas.passageiros = parseInt(this.value)">
+                            <option value="1">1 a 2 pessoas</option>
+                            <option value="3" selected>3 a 4 pessoas</option>
+                            <option value="5">5 ou mais pessoas</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="quiz-form-group">
+                    <label>O carro será utilizado para trabalho?</label>
+                    <select class="quiz-select" onchange="respostas.usoTrabalho = this.value">
+                        <option value="nao">Não, apenas uso pessoal/familiar</option>
+                        <option value="uber">Sim, transporte de passageiros (Uber/99)</option>
+                        <option value="carga">Sim, transporte de mercadorias/cargas</option>
+                    </select>
+                </div>
+
+                <div class="quiz-actions">
+                    <button class="btn-outline-cta" style="color:#111; border-color:#ccc;" onclick="etapaAnterior(1)">
+                        <i class="ph ph-arrow-left"></i> Voltar
+                    </button>
+                    <button class="btn-yellow-cta" onclick="proximaEtapa(3)">
+                        Avançar <i class="ph ph-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ETAPA 3: PREFERÊNCIAS MECÂNICAS & ELETRICA -->
+            <div class="quiz-step" id="step3">
+                <span class="quiz-step-label">ETAPA 3 DE 4 · MECÂNICA & MOTORIZAÇÃO</span>
+                <h2>Suas preferências de condução e motor</h2>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="quiz-form-group">
+                        <label>Preferência por motorização / carro elétrico</label>
+                        <select class="quiz-select" onchange="respostas.eletricoPref = this.value">
+                            <option value="qualquer">Tanto faz (Combustão, Híbrido ou Elétrico)</option>
+                            <option value="eletrico">Preferência por 100% Elétrico</option>
+                            <option value="hibrido">Preferência por Híbrido</option>
+                            <option value="combustao">Apenas Combustão (Gasolina / Flex)</option>
+                        </select>
+                    </div>
+
+                    <div class="quiz-form-group">
+                        <label>Preferência de Câmbio</label>
+                        <select class="quiz-select" onchange="respostas.cambio = this.value">
+                            <option value="qualquer">Tanto faz (Manual ou Automático)</option>
+                            <option value="automatico">Exclusivamente Automático</option>
+                            <option value="manual">Preferência por Manual</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="quiz-form-group">
+                    <label>Carroçaria que mais combina com você</label>
+                    <select class="quiz-select" onchange="respostas.categoria = this.value">
+                        <option value="qualquer">Qualquer categoria</option>
+                        <option value="suv compacto">SUV Compacto</option>
+                        <option value="hatch">Hatchback</option>
+                        <option value="sedã">Sedã</option>
+                    </select>
+                </div>
+
+                <div class="quiz-form-group">
+                    <label>Quanto a economia de combustível é importante para você? (0 a 5)</label>
+                    <div class="scale-selector">
+                        <div class="scale-btn" onclick="setEscala('importanciaConsumo', 0, this)">0</div>
+                        <div class="scale-btn" onclick="setEscala('importanciaConsumo', 1, this)">1</div>
+                        <div class="scale-btn" onclick="setEscala('importanciaConsumo', 2, this)">2</div>
+                        <div class="scale-btn" onclick="setEscala('importanciaConsumo', 3, this)">3</div>
+                        <div class="scale-btn selected" onclick="setEscala('importanciaConsumo', 4, this)">4</div>
+                        <div class="scale-btn" onclick="setEscala('importanciaConsumo', 5, this)">5</div>
+                    </div>
+                </div>
+
+                <div class="quiz-form-group">
+                    <label>Aceitaria um carro um pouco mais antigo em troca de maior desempenho e tecnologia?</label>
+                    <select class="quiz-select" onchange="respostas.aceitaAntigoDesempenho = this.value">
+                        <option value="sim">Sim, priorizo motor e equipamentos</option>
+                        <option value="nao" selected>Não, prefiro um ano/modelo mais recente</option>
+                    </select>
+                </div>
+
+                <div class="quiz-actions">
+                    <button class="btn-outline-cta" style="color:#111; border-color:#ccc;" onclick="etapaAnterior(2)">
+                        <i class="ph ph-arrow-left"></i> Voltar
+                    </button>
+                    <button class="btn-yellow-cta" onclick="proximaEtapa(4)">
+                        Avançar <i class="ph ph-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ETAPA 4: EQUIPAMENTOS, MARCAS & MANUTENÇÃO -->
+            <div class="quiz-step" id="step4">
+                <span class="quiz-step-label">ETAPA 4 DE 4 · EQUIPAMENTOS & MERCADO</span>
+                <h2>Detalhes finais do veículo</h2>
+                
+                <div class="quiz-form-group">
+                    <label>Quais equipamentos são INDISPENSÁVEIS para você?</label>
+                    <div class="checkbox-grid">
+                        <div class="checkbox-card" onclick="toggleEquipamento('ar_condicionado', this)">
+                            <i class="ph ph-snowflake"></i> Ar-condicionado
+                        </div>
+                        <div class="checkbox-card" onclick="toggleEquipamento('multimidia', this)">
+                            <i class="ph ph-screencast"></i> Central Multimídia
+                        </div>
+                        <div class="checkbox-card" onclick="toggleEquipamento('retrovisor_eletrico', this)">
+                            <i class="ph ph-arrows-out-line-horizontal"></i> Retrovisor Elétrico
+                        </div>
+                        <div class="checkbox-card" onclick="toggleEquipamento('farois_led', this)">
+                            <i class="ph ph-lightbulb"></i> Faróis em LED
+                        </div>
+                        <div class="checkbox-card" onclick="toggleEquipamento('camera_re', this)">
+                            <i class="ph ph-camera"></i> Sensor/Câmera de ré
+                        </div>
+                        <div class="checkbox-card" onclick="toggleEquipamento('piloto_automatico', this)">
+                            <i class="ph ph-gauge"></i> Piloto Automático
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="quiz-form-group">
+                        <label>Tolerância com manutenção e peças caras (0 a 5)</label>
+                        <div class="scale-selector">
+                            <div class="scale-btn" onclick="setEscala('toleranciaManutencao', 0, this)">0</div>
+                            <div class="scale-btn selected" onclick="setEscala('toleranciaManutencao', 1, this)">1</div>
+                            <div class="scale-btn" onclick="setEscala('toleranciaManutencao', 2, this)">2</div>
+                            <div class="scale-btn" onclick="setEscala('toleranciaManutencao', 3, this)">3</div>
+                            <div class="scale-btn" onclick="setEscala('toleranciaManutencao', 4, this)">4</div>
+                            <div class="scale-btn" onclick="setEscala('toleranciaManutencao', 5, this)">5</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-form-group">
+                        <label>Importância de facilidade de revenda (0 a 5)</label>
+                        <div class="scale-selector">
+                            <div class="scale-btn" onclick="setEscala('importanciaRevenda', 0, this)">0</div>
+                            <div class="scale-btn" onclick="setEscala('importanciaRevenda', 1, this)">1</div>
+                            <div class="scale-btn" onclick="setEscala('importanciaRevenda', 2, this)">2</div>
+                            <div class="scale-btn" onclick="setEscala('importanciaRevenda', 3, this)">3</div>
+                            <div class="scale-btn selected" onclick="setEscala('importanciaRevenda', 4, this)">4</div>
+                            <div class="scale-btn" onclick="setEscala('importanciaRevenda', 5, this)">5</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quiz-form-group">
+                    <label>Tem preferência por alguma marca?</label>
+                    <select class="quiz-select" onchange="respostas.marcaPreferida = this.value">
+                        <option value="qualquer">Sem preferência (Todas as marcas)</option>
+                        <option value="volkswagen">Volkswagen</option>
+                        <option value="chevrolet">Chevrolet</option>
+                        <option value="honda">Honda</option>
+                        <option value="byd">BYD</option>
+                        <option value="bmw">BMW</option>
+                        <option value="toyota">Toyota</option>
+                        <option value="hyundai">Hyundai</option>
+                        <option value="fiat">Fiat</option>
+                    </select>
+                </div>
+
+                <div class="quiz-actions">
+                    <button class="btn-outline-cta" style="color:#111; border-color:#ccc;" onclick="etapaAnterior(3)">
+                        <i class="ph ph-arrow-left"></i> Voltar
+                    </button>
+                    <button class="btn-yellow-cta" onclick="calcularERexibirResultados()">
+                        <i class="ph ph-check-circle"></i> Gerar Meu Diagnóstico (Top 5)
+                    </button>
+                </div>
+            </div>
+
+            <!-- RESULTADOS (TOP 5 RECOMENDAÇÕES) -->
+            <div class="quiz-step" id="stepResults">
+                <div class="results-header-banner">
+                    <span class="match-score-badge"><i class="ph-fill ph-sparkle"></i> DIAGNÓSTICO CONCLUÍDO</span>
+                    <h2>Seu Top 5 Veículos Ideal</h2>
+                    <p>Cruzamos 20 variáveis do seu perfil com os custos e especificações do catálogo.</p>
+                </div>
+
+                <!-- Botão de Destaque para o AutoMatch AI -->
+                <div style="text-align: center; margin-bottom: 28px;">
+                    <button class="btn-yellow-cta" style="width: 100%; max-width: 580px; padding: 16px 24px; font-size: 1rem; justify-content: center; border-radius: 12px; box-shadow: 0 4px 14px rgba(255, 214, 0, 0.4);" onclick="abrirModalAI()">
+                        <i class="ph-fill ph-sparkle" style="font-size: 1.3rem;"></i> 
+                        Quero conversar com o AutoMatch AI para decidir qual destas opções é a melhor pra mim
+                    </button>
+                </div>
+
+                <div class="cars-grid" id="resultsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
+                </div>
+
+                <div style="text-align: center; margin-top: 32px;">
+                    <button class="btn-outline-cta" style="color:#111; border-color:#ccc;" onclick="location.reload()">
+                        <i class="ph ph-arrow-counter-clockwise"></i> Refazer o teste
+                    </button>
+                    <a href="/" class="btn-yellow-cta" style="margin-left: 12px; text-decoration: none;">
+                        Ver catálogo completo <i class="ph ph-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal do AutoMatch AI -->
+    <div id="aiModal" class="ai-modal-overlay">
+        <div class="ai-modal">
+            <div class="ai-modal-header">
+                <div class="ai-title">
+                    <i class="ph-fill ph-sparkle" style="color: var(--primary-yellow); font-size: 1.5rem;"></i>
+                    <div class="ai-info">
+                        <h3>AutoMatch AI</h3>
+                        <span class="ai-status">Online e pronto para analisar seu perfil</span>
+                    </div>
+                </div>
+                <button class="btn-close-modal" onclick="fecharModalAI()"><i class="ph ph-x"></i></button>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai-message">
+                    <div class="message-content">
+                        Olá! Vi que você concluiu o teste. Qual das opções geradas no seu Top 5 mais te chamou atenção, ou sobre qual gostaria de tirar dúvidas específicas?
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-input-area">
+                <input type="text" id="userInput" placeholder="Ex: Qual o custo de seguro do top 1 comparado ao top 2?..." onkeypress="lidarComEnter(event)">
+                <button class="btn-send" onclick="enviarMensagem()"><i class="ph-fill ph-paper-plane-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script de Dados do Flask -->
+    <script id="carros-data" type="application/json">
+        {{ carros|tojson|safe }}
+    </script>
+
+    <script>
+        const TODOS_OS_CARROS = JSON.parse(document.getElementById('carros-data').textContent);
+        
+        let respostas = {
+            estadoUf: 'MG',
+            primeiroCarro: 'nao',
+            condicao: 'qualquer',
+            orcamento: 80000,
+            pagamento: 'avista',
+            tempoPosse: '3_5',
+            limiteMensal: 900,
+            localUso: 'cidade',
+            kmMensal: 1200,
+            passageiros: 3,
+            usoTrabalho: 'nao',
+            eletricoPref: 'qualquer',
+            categoria: 'qualquer',
+            cambio: 'qualquer',
+            importanciaConsumo: 4,
+            aceitaAntigoDesempenho: 'nao',
+            equipamentos: [],
+            toleranciaManutencao: 1,
+            importanciaRevenda: 4,
+            marcaPreferida: 'qualquer'
+        };
+
+        function setEscala(campo, valor, elemento) {
+            respostas[campo] = valor;
+            const parent = elemento.parentElement;
+            parent.querySelectorAll('.scale-btn').forEach(btn => btn.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        function toggleEquipamento(item, elemento) {
+            const idx = respostas.equipamentos.indexOf(item);
+            if (idx > -1) {
+                respostas.equipamentos.splice(idx, 1);
+                elemento.classList.remove('selected');
+            } else {
+                respostas.equipamentos.push(item);
+                elemento.classList.add('selected');
+            }
+        }
+
+        function proximaEtapa(numEtapa) {
+            document.querySelectorAll('.quiz-step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step${numEtapa}`).classList.add('active');
+            
+            const porcentagens = { 1: '25%', 2: '50%', 3: '75%', 4: '100%' };
+            document.getElementById('progressFill').style.width = porcentagens[numEtapa];
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function etapaAnterior(numEtapa) {
+            proximaEtapa(numEtapa);
+        }
+
+        function calcularERexibirResultados() {
+            document.getElementById('progressBarContainer').style.display = 'none';
+            document.querySelectorAll('.quiz-step').forEach(s => s.classList.remove('active'));
+            
+            const resultsStep = document.getElementById('stepResults');
+            resultsStep.classList.add('active');
+
+            // ALGORITMO AVANÇADO DE MATCH
+            const carrosComScore = TODOS_OS_CARROS.map(carro => {
+                let pontos = 60;
+
+                // 1. Orçamento
+                if (carro.preco_estimado <= respostas.orcamento) {
+                    pontos += 20;
+                } else if (carro.preco_estimado <= respostas.orcamento * 1.12) {
+                    pontos += 5;
+                } else {
+                    pontos -= 25;
+                }
+
+                // 2. Preferência por Elétrico / Híbrido / Combustão
+                const combustivel = (carro.combustivel || carro.ficha_tecnica?.combustivel || '').toLowerCase();
+                if (respostas.eletricoPref === 'eletrico' && (combustivel.includes('elétrico') || carro.modelo.toLowerCase().includes('dolphin'))) {
+                    pontos += 25;
+                } else if (respostas.eletricoPref === 'hibrido' && combustivel.includes('híbrido')) {
+                    pontos += 20;
+                } else if (respostas.eletricoPref === 'combustao' && !combustivel.includes('elétrico')) {
+                    pontos += 10;
+                }
+
+                // 3. Marca
+                if (respostas.marcaPreferida !== 'qualquer' && carro.marca.toLowerCase() === respostas.marcaPreferida.toLowerCase()) {
+                    pontos += 15;
+                }
+
+                // 4. Categoria
+                if (respostas.categoria !== 'qualquer' && carro.categoria.toLowerCase() === respostas.categoria.toLowerCase()) {
+                    pontos += 12;
+                }
+
+                // 5. Consumo de Combustível
+                const kml = carro.consumo_praticidade.urbano_gasolina_kml || 10;
+                if (kml >= 13) {
+                    pontos += respostas.importanciaConsumo * 3;
+                }
+
+                const matchPorcentagem = Math.min(Math.max(Math.round(pontos), 65), 99);
+
+                return {
+                    ...carro,
+                    matchPorcentagem
+                };
+            });
+
+            carrosComScore.sort((a, b) => b.matchPorcentagem - a.matchPorcentagem);
+            const top5 = carrosComScore.slice(0, 5);
+
+            const resultsGrid = document.getElementById('resultsGrid');
+            resultsGrid.innerHTML = '';
+
+            top5.forEach(carro => {
+                const card = document.createElement('div');
+                card.className = 'car-card';
+                card.style.display = 'flex';
+                card.innerHTML = `
+                    <div class="car-card-header">
+                        <span class="tag-match">${carro.matchPorcentagem}% de match</span>
+                        <button class="btn-favorite"><i class="ph ph-heart"></i></button>
+                    </div>
+                    
+                    <div class="car-image-container">
+                        <img src="/static/images/${carro.media.imagem_principal}" 
+                             alt="${carro.modelo}" 
+                             class="car-thumbnail"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="car-image-placeholder" style="display: none;">
+                            <i class="ph ph-car"></i>
+                        </div>
+                    </div>
+
+                    <div class="car-card-body">
+                        <div class="car-title">
+                            <h3>${carro.marca} ${carro.modelo}</h3>
+                            <p>${carro.versao} · ${carro.ano}</p>
+                        </div>
+
+                        <div class="car-specs">
+                            <span><i class="ph ph-lightning"></i> ${carro.desempenho.potencia_cv} cv</span>
+                            <span><i class="ph ph-gas-pump"></i> ${carro.consumo_praticidade.urbano_gasolina_kml} km/l</span>
+                        </div>
+
+                        <div class="car-card-footer">
+                            <div class="price-container">
+                                <span class="price-label">Preço estimado</span>
+                                <span class="price-value">R$ ${carro.preco_estimado.toLocaleString('pt-BR')}</span>
+                            </div>
+                            <a href="/carro/${carro.id}" class="btn-add" title="Ver Detalhes"><i class="ph ph-arrow-right"></i></a>
+                        </div>
+                    </div>
+                `;
+                resultsGrid.appendChild(card);
+            });
+        }
+
+        // Funções da IA
+        function abrirModalAI() {
+            const modal = document.getElementById('aiModal');
+            if (modal) {
+                modal.classList.add('active');
+                document.getElementById('userInput').focus();
+            }
+        }
+
+        function fecharModalAI() {
+            const modal = document.getElementById('aiModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function lidarComEnter(event) {
+            if (event.key === 'Enter') enviarMensagem();
+        }
+
+        function enviarMensagem() {
+            const input = document.getElementById('userInput');
+            const mensagem = input.value.trim();
+            if (mensagem === '') return;
+
+            const chatMessages = document.getElementById('chatMessages');
+
+            const userDiv = document.createElement('div');
+            userDiv.className = 'message user-message';
+            userDiv.innerHTML = `<div class="message-content">${mensagem}</div>`;
+            chatMessages.appendChild(userDiv);
+
+            input.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            setTimeout(() => {
+                const aiDiv = document.createElement('div');
+                aiDiv.className = 'message ai-message';
+                aiDiv.innerHTML = `<div class="message-content">Analisando suas opções no estado de ${respostas.estadoUf} com foco nas suas prioridades: "${mensagem}". Em breve poderei comparar o IPVA local e o custo-benefício de cada um dos 5 modelos do seu Top Match!</div>`;
+                chatMessages.appendChild(aiDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

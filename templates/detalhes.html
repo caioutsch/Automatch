@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoMatch - {{ carro.marca }} {{ carro.modelo }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .btn-favorite.favorito-ativo {
+            color: #E11D48 !important;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .spec-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .spec-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: #FFFDE7;
+            color: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+        .spec-info label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            font-weight: 500;
+        }
+        .spec-info strong {
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        /* Estilo customizado para o botão da IA no card escuro */
+        .btn-ai-details {
+            width: 100%;
+            justify-content: center;
+            color: #FFFFFF;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px;
+            font-size: 0.88rem;
+            cursor: pointer;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .btn-ai-details:hover {
+            background: var(--primary-yellow, #FACC15);
+            color: #111111;
+            border-color: var(--primary-yellow, #FACC15);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        
+        <!-- Menu Lateral Fino -->
+        <aside class="sidebar">
+            <div>
+                <a href="{{ url_for('visao_geral') }}" class="logo-link">
+                    <div class="logo">
+                        <div class="logo-icon"><i class="ph ph-arrow-up-right"></i></div>
+                        <h2>AutoMatch</h2>
+                    </div>
+                </a>
+
+                <div class="menu-section">
+                    <p class="menu-label">ÁREA DE TRABALHO</p>
+                    <nav>
+                        <a href="{{ url_for('visao_geral') }}" class="menu-item {% if request.endpoint == 'visao_geral' %}active{% endif %}">
+                            <i class="ph ph-squares-four"></i> Visão geral
+                        </a>
+                        <a href="{{ url_for('catalogo') }}" class="menu-item {% if request.endpoint == 'catalogo' %}active{% endif %}">
+                            <i class="ph ph-car-profile"></i> Catálogo
+                        </a>
+                        <a href="{{ url_for('comparador') }}" class="menu-item {% if request.endpoint == 'comparador' %}active{% endif %}">
+                            <i class="ph ph-columns"></i> Comparador
+                        </a>
+                        <a href="{{ url_for('financeiro') }}" class="menu-item {% if request.endpoint == 'financeiro' %}active{% endif %}">
+                            <i class="ph ph-wallet"></i> Financeiro
+                        </a>
+                        <a href="{{ url_for('formulario') }}" class="menu-item {% if request.endpoint == 'formulario' %}active{% endif %}">
+                            <i class="ph ph-sparkle"></i> Para você
+                        </a>
+                        <a href="{{ url_for('garagem') }}" class="menu-item {% if request.endpoint == 'garagem' %}active{% endif %}">
+                            <i class="ph ph-heart"></i> Garagem <span class="badge" id="garagemBadge">{{ favoritos_ids|length if favoritos_ids else 0 }}</span>
+                        </a>
+                        {% if usuario %}
+                        <a href="{{ url_for('perfil') }}" class="menu-item {% if request.endpoint == 'perfil' %}active{% endif %}">
+                            <i class="ph ph-user-circle"></i> Meu Perfil
+                        </a>
+                        {% endif %}
+                    </nav>
+                </div>
+            </div>
+
+            <div>
+                {% if usuario %}
+                <div class="user-profile" style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: #F9FAFB; border-radius: 12px; border: 1px solid var(--border-color);">
+                    <a href="{{ url_for('perfil') }}" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; flex: 1; min-width: 0;">
+                        {% if usuario.foto_perfil %}
+                        <img src="/static/uploads/{{ usuario.foto_perfil }}" alt="{{ usuario.nome }}" style="width: 36px; height: 36px; object-fit: cover; border-radius: 50%; flex-shrink: 0; border: 1px solid var(--border-color);">
+                        {% else %}
+                        <div class="avatar">{{ usuario.iniciais }}</div>
+                        {% endif %}
+                        <div class="user-info" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                            <span class="user-name" style="display: block; font-weight: 700; font-size: 0.85rem; color: var(--text-dark);">{{ usuario.nome }}</span>
+                            <span class="user-plan" style="display: block; font-size: 0.75rem; color: var(--text-gray); overflow: hidden; text-overflow: ellipsis;">{{ usuario.email }}</span>
+                        </div>
+                    </a>
+                    <a href="{{ url_for('logout') }}" title="Sair da conta" style="color: #9CA3AF; font-size: 1.2rem; text-decoration: none; padding: 4px; display: flex; align-items: center;">
+                        <i class="ph ph-sign-out"></i>
+                    </a>
+                </div>
+                {% else %}
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 16px;">
+                    <a href="{{ url_for('login') }}" class="btn-outline-cta" style="color: #111; border-color: #D1D5DB; text-align: center; justify-content: center; padding: 8px; font-size: 0.85rem;">Entrar</a>
+                    <a href="{{ url_for('cadastro') }}" class="btn-yellow-cta" style="text-align: center; justify-content: center; padding: 8px; font-size: 0.85rem;">Criar conta</a>
+                </div>
+                {% endif %}
+            </div>
+        </aside>
+
+        <!-- Conteúdo Principal -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="search-bar" style="visibility: hidden;"></div>
+                <div class="top-actions">
+                    <button onclick="abrirModalAI()" class="btn-yellow-cta" style="padding: 6px 14px; font-size: 0.82rem; gap: 6px; cursor: pointer; border: none; display: flex; align-items: center;">
+                        <i class="ph-fill ph-sparkle"></i> AutoMatch AI
+                    </button>
+                    <span class="region">Brasil - BRL</span>
+                    <i class="ph ph-bell"></i>
+                    <span class="pro-tag">PRO</span>
+                    {% if usuario %}
+                    <a href="{{ url_for('perfil') }}" title="Ir para o Meu Perfil" style="text-decoration: none; display: flex; align-items: center;">
+                        {% if usuario.foto_perfil %}
+                        <img src="/static/uploads/{{ usuario.foto_perfil }}" alt="{{ usuario.nome }}" class="avatar-small" style="width: 34px; height: 34px; object-fit: cover; border-radius: 50%; border: 2px solid var(--primary-yellow);">
+                        {% else %}
+                        <div class="avatar-small">{{ usuario.iniciais }}</div>
+                        {% endif %}
+                    </a>
+                    {% endif %}
+                </div>
+            </header>
+
+            <div class="content-area" style="max-width: 1100px;">
+                
+                <!-- Botão Voltar -->
+                <a href="{{ url_for('catalogo') }}" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text-gray); font-weight: 600; font-size: 0.88rem; margin-bottom: 20px;">
+                    <i class="ph ph-arrow-left"></i> Voltar ao catálogo
+                </a>
+
+                <!-- Cabeçalho do Veículo -->
+                <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 24px;">
+                    <div>
+                        <span class="subheading">{{ carro.marca }}</span>
+                        <h1 style="font-size: 1.8rem; font-weight: 800; color: var(--text-dark); margin: 4px 0;">{{ carro.modelo }} {{ carro.versao }}</h1>
+                        <p style="color: var(--text-gray); font-size: 0.95rem;">Ano {{ carro.ano }} · Categoria: {{ carro.categoria if carro.categoria else 'Passeio' }}</p>
+                    </div>
+
+                    <div style="text-align: right; display: flex; align-items: center; gap: 16px;">
+                        <div>
+                            <span style="font-size: 0.75rem; color: var(--text-gray); display: block;">Preço Estimado</span>
+                            <span style="font-size: 1.5rem; font-weight: 800; color: var(--text-dark);">R$ {{ "{:,.0f}".format(carro.preco_estimado).replace(',', '.') }}</span>
+                        </div>
+
+                        {% set eh_favorito = favoritos_ids and (carro.id in favoritos_ids) %}
+                        <button class="btn-favorite {{ 'favorito-ativo' if eh_favorito else '' }}" 
+                                onclick="toggleFavorito('{{ carro.id }}', this)" 
+                                style="width: 48px; height: 48px; border-radius: 12px; border: 1px solid var(--border-color); background: #FFF; font-size: 1.4rem; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                            <i class="{{ 'ph-fill ph-heart' if eh_favorito else 'ph ph-heart' }}"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Grid Superior: Imagem Principal e Ações Rápidas -->
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 32px;">
+                    <!-- Card da Imagem Principal -->
+                    <div style="background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; display: flex; align-items: center; justify-content: center; min-height: 320px;">
+                        {% if carro.media and carro.media.imagem_principal %}
+                        <img src="/static/images/{{ carro.media.imagem_principal }}" 
+                             alt="{{ carro.modelo }}" 
+                             style="max-width: 100%; max-height: 280px; object-fit: contain;"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div style="display: none; flex-direction: column; align-items: center; color: var(--text-gray);">
+                            <i class="ph ph-car" style="font-size: 4rem;"></i>
+                            <p>Imagem indisponível</p>
+                        </div>
+                        {% else %}
+                        <div style="display: flex; flex-direction: column; align-items: center; color: var(--text-gray);">
+                            <i class="ph ph-car" style="font-size: 4rem;"></i>
+                            <p>Imagem indisponível</p>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Card de Destaques e Botão Comparar -->
+                    <div style="background: #0F1319; color: #FFF; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div>
+                            <span style="color: var(--primary-yellow); font-size: 0.8rem; font-weight: 800; text-transform: uppercase;">Ações e Análise</span>
+                            <h3 style="font-size: 1.2rem; font-weight: 800; margin: 8px 0 16px 0;">Gostou deste modelo?</h3>
+                            <p style="color: #9CA3AF; font-size: 0.85rem; line-height: 1.5; margin-bottom: 20px;">
+                                Compare as especificações técnicas deste {{ carro.modelo }} diretamente contra outros veículos da sua garagem ou do catálogo.
+                            </p>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <a href="{{ url_for('comparador', carro1=carro.id) }}" class="btn-yellow-cta" style="width: 100%; justify-content: center; text-decoration: none; padding: 12px; font-size: 0.9rem;">
+                                <i class="ph ph-columns"></i> Comparar este modelo
+                            </a>
+                            <button onclick="abrirModalAI()" class="btn-ai-details">
+                                <i class="ph-fill ph-sparkle"></i> Perguntar à IA sobre ele
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção 1: Desempenho e Motorização -->
+                <h2 style="font-size: 1.2rem; font-weight: 800; color: var(--text-dark); margin-bottom: 16px;">Desempenho e Motorização</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 32px;">
+                    <div class="spec-card">
+                        <div class="spec-icon"><i class="ph ph-lightning"></i></div>
+                        <div class="spec-info">
+                            <label>Potência</label>
+                            <strong>{{ carro.desempenho.potencia_cv if carro.desempenho else 'N/I' }} cv</strong>
+                        </div>
+                    </div>
+
+                    <div class="spec-card">
+                        <div class="spec-icon"><i class="ph ph-gauge"></i></div>
+                        <div class="spec-info">
+                            <label>Torque</label>
+                            <strong>{{ carro.desempenho.torque_kgfm if carro.desempenho else 'N/I' }} kgfm</strong>
+                        </div>
+                    </div>
+
+                    <div class="spec-card">
+                        <div class="spec-icon"><i class="ph ph-timer"></i></div>
+                        <div class="spec-info">
+                            <label>0 a 100 km/h</label>
+                            <strong>{{ carro.desempenho.zero_a_cem_s if carro.desempenho else 'N/I' }} s</strong>
+                        </div>
+                    </div>
+
+                    <div class="spec-card">
+                        <div class="spec-icon"><i class="ph ph-trend-up"></i></div>
+                        <div class="spec-info">
+                            <label>Velocidade Máxima</label>
+                            <strong>{{ carro.desempenho.velocidade_max_kmh if carro.desempenho else 'N/I' }} km/h</strong>
+                        </div>
+                    </div>
+
+                    <div class="spec-card">
+                        <div class="spec-icon"><i class="ph ph-gear"></i></div>
+                        <div class="spec-info">
+                            <label>Câmbio</label>
+                            <strong>{{ carro.desempenho.cambio if carro.desempenho else 'N/I' }}</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção 2: Consumo e Praticidade -->
+                <h2 style="font-size: 1.2rem; font-weight: 800; color: var(--text-dark); margin-bottom: 16px;">Consumo e Praticidade</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 40px;">
+                    <div class="spec-card">
+                        <div class="spec-icon" style="background: #ECFDF5; color: #10B981;"><i class="ph ph-gas-pump"></i></div>
+                        <div class="spec-info">
+                            <label>Consumo Urbano</label>
+                            <strong>{{ carro.consumo_praticidade.urbano_gasolina_kml if carro.consumo_praticidade else 'N/I' }} km/l</strong>
+                        </div>
+                    </div>
+
+                    <div class="spec-card">
+                        <div class="spec-icon" style="background: #ECFDF5; color: #10B981;"><i class="ph ph-navigation-arrow"></i></div>
+                        <div class="spec-info">
+                            <label>Consumo Rodoviário</label>
+                            <strong>{{ carro.consumo_praticidade.rodoviario_gasolina_kml if carro.consumo_praticidade else 'N/I' }} km/l</strong>
+                        </div>
+                    </div>
+
+                    <div class="spec-card">
+                        <div class="spec-icon" style="background: #EEF2FF; color: #4F46E5;"><i class="ph ph-suitcases"></i></div>
+                        <div class="spec-info">
+                            <label>Porta-Malas</label>
+                            <strong>{{ carro.consumo_praticidade.porta_malas_l if carro.consumo_praticidade else 'N/I' }} Litros</strong>
+                        </div>
+                    </div>
+
+                    <div class="spec-card">
+                        <div class="spec-icon" style="background: #FFFDE7; color: #111;"><i class="ph ph-drop"></i></div>
+                        <div class="spec-info">
+                            <label>Tanque de Combustível</label>
+                            <strong>{{ carro.consumo_praticidade.tanque_l if carro.consumo_praticidade else 'N/I' }} Litros</strong>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal do AutoMatch AI -->
+    <div id="aiModal" class="ai-modal-overlay">
+        <div class="ai-modal">
+            <div class="ai-modal-header">
+                <div class="ai-title">
+                    <i class="ph-fill ph-sparkle" style="color: var(--primary-yellow); font-size: 1.5rem;"></i>
+                    <div class="ai-info">
+                        <h3>AutoMatch AI</h3>
+                        <span class="ai-status">Online e pronto para analisar o catálogo</span>
+                    </div>
+                </div>
+                <button class="btn-close-modal" onclick="fecharModalAI()"><i class="ph ph-x"></i></button>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai-message">
+                    <div class="message-content">
+                        Olá! Sou o assistente do AutoMatch. Quer saber se o {{ carro.marca }} {{ carro.modelo }} é a melhor opção para sua rotina? Pode perguntar!
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-input-area">
+                <input type="text" id="userInput" placeholder="Ex: Este modelo é econômico na cidade?..." onkeypress="lidarComEnter(event)">
+                <button class="btn-send" onclick="enviarMensagem()"><i class="ph-fill ph-paper-plane-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleFavorito(idCarro, btn) {
+            fetch('/api/favorito/' + idCarro, { method: 'POST' })
+                .then(response => {
+                    if (response.status === 401) {
+                        window.location.href = '{{ url_for("login") }}';
+                        return null;
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (!data) return;
+                    const icone = btn.querySelector('i');
+                    if (data.status === 'adicionado') {
+                        icone.className = 'ph-fill ph-heart';
+                        btn.classList.add('favorito-ativo');
+                    } else {
+                        icone.className = 'ph ph-heart';
+                        btn.classList.remove('favorito-ativo');
+                    }
+
+                    const badge = document.getElementById('garagemBadge');
+                    if (badge) {
+                        badge.innerText = data.total_favoritos;
+                    }
+                })
+                .catch(err => console.error('Erro ao alternar favorito:', err));
+        }
+
+        function abrirModalAI() {
+            const modal = document.getElementById('aiModal');
+            if (modal) {
+                modal.classList.add('active');
+                document.getElementById('userInput').focus();
+            }
+        }
+
+        function fecharModalAI() {
+            const modal = document.getElementById('aiModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function lidarComEnter(event) {
+            if (event.key === 'Enter') enviarMensagem();
+        }
+
+        function enviarMensagem() {
+            const input = document.getElementById('userInput');
+            const mensagem = input.value.trim();
+            if (mensagem === '') return;
+
+            const chatMessages = document.getElementById('chatMessages');
+
+            const userDiv = document.createElement('div');
+            userDiv.className = 'message user-message';
+            userDiv.innerHTML = `<div class="message-content">${mensagem}</div>`;
+            chatMessages.appendChild(userDiv);
+
+            input.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'message ai-message';
+            loadingDiv.id = 'aiLoadingMessage';
+            loadingDiv.innerHTML = `
+                <div class="message-content" style="color: var(--text-gray); display: flex; align-items: center; gap: 8px;">
+                    <i class="ph ph-spinner" style="animation: spin 1s linear infinite;"></i> 
+                    Analisando o catálogo e gerando recomendação...
+                </div>`;
+            chatMessages.appendChild(loadingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mensagem: mensagem })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const loading = document.getElementById('aiLoadingMessage');
+                if (loading) loading.remove();
+
+                const aiDiv = document.createElement('div');
+                aiDiv.className = 'message ai-message';
+                aiDiv.innerHTML = `<div class="message-content">${data.resposta.replace(/\n/g, '<br>')}</div>`;
+                chatMessages.appendChild(aiDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            })
+            .catch(err => {
+                console.error('Erro na comunicação com a IA:', err);
+                const loading = document.getElementById('aiLoadingMessage');
+                if (loading) loading.remove();
+
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'message ai-message';
+                errorDiv.innerHTML = `<div class="message-content" style="color: #E11D48;">Não foi possível obter resposta do AutoMatch AI. Tente novamente em instantes.</div>`;
+                chatMessages.appendChild(errorDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            });
+        }
+    </script>
+</body>
+</html>

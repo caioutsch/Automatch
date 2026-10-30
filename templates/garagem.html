@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoMatch - Minha Garagem</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .btn-favorite.favorito-ativo { color: #E11D48 !important; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div>
+                <a href="{{ url_for('visao_geral') }}" class="logo-link">
+                    <div class="logo">
+                        <div class="logo-icon"><i class="ph ph-arrow-up-right"></i></div>
+                        <h2>AutoMatch</h2>
+                    </div>
+                </a>
+                <div class="menu-section">
+                    <p class="menu-label">ÁREA DE TRABALHO</p>
+                    <nav>
+                        <a href="{{ url_for('visao_geral') }}" class="menu-item {% if request.endpoint == 'visao_geral' %}active{% endif %}">
+                            <i class="ph ph-squares-four"></i> Visão geral
+                        </a>
+                        <a href="{{ url_for('catalogo') }}" class="menu-item {% if request.endpoint == 'catalogo' %}active{% endif %}">
+                            <i class="ph ph-car-profile"></i> Catálogo
+                        </a>
+                        <a href="{{ url_for('comparador') }}" class="menu-item {% if request.endpoint == 'comparador' %}active{% endif %}">
+                            <i class="ph ph-columns"></i> Comparador
+                        </a>
+                        <a href="{{ url_for('financeiro') }}" class="menu-item {% if request.endpoint == 'financeiro' %}active{% endif %}">
+                            <i class="ph ph-wallet"></i> Financeiro
+                        </a>
+                        <a href="{{ url_for('formulario') }}" class="menu-item {% if request.endpoint == 'formulario' %}active{% endif %}">
+                            <i class="ph ph-sparkle"></i> Para você
+                        </a>
+                        <a href="{{ url_for('garagem') }}" class="menu-item {% if request.endpoint == 'garagem' %}active{% endif %}">
+                            <i class="ph ph-heart"></i> Garagem <span class="badge" id="garagemBadge">{{ favoritos_ids|length if favoritos_ids else 0 }}</span>
+                        </a>
+                        {% if usuario %}
+                        <a href="{{ url_for('perfil') }}" class="menu-item {% if request.endpoint == 'perfil' %}active{% endif %}">
+                            <i class="ph ph-user-circle"></i> Meu Perfil
+                        </a>
+                        {% endif %}
+                    </nav>
+                </div>
+            </div>
+            <div>
+                {% if usuario %}
+                <div class="user-profile" style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: #F9FAFB; border-radius: 12px; border: 1px solid var(--border-color);">
+                    <a href="{{ url_for('perfil') }}" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; flex: 1; min-width: 0;">
+                        {% if usuario.foto_perfil %}
+                        <img src="/static/uploads/{{ usuario.foto_perfil }}" alt="{{ usuario.nome }}" style="width: 36px; height: 36px; object-fit: cover; border-radius: 50%; flex-shrink: 0; border: 1px solid var(--border-color);">
+                        {% else %}
+                        <div class="avatar">{{ usuario.iniciais }}</div>
+                        {% endif %}
+                        <div class="user-info" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                            <span class="user-name" style="display: block; font-weight: 700; font-size: 0.85rem; color: var(--text-dark);">{{ usuario.nome }}</span>
+                            <span class="user-plan" style="display: block; font-size: 0.75rem; color: var(--text-gray); overflow: hidden; text-overflow: ellipsis;">{{ usuario.email }}</span>
+                        </div>
+                    </a>
+                    <a href="{{ url_for('logout') }}" title="Sair da conta" style="color: #9CA3AF; font-size: 1.2rem; text-decoration: none; padding: 4px; display: flex; align-items: center;">
+                        <i class="ph ph-sign-out"></i>
+                    </a>
+                </div>
+                {% else %}
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 16px;">
+                    <a href="{{ url_for('login') }}" class="btn-outline-cta" style="color: #111; border-color: #D1D5DB; text-align: center; justify-content: center; padding: 8px; font-size: 0.85rem;">Entrar</a>
+                    <a href="{{ url_for('cadastro') }}" class="btn-yellow-cta" style="text-align: center; justify-content: center; padding: 8px; font-size: 0.85rem;">Criar conta</a>
+                </div>
+                {% endif %}
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+    <div class="search-bar" style="visibility: hidden;"></div>
+    <div class="top-actions">
+        <!-- Botão Global do AutoMatch AI -->
+        <button onclick="abrirModalAI()" class="btn-yellow-cta" style="padding: 6px 14px; font-size: 0.82rem; gap: 6px; cursor: pointer; border: none; display: flex; align-items: center;">
+            <i class="ph-fill ph-sparkle"></i> AutoMatch AI
+        </button>
+
+        <span class="region">Brasil - BRL</span>
+        <i class="ph ph-bell"></i>
+        <span class="pro-tag">PRO</span>
+        
+        {% if usuario %}
+        <a href="{{ url_for('perfil') }}" title="Ir para o Meu Perfil" style="text-decoration: none; display: flex; align-items: center;">
+            {% if usuario.foto_perfil %}
+            <img src="/static/uploads/{{ usuario.foto_perfil }}" alt="{{ usuario.nome }}" class="avatar-small" style="width: 34px; height: 34px; object-fit: cover; border-radius: 50%; border: 2px solid var(--primary-yellow);">
+            {% else %}
+            <div class="avatar-small">{{ usuario.iniciais }}</div>
+            {% endif %}
+        </a>
+        {% endif %}
+    </div>
+</header>
+
+            <div class="content-area">
+                <div class="page-header" style="margin-bottom: 28px;">
+                    <span class="subheading">SEUS FAVORITOS SALVOS</span>
+                    <h1>Minha Garagem</h1>
+                    <p>Acompanhe e gerencie os modelos que você favoritou.</p>
+                </div>
+
+                {% if carros|length > 0 %}
+                <div class="cars-grid" id="carsGrid">
+                    {% for carro in carros %}
+                    <div class="car-card" id="card-{{ carro.id }}" onclick="irParaDetalhes('{{ carro.id }}')">
+                        <div class="car-card-header">
+                            <span class="tag-match">Salvo</span>
+                            <button class="btn-favorite favorito-ativo" onclick="event.stopPropagation(); toggleFavorito('{{ carro.id }}', this)">
+                                <i class="ph-fill ph-heart"></i>
+                            </button>
+                        </div>
+                        <div class="car-image-container">
+                            <img src="/static/images/{{ carro.media.imagem_principal }}" alt="{{ carro.modelo }}" class="car-thumbnail" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="car-image-placeholder" style="display: none;"><i class="ph ph-car"></i></div>
+                        </div>
+                        <div class="car-card-body">
+                            <div class="car-title">
+                                <h3>{{ carro.marca }} {{ carro.modelo }}</h3>
+                                <p>{{ carro.versao }} · {{ carro.ano }}</p>
+                            </div>
+                            <div class="car-card-footer">
+                                <div class="price-container">
+                                    <span class="price-label">Preço estimado</span>
+                                    <span class="price-value">R$ {{ "{:,.0f}".format(carro.preco_estimado).replace(',', '.') }}</span>
+                                </div>
+                                <span class="btn-add"><i class="ph ph-arrow-right"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div style="text-align: center; padding: 64px 20px; background: #FFFFFF; border-radius: 16px; border: 1px solid var(--border-color);">
+                    <i class="ph ph-heart-break" style="font-size: 3.5rem; color: #9CA3AF; margin-bottom: 16px;"></i>
+                    <h2 style="font-size: 1.3rem; font-weight: 700;">Sua garagem está vazia</h2>
+                    <p style="color: var(--text-gray); margin: 8px 0 24px 0;">Favorite modelos no catálogo para exibi-los aqui.</p>
+                    <a href="{{ url_for('catalogo') }}" class="btn-yellow-cta" style="display: inline-flex; text-decoration: none;">Explorar Catálogo</a>
+                </div>
+                {% endif %}
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function irParaDetalhes(id) { window.location.href = '/carro/' + id; }
+        function toggleFavorito(idCarro, btn) {
+            fetch('/api/favorito/' + idCarro, { method: 'POST' })
+                .then(res => res.json())
+                .then(data => {
+                    const badge = document.getElementById('garagemBadge');
+                    if (badge) badge.innerText = data.total_favoritos;
+                    const card = document.getElementById('card-' + idCarro);
+                    if (card && data.status === 'removido') {
+                        card.remove();
+                        if (data.total_favoritos === 0) location.reload();
+                    }
+                });
+        }
+    </script>
+</body>
+<!-- Modal do AutoMatch AI -->
+<div id="aiModal" class="ai-modal-overlay">
+    <div class="ai-modal">
+        <div class="ai-modal-header">
+            <div class="ai-title">
+                <i class="ph-fill ph-sparkle" style="color: var(--primary-yellow); font-size: 1.5rem;"></i>
+                <div class="ai-info">
+                    <h3>AutoMatch AI</h3>
+                    <span class="ai-status">Online e pronto para analisar o catálogo</span>
+                </div>
+            </div>
+            <button class="btn-close-modal" onclick="fecharModalAI()"><i class="ph ph-x"></i></button>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <div class="message ai-message">
+                <div class="message-content">
+                    Olá! Sou o assistente inteligente do AutoMatch. Como posso ajudar com os veículos do catálogo hoje?
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="userInput" placeholder="Ex: Qual o carro com menor consumo até 100 mil?..." onkeypress="lidarComEnter(event)">
+            <button class="btn-send" onclick="enviarMensagem()"><i class="ph-fill ph-paper-plane-right"></i></button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function abrirModalAI() {
+        const modal = document.getElementById('aiModal');
+        if (modal) {
+            modal.classList.add('active');
+            document.getElementById('userInput').focus();
+        }
+    }
+
+    function fecharModalAI() {
+        const modal = document.getElementById('aiModal');
+        if (modal) modal.classList.remove('active');
+    }
+
+    function lidarComEnter(event) {
+        if (event.key === 'Enter') enviarMensagem();
+    }
+
+    function enviarMensagem() {
+        const input = document.getElementById('userInput');
+        const mensagem = input.value.trim();
+        if (mensagem === '') return;
+
+        const chatMessages = document.getElementById('chatMessages');
+
+        const userDiv = document.createElement('div');
+        userDiv.className = 'message user-message';
+        userDiv.innerHTML = `<div class="message-content">${mensagem}</div>`;
+        chatMessages.appendChild(userDiv);
+
+        input.value = '';
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        const loadingDiv = document.createElement('div');
+        loadingDiv.className = 'message ai-message';
+        loadingDiv.id = 'aiLoadingMessage';
+        loadingDiv.innerHTML = `
+            <div class="message-content" style="color: var(--text-gray); display: flex; align-items: center; gap: 8px;">
+                <i class="ph ph-spinner" style="animation: spin 1s linear infinite;"></i> 
+                Analisando o catálogo e gerando recomendação...
+            </div>`;
+        chatMessages.appendChild(loadingDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ mensagem: mensagem })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const loading = document.getElementById('aiLoadingMessage');
+            if (loading) loading.remove();
+
+            const aiDiv = document.createElement('div');
+            aiDiv.className = 'message ai-message';
+            aiDiv.innerHTML = `<div class="message-content">${data.resposta.replace(/\n/g, '<br>')}</div>`;
+            chatMessages.appendChild(aiDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        })
+        .catch(err => {
+            console.error('Erro na comunicação com a IA:', err);
+            const loading = document.getElementById('aiLoadingMessage');
+            if (loading) loading.remove();
+
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'message ai-message';
+            errorDiv.innerHTML = `<div class="message-content" style="color: #E11D48;">Não foi possível obter resposta do AutoMatch AI. Tente novamente em instantes.</div>`;
+            chatMessages.appendChild(errorDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
+    }
+</script>
+</html>

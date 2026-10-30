@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoMatch - Visão Geral</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        
+        <!-- Menu Lateral Fino (Slim Sidebar) -->
+        <aside class="sidebar">
+    <div>
+        <!-- Logo Clicável -->
+        <a href="{{ url_for('visao_geral') }}" class="logo-link">
+            <div class="logo">
+                <div class="logo-icon"><i class="ph ph-arrow-up-right"></i></div>
+                <h2>AutoMatch</h2>
+            </div>
+        </a>
+
+        <div class="menu-section">
+            <p class="menu-label">ÁREA DE TRABALHO</p>
+            <nav>
+                <a href="{{ url_for('visao_geral') }}" class="menu-item {% if request.endpoint == 'visao_geral' %}active{% endif %}">
+                    <i class="ph ph-squares-four"></i> Visão geral
+                </a>
+                <a href="{{ url_for('catalogo') }}" class="menu-item {% if request.endpoint == 'catalogo' %}active{% endif %}">
+                    <i class="ph ph-car-profile"></i> Catálogo
+                </a>
+                <a href="{{ url_for('comparador') }}" class="menu-item {% if request.endpoint == 'comparador' %}active{% endif %}">
+                    <i class="ph ph-columns"></i> Comparador
+                </a>
+                <a href="{{ url_for('financeiro') }}" class="menu-item {% if request.endpoint == 'financeiro' %}active{% endif %}">
+                    <i class="ph ph-wallet"></i> Financeiro
+                </a>
+                <a href="{{ url_for('formulario') }}" class="menu-item {% if request.endpoint == 'formulario' %}active{% endif %}">
+                    <i class="ph ph-sparkle"></i> Para você
+                </a>
+                <a href="{{ url_for('garagem') }}" class="menu-item {% if request.endpoint == 'garagem' %}active{% endif %}">
+                    <i class="ph ph-heart"></i> Garagem <span class="badge" id="garagemBadge">{{ favoritos_ids|length if favoritos_ids else 0 }}</span>
+                </a>
+                
+                {% if usuario %}
+                <a href="{{ url_for('perfil') }}" class="menu-item {% if request.endpoint == 'perfil' %}active{% endif %}">
+                    <i class="ph ph-user-circle"></i> Meu Perfil
+                </a>
+                {% endif %}
+            </nav>
+        </div>
+    </div>
+
+    <div>
+        {% if usuario %}
+        <!-- Card do Usuário Sem Aninhamento de Links -->
+        <div class="user-profile" style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: #F9FAFB; border-radius: 12px; border: 1px solid var(--border-color);">
+            <a href="{{ url_for('perfil') }}" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; flex: 1; min-width: 0;">
+                <div class="avatar">{{ usuario.iniciais }}</div>
+                <div class="user-info" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                    <span class="user-name" style="display: block; font-weight: 700; font-size: 0.85rem; color: var(--text-dark);">{{ usuario.nome }}</span>
+                    <span class="user-plan" style="display: block; font-size: 0.75rem; color: var(--text-gray); overflow: hidden; text-overflow: ellipsis;">{{ usuario.email }}</span>
+                </div>
+            </a>
+            
+            <a href="{{ url_for('logout') }}" title="Sair da conta" style="color: #9CA3AF; font-size: 1.2rem; text-decoration: none; padding: 4px; display: flex; align-items: center;">
+                <i class="ph ph-sign-out"></i>
+            </a>
+        </div>
+        {% else %}
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 16px;">
+            <a href="{{ url_for('login') }}" class="btn-outline-cta" style="color: #111; border-color: #D1D5DB; text-align: center; justify-content: center; padding: 8px; font-size: 0.85rem;">
+                Entrar
+            </a>
+            <a href="{{ url_for('cadastro') }}" class="btn-yellow-cta" style="text-align: center; justify-content: center; padding: 8px; font-size: 0.85rem;">
+                Criar conta
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</aside>
+
+        <!-- Conteúdo Principal da Visão Geral -->
+        <main class="main-content">
+            <header class="top-bar">
+    <div class="search-bar" style="visibility: hidden;"></div>
+    <div class="top-actions">
+        <!-- Botão Global do AutoMatch AI -->
+        <button onclick="abrirModalAI()" class="btn-yellow-cta" style="padding: 6px 14px; font-size: 0.82rem; gap: 6px; cursor: pointer; border: none; display: flex; align-items: center;">
+            <i class="ph-fill ph-sparkle"></i> AutoMatch AI
+        </button>
+
+        <span class="region">Brasil - BRL</span>
+        <i class="ph ph-bell"></i>
+        <span class="pro-tag">PRO</span>
+        
+        {% if usuario %}
+        <a href="{{ url_for('perfil') }}" title="Ir para o Meu Perfil" style="text-decoration: none; display: flex; align-items: center;">
+            {% if usuario.foto_perfil %}
+            <img src="/static/uploads/{{ usuario.foto_perfil }}" alt="{{ usuario.nome }}" class="avatar-small" style="width: 34px; height: 34px; object-fit: cover; border-radius: 50%; border: 2px solid var(--primary-yellow);">
+            {% else %}
+            <div class="avatar-small">{{ usuario.iniciais }}</div>
+            {% endif %}
+        </a>
+        {% endif %}
+    </div>
+</header>
+
+            <div class="content-area" style="padding: 0 32px 32px 32px;">
+                
+                <!-- Hero Cinematográfica Embutida -->
+                <section class="hero-dark-card">
+                    <div class="hero-text-content">
+                        <span class="hero-badge">— INTELIGÊNCIA PARA SUA PRÓXIMA ESCOLHA</span>
+                        <h1>Seu próximo carro.<br>Sua melhor decisão.</h1>
+                        
+                        <p>Compare o que importa. Entenda cada custo. Encontre o carro que combina com a sua vida.</p>
+                        
+                        <div class="hero-cta-group">
+                            <button class="btn-yellow-cta" onclick="abrirFormulario()">
+                                <i class="ph ph-arrow-up-right"></i> Encontrar meu carro
+                            </button>
+                            <a href="{{ url_for('comparador') }}" class="btn-outline-cta">Conhecer o comparador</a>
+                        </div>
+
+                        <!-- Botão do AutoMatch AI na Hero -->
+                        <button class="hero-ai-trigger" onclick="abrirModalAI()">
+                            <i class="ph-fill ph-sparkle"></i>
+                            <span>Dúvidas na escolha? <strong>Converse com o AutoMatch AI</strong></span>
+                        </button>
+
+                        <div style="margin-top: 14px;">
+                            <span class="hero-sub-label"><i class="ph ph-check-circle"></i> Análise independente. Você no controle.</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Imagem do Volkswagen Up Branco -->
+                    <div class="hero-image-container">
+                        <img src="/static/images/up_branco.png" 
+                             alt="Volkswagen Up Branco" 
+                             onerror="this.src='https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?q=80&w=1000&auto=format&fit=crop';">
+                    </div>
+                </section>
+
+                <!-- Barra de Busca Flutuante -->
+                <section class="search-floating-bar-container" style="padding: 0; margin-top: -30px;">
+                    <form action="{{ url_for('catalogo') }}" method="GET" class="search-floating-bar">
+                        
+                        <div class="search-floating-item">
+                            <i class="ph ph-magnifying-glass" style="font-size: 1.8rem;"></i>
+                            <div class="search-floating-item-inner" style="flex: 1;">
+                                <span>Qual será o seu próximo?</span>
+                                <p>Comece pelo que faz sentido</p>
+                            </div>
+                        </div>
+
+                        <div class="search-floating-item">
+                            <div class="search-floating-item-inner" style="width: 100%;">
+                                <span>Marca ou modelo</span>
+                                <select name="marca">
+                                    <option value="">Todos os veículos</option>
+                                    <option value="volkswagen">Volkswagen</option>
+                                    <option value="chevrolet">Chevrolet</option>
+                                    <option value="honda">Honda</option>
+                                    <option value="byd">BYD</option>
+                                    <option value="bmw">BMW</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="search-floating-item">
+                            <div class="search-floating-item-inner" style="width: 100%;">
+                                <span>Seu orçamento</span>
+                                <select name="preco">
+                                    <option value="">Até R$ 190.000</option>
+                                    <option value="100000">Até R$ 100.000</option>
+                                    <option value="150000">Até R$ 150.000</option>
+                                    <option value="190000">Até R$ 190.000</option>
+                                    <option value="250000">Mais de R$ 200.000</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="search-floating-item">
+                            <div class="search-floating-item-inner" style="width: 100%;">
+                                <span>Categoria</span>
+                                <select name="categoria">
+                                    <option value="">Todas as categorias</option>
+                                    <option value="suv compacto">SUV compacto</option>
+                                    <option value="hatch">Hatch</option>
+                                    <option value="sedã">Sedã</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-search-landing"><i class="ph ph-magnifying-glass"></i> Explorar</button>
+
+                    </form>
+                </section>
+
+                <!-- Banner de Atalho para IA -->
+                <div style="margin-top: 32px;">
+                    <div class="ai-banner">
+                        <button class="btn-ai-chat" onclick="abrirModalAI()">
+                            <i class="ph-fill ph-sparkle"></i> 
+                            Converse com o AutoMatch AI para analisar o mercado e tirar suas dúvidas!
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Estatísticas -->
+                <section class="stats-strip" style="margin-top: 32px; border-radius: 16px; border: 1px solid var(--border-color);">
+                    <div class="stat-item">
+                        <span class="stat-number">04</span>
+                        <span class="stat-label">SUVs para<br>explorar</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">Foco na sua<br>decisão</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">06</span>
+                        <span class="stat-label">Dimensões de<br>análise</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">01</span>
+                        <span class="stat-label">Lugar para comparar<br>tudo</span>
+                    </div>
+                </section>
+
+                <!-- Recursos & Vantagens -->
+                <section id="como-funciona" class="intro-features-section" style="padding: 60px 0;">
+                    <div class="features-header">
+                        <span>MENOS DÚVIDAS, MAIS DIREÇÃO.</span>
+                        <h2>A melhor escolha vai além da ficha técnica.</h2>
+                        <p>Transforme números soltos em uma visão clara do que realmente vale a pena para você.</p>
+                    </div>
+
+                    <div class="features-columns">
+                        <div class="feature-col-card">
+                            <div class="feature-col-icon"><i class="ph ph-layout"></i></div>
+                            <h3>Compare sem complicar</h3>
+                            <p>Até quatro modelos lado a lado. As diferenças que importam ficam em evidência.</p>
+                        </div>
+
+                        <div class="feature-col-card">
+                            <div class="feature-col-icon"><i class="ph ph-wallet"></i></div>
+                            <h3>Enxergue o custo real</h3>
+                            <p>Combustível, seguro, impostos e manutenção. A conta completa, antes da decisão.</p>
+                        </div>
+
+                        <div class="feature-col-card">
+                            <div class="feature-col-icon"><i class="ph ph-sparkle"></i></div>
+                            <h3>Encontre seu match</h3>
+                            <p>Seu orçamento e sua rotina viram recomendações com motivos claros.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- FAQ, Banner Amarelo e Rodapé -->
+                <section class="faq-section">
+                    <div class="faq-header">
+                        <span class="subheading">TUDO ÀS CLARAS</span>
+                        <h2>Antes de pegar a estrada.</h2>
+                        <p>Respostas rápidas para você começar com confiança.</p>
+                        <a href="#" class="faq-contact-link">Fale com a nossa equipe <i class="ph ph-arrow-up-right"></i></a>
+                    </div>
+
+                    <div class="faq-accordion">
+                        <details class="faq-item" open>
+                            <summary class="faq-question">O AutoMatch vende carros?</summary>
+                            <p class="faq-answer">Não. Somos uma plataforma independente de comparação e análise. Você pesquisa com clareza, sem pressão de venda.</p>
+                        </details>
+
+                        <details class="faq-item">
+                            <summary class="faq-question">De onde vêm os dados dos veículos?</summary>
+                            <p class="faq-answer">Nesta demonstração, usamos um conjunto ilustrativo de veículos 2025. Os dados devem ser confirmados com o fabricante.</p>
+                        </details>
+
+                        <details class="faq-item">
+                            <summary class="faq-question">Como o custo total é calculado?</summary>
+                            <p class="faq-answer">Somamos combustível, seguro, impostos, manutenção e desvalorização para 3 anos e 36.000 km.</p>
+                        </details>
+
+                        <details class="faq-item">
+                            <summary class="faq-question">Posso salvar e comparar meus favoritos?</summary>
+                            <p class="faq-answer">Sim. Sua garagem organiza modelos e comparações, com até quatro carros lado a lado.</p>
+                        </details>
+                    </div>
+                </section>
+
+                <!-- Banner Amarelo Inferior -->
+                <section class="cta-yellow-banner">
+                    <div class="cta-content">
+                        <span class="subheading-dark">SEU PRÓXIMO CAPÍTULO COMEÇA AQUI</span>
+                        <h2>Encontre o carro certo. Para você.</h2>
+                        <p>Da primeira pesquisa à decisão final, vá de AutoMatch.</p>
+                    </div>
+                    <button onclick="abrirFormulario()" class="btn-cta-dark">
+                        <i class="ph ph-arrow-up-right"></i> Começar minha busca
+                    </button>
+                </section>
+
+                <footer class="site-footer">
+                    <div class="footer-top">
+                        <div class="footer-brand">
+                            <div class="logo">
+                                <div class="logo-icon"><i class="ph ph-arrow-up-right"></i></div>
+                                <h2>AutoMatch</h2>
+                            </div>
+                            <p>Inteligência automotiva para transformar pesquisa em boas decisões.</p>
+                        </div>
+
+                        <div class="footer-col">
+                            <h4>Produto</h4>
+                            <ul>
+                                <li><a href="{{ url_for('catalogo') }}">Catálogo de veículos</a></li>
+                                <li><a href="{{ url_for('comparador') }}">Comparador</a></li>
+                                <li><a href="{{ url_for('financeiro') }}">Análises financeiras</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="footer-col">
+                            <h4>AutoMatch</h4>
+                            <ul>
+                                <li><a href="#">Como funciona</a></li>
+                                <li><a href="#">Sobre nós</a></li>
+                                <li><a href="#">Central de ajuda</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="footer-col">
+                            <h4>Acompanhe</h4>
+                            <ul>
+                                <li><a href="#">Instagram</a></li>
+                                <li><a href="#">LinkedIn</a></li>
+                                <li><a href="#">Contato</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="footer-bottom">
+                        <p>© 2026 AutoMatch. Projeto demonstrativo · Dados e estimativas ilustrativos.</p>
+                        <div class="footer-links">
+                            <a href="#">Privacidade</a>
+                            <a href="#">Termos de uso</a>
+                            <span>Brasil - Português</span>
+                        </div>
+                    </div>
+                </footer>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal do AutoMatch AI -->
+    <div id="aiModal" class="ai-modal-overlay">
+        <div class="ai-modal">
+            <div class="ai-modal-header">
+                <div class="ai-title">
+                    <i class="ph-fill ph-sparkle" style="color: var(--primary-yellow); font-size: 1.5rem;"></i>
+                    <div class="ai-info">
+                        <h3>AutoMatch AI</h3>
+                        <span class="ai-status">Online e a analisar o mercado</span>
+                    </div>
+                </div>
+                <button class="btn-close-modal" onclick="fecharModalAI()"><i class="ph ph-x"></i></button>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai-message">
+                    <div class="message-content">
+                        Olá! Sou o assistente inteligente do AutoMatch. Como posso ajudar a encontrar o veículo ideal para o seu perfil hoje?
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-input-area">
+                <input type="text" id="userInput" placeholder="Ex: Qual o hatchback mais econômico para uso diário em cidade?..." onkeypress="lidarComEnter(event)">
+                <button class="btn-send" onclick="enviarMensagem()"><i class="ph-fill ph-paper-plane-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function abrirFormulario() {
+            window.location.href = "{{ url_for('formulario') }}";
+        }
+
+        function abrirModalAI() {
+            const modal = document.getElementById('aiModal');
+            if (modal) {
+                modal.classList.add('active');
+                document.getElementById('userInput').focus();
+            }
+        }
+
+        function fecharModalAI() {
+            const modal = document.getElementById('aiModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function lidarComEnter(event) {
+            if (event.key === 'Enter') enviarMensagem();
+        }
+
+        function enviarMensagem() {
+            const input = document.getElementById('userInput');
+            const mensagem = input.value.trim();
+            if (mensagem === '') return;
+
+            const chatMessages = document.getElementById('chatMessages');
+
+            const userDiv = document.createElement('div');
+            userDiv.className = 'message user-message';
+            userDiv.innerHTML = `<div class="message-content">${mensagem}</div>`;
+            chatMessages.appendChild(userDiv);
+
+            input.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            setTimeout(() => {
+                const aiDiv = document.createElement('div');
+                aiDiv.className = 'message ai-message';
+                aiDiv.innerHTML = `<div class="message-content">Entendi perfeitamente sua dúvida sobre: "${mensagem}". Em breve poderei consultar os dados do Volkswagen Up e de todo o catálogo para te sugerir a melhor opção!</div>`;
+                chatMessages.appendChild(aiDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 1000);
+        }
+    </script>
+    <!-- Modal do AutoMatch AI -->
+<div id="aiModal" class="ai-modal-overlay">
+    <div class="ai-modal">
+        <div class="ai-modal-header">
+            <div class="ai-title">
+                <i class="ph-fill ph-sparkle" style="color: var(--primary-yellow); font-size: 1.5rem;"></i>
+                <div class="ai-info">
+                    <h3>AutoMatch AI</h3>
+                    <span class="ai-status">Online e pronto para analisar o catálogo</span>
+                </div>
+            </div>
+            <button class="btn-close-modal" onclick="fecharModalAI()"><i class="ph ph-x"></i></button>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <div class="message ai-message">
+                <div class="message-content">
+                    Olá! Sou o assistente inteligente do AutoMatch. Como posso ajudar com os veículos do catálogo hoje?
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="userInput" placeholder="Ex: Qual o carro com menor consumo até 100 mil?..." onkeypress="lidarComEnter(event)">
+            <button class="btn-send" onclick="enviarMensagem()"><i class="ph-fill ph-paper-plane-right"></i></button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function abrirModalAI() {
+        const modal = document.getElementById('aiModal');
+        if (modal) {
+            modal.classList.add('active');
+            document.getElementById('userInput').focus();
+        }
+    }
+
+    function fecharModalAI() {
+        const modal = document.getElementById('aiModal');
+        if (modal) modal.classList.remove('active');
+    }
+
+    function lidarComEnter(event) {
+        if (event.key === 'Enter') enviarMensagem();
+    }
+
+    function enviarMensagem() {
+        const input = document.getElementById('userInput');
+        const mensagem = input.value.trim();
+        if (mensagem === '') return;
+
+        const chatMessages = document.getElementById('chatMessages');
+
+        const userDiv = document.createElement('div');
+        userDiv.className = 'message user-message';
+        userDiv.innerHTML = `<div class="message-content">${mensagem}</div>`;
+        chatMessages.appendChild(userDiv);
+
+        input.value = '';
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        const loadingDiv = document.createElement('div');
+        loadingDiv.className = 'message ai-message';
+        loadingDiv.id = 'aiLoadingMessage';
+        loadingDiv.innerHTML = `
+            <div class="message-content" style="color: var(--text-gray); display: flex; align-items: center; gap: 8px;">
+                <i class="ph ph-spinner" style="animation: spin 1s linear infinite;"></i> 
+                Analisando o catálogo e gerando recomendação...
+            </div>`;
+        chatMessages.appendChild(loadingDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ mensagem: mensagem })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const loading = document.getElementById('aiLoadingMessage');
+            if (loading) loading.remove();
+
+            const aiDiv = document.createElement('div');
+            aiDiv.className = 'message ai-message';
+            aiDiv.innerHTML = `<div class="message-content">${data.resposta.replace(/\n/g, '<br>')}</div>`;
+            chatMessages.appendChild(aiDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        })
+        .catch(err => {
+            console.error('Erro na comunicação com a IA:', err);
+            const loading = document.getElementById('aiLoadingMessage');
+            if (loading) loading.remove();
+
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'message ai-message';
+            errorDiv.innerHTML = `<div class="message-content" style="color: #E11D48;">Não foi possível obter resposta do AutoMatch AI. Tente novamente em instantes.</div>`;
+            chatMessages.appendChild(errorDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
+    }
+</script>
+</body>
+</html>

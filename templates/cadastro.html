@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoMatch - Criar Conta</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="auth-container">
+        
+        <!-- Fundo de Partículas de Letras -->
+        <div class="particles-bg" id="particlesBg"></div>
+
+        <div class="auth-card">
+            
+            <!-- Botão Amarelo de Voltar -->
+            <div style="margin-bottom: 20px;">
+                <a href="{{ url_for('visao_geral') }}" class="btn-yellow-cta" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 8px 16px; font-size: 0.85rem; border-radius: 8px; width: fit-content;">
+                    <i class="ph ph-arrow-left" style="font-size: 1.1rem;"></i> Voltar à página inicial
+                </a>
+            </div>
+
+            <div class="auth-header" style="text-align: left;">
+                <h2>Crie sua conta no AutoMatch</h2>
+                <p>Análises inteligentes para a sua próxima escolha.</p>
+            </div>
+
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <div class="auth-alert">
+                  {{ messages[0] }}
+                </div>
+              {% endif %}
+            {% endwith %}
+
+            <form action="{{ url_for('cadastro') }}" method="POST">
+                <div class="auth-form-group">
+                    <label>Nome Completo</label>
+                    <input type="text" name="nome" class="auth-input" placeholder="Ex: Rafael Martins" required>
+                </div>
+
+                <div class="auth-form-group">
+                    <label>E-mail</label>
+                    <input type="email" name="email" class="auth-input" placeholder="seuemail@exemplo.com" required>
+                </div>
+
+                <div class="auth-form-group">
+                    <label>Senha</label>
+                    <input type="password" name="senha" class="auth-input" placeholder="Mínimo de 6 caracteres" minlength="6" required>
+                </div>
+
+                <button type="submit" class="auth-btn">Criar minha conta</button>
+            </form>
+
+            <div class="auth-footer">
+                Já tem uma conta? <a href="{{ url_for('login') }}">Fazer login</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gerador Dinâmico de Partículas Contínuas -->
+    <script>
+        function gerarParticulas() {
+            const container = document.getElementById('particlesBg');
+            if (!container) return;
+            const palavra = "AUTOMATCH";
+            const total = 45;
+
+            for (let i = 0; i < total; i++) {
+                const span = document.createElement('span');
+                span.className = 'particle-letter';
+                span.innerText = palavra[Math.floor(Math.random() * palavra.length)];
+                
+                const size = Math.random() * 24 + 14;
+                const left = Math.random() * 100;
+                const duration = Math.random() * 8 + 6;
+                
+                // O delay negativo faz a animação 'começar no meio do ciclo'
+                const delayNegativo = -(Math.random() * duration);
+
+                span.style.fontSize = `${size}px`;
+                span.style.left = `${left}%`;
+                span.style.animationDuration = `${duration}s`;
+                span.style.animationDelay = `${delayNegativo}s`;
+
+                container.appendChild(span);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', gerarParticulas);
+    </script>
+</body>
+</html>

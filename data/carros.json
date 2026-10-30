@@ -1,0 +1,1336 @@
+[
+  {
+    "id": "vw-polo-track-2024",
+    "marca": "Volkswagen",
+    "modelo": "Polo",
+    "versao": "Track 1.0 MPI",
+    "ano": 2024,
+    "preco_estimado": 89290,
+    "categoria": "Hatch",
+    "desempenho": {
+      "potencia_cv": 84,
+      "torque_kgfm": 10.3,
+      "zero_a_cem_s": 13.4,
+      "velocidade_max_kmh": 169,
+      "cambio": "Manual de 5 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 13.5,
+      "rodoviario_gasolina_kml": 15.0,
+      "porta_malas_l": 300,
+      "tanque_l": 52
+    },
+    "media": { "imagem_principal": "polo_track.jpg" }
+  },
+  {
+    "id": "vw-polo-gts-2024",
+    "marca": "Volkswagen",
+    "modelo": "Polo",
+    "versao": "GTS 250 TSI",
+    "ano": 2024,
+    "preco_estimado": 153790,
+    "categoria": "Hatch Esportivo",
+    "desempenho": {
+      "potencia_cv": 150,
+      "torque_kgfm": 25.5,
+      "zero_a_cem_s": 8.3,
+      "velocidade_max_kmh": 206,
+      "cambio": "Automático de 6 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 11.6,
+      "rodoviario_gasolina_kml": 13.8,
+      "porta_malas_l": 300,
+      "tanque_l": 52
+    },
+    "media": { "imagem_principal": "polo_gts.jpg" }
+  },
+  {
+    "id": "vw-nivus-highline-2024",
+    "marca": "Volkswagen",
+    "modelo": "Nivus",
+    "versao": "Highline 200 TSI",
+    "ano": 2024,
+    "preco_estimado": 151590,
+    "categoria": "SUV Cupê",
+    "desempenho": {
+      "potencia_cv": 128,
+      "torque_kgfm": 20.4,
+      "zero_a_cem_s": 9.9,
+      "velocidade_max_kmh": 189,
+      "cambio": "Automático de 6 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 12.1,
+      "rodoviario_gasolina_kml": 14.2,
+      "porta_malas_l": 415,
+      "tanque_l": 52
+    },
+    "media": { "imagem_principal": "nivus_highline.jpg" }
+  },
+  {
+    "id": "vw-tcross-highline-2024",
+    "marca": "Volkswagen",
+    "modelo": "T-Cross",
+    "versao": "Highline 250 TSI",
+    "ano": 2024,
+    "preco_estimado": 175990,
+    "categoria": "SUV",
+    "desempenho": {
+      "potencia_cv": 150,
+      "torque_kgfm": 25.5,
+      "zero_a_cem_s": 8.6,
+      "velocidade_max_kmh": 202,
+      "cambio": "Automático de 6 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 11.7,
+      "rodoviario_gasolina_kml": 14.0,
+      "porta_malas_l": 373,
+      "tanque_l": 52
+    },
+    "media": { "imagem_principal": "tcross_highline.jpg" }
+  },
+  {
+    "id": "vw-virtus-highline-2024",
+    "marca": "Volkswagen",
+    "modelo": "Virtus",
+    "versao": "Highline 200 TSI",
+    "ano": 2024,
+    "preco_estimado": 141990,
+    "categoria": "Sedan",
+    "desempenho": {
+      "potencia_cv": 128,
+      "torque_kgfm": 20.4,
+      "zero_a_cem_s": 10.0,
+      "velocidade_max_kmh": 196,
+      "cambio": "Automático de 6 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 12.1,
+      "rodoviario_gasolina_kml": 14.4,
+      "porta_malas_l": 521,
+      "tanque_l": 52
+    },
+    "media": { "imagem_principal": "virtus_highline.jpg" }
+  },
+  {
+    "id": "vw-jetta-gli-2024",
+    "marca": "Volkswagen",
+    "modelo": "Jetta",
+    "versao": "GLI 350 TSI",
+    "ano": 2024,
+    "preco_estimado": 239990,
+    "categoria": "Sedan Esportivo",
+    "desempenho": {
+      "potencia_cv": 231,
+      "torque_kgfm": 35.7,
+      "zero_a_cem_s": 6.7,
+      "velocidade_max_kmh": 249,
+      "cambio": "Automatizado DSG de 7 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 9.9,
+      "rodoviario_gasolina_kml": 12.2,
+      "porta_malas_l": 510,
+      "tanque_l": 50
+    },
+    "media": { "imagem_principal": "jetta_gli.jpg" }
+  },
+  {
+    "id": "vw-up-tsi-2019",
+    "marca": "Volkswagen",
+    "modelo": "Up!",
+    "versao": "High TSI 1.0",
+    "ano": 2019,
+    "preco_estimado": 58500,
+    "categoria": "Hatch",
+    "desempenho": {
+      "potencia_cv": 105,
+      "torque_kgfm": 16.8,
+      "zero_a_cem_s": 9.1,
+      "velocidade_max_kmh": 184,
+      "cambio": "Manual de 5 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 13.8,
+      "rodoviario_gasolina_kml": 16.1,
+      "porta_malas_l": 285,
+      "tanque_l": 50
+    },
+    "media": { "imagem_principal": "vw_up_tsi.jpg" }
+  },
+  {
+    "id": "chevrolet-onix-lt-2024",
+    "marca": "Chevrolet",
+    "modelo": "Onix",
+    "versao": "LT 1.0 Manual",
+    "ano": 2024,
+    "preco_estimado": 86150,
+    "categoria": "Hatch",
+    "desempenho": {
+      "potencia_cv": 82,
+      "torque_kgfm": 10.6,
+      "zero_a_cem_s": 13.3,
+      "velocidade_max_kmh": 167,
+      "cambio": "Manual de 6 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 13.3,
+      "rodoviario_gasolina_kml": 16.6,
+      "porta_malas_l": 275,
+      "tanque_l": 44
+    },
+    "media": { "imagem_principal": "onix_lt.jpg" }
+  },
+  {
+    "id": "chevrolet-onix-premier-2024",
+    "marca": "Chevrolet",
+    "modelo": "Onix",
+    "versao": "Premier 1.0 Turbo AT",
+    "ano": 2024,
+    "preco_estimado": 118000,
+    "categoria": "Hatch",
+    "desempenho": {
+      "potencia_cv": 116,
+      "torque_kgfm": 16.8,
+      "zero_a_cem_s": 10.1,
+      "velocidade_max_kmh": 187,
+      "cambio": "Automático de 6 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 11.9,
+      "rodoviario_gasolina_kml": 15.1,
+      "porta_malas_l": 275,
+      "tanque_l": 44
+    },
+    "media": { "imagem_principal": "onix_premier.jpg" }
+  },
+  {
+    "id": "chevrolet-onix-plus-premier-2024",
+    "marca": "Chevrolet",
+    "modelo": "Onix Plus",
+    "versao": "Premier 1.0 Turbo AT",
+    "ano": 2024,
+    "preco_estimado": 123500,
+    "categoria": "Sedan",
+    "desempenho": {
+      "potencia_cv": 116,
+      "torque_kgfm": 16.8,
+      "zero_a_cem_s": 10.4,
+      "velocidade_max_kmh": 185,
+      "cambio": "Automático de 6 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 12.3,
+      "rodoviario_gasolina_kml": 15.6,
+      "porta_malas_l": 469,
+      "tanque_l": 44
+    },
+    "media": { "imagem_principal": "onix_plus_premier.jpg" }
+  },
+  {
+    "id": "chevrolet-tracker-premier-2024",
+    "marca": "Chevrolet",
+    "modelo": "Tracker",
+    "versao": "Premier 1.2 Turbo AT",
+    "ano": 2024,
+    "preco_estimado": 170600,
+    "categoria": "SUV",
+    "desempenho": {
+      "potencia_cv": 133,
+      "torque_kgfm": 21.4,
+      "zero_a_cem_s": 9.4,
+      "velocidade_max_kmh": 185,
+      "cambio": "Automático de 6 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 11.2,
+      "rodoviario_gasolina_kml": 13.6,
+      "porta_malas_l": 393,
+      "tanque_l": 44
+    },
+    "media": { "imagem_principal": "tracker_premier.jpg" }
+  },
+  {
+    "id": "chevrolet-montana-premier-2024",
+    "marca": "Chevrolet",
+    "modelo": "Montana",
+    "versao": "Premier 1.2 Turbo AT",
+    "ano": 2024,
+    "preco_estimado": 153000,
+    "categoria": "Picape",
+    "desempenho": {
+      "potencia_cv": 133,
+      "torque_kgfm": 21.4,
+      "zero_a_cem_s": 10.1,
+      "velocidade_max_kmh": 180,
+      "cambio": "Automático de 6 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 11.1,
+      "rodoviario_gasolina_kml": 13.3,
+      "porta_malas_l": 874,
+      "tanque_l": 44
+    },
+    "media": { "imagem_principal": "montana_premier.jpg" }
+  },
+  {
+    "id": "chevrolet-s10-hc-2024",
+    "marca": "Chevrolet",
+    "modelo": "S10",
+    "versao": "High Country 2.8 Diesel 4x4",
+    "ano": 2024,
+    "preco_estimado": 302900,
+    "categoria": "Picape",
+    "desempenho": {
+      "potencia_cv": 207,
+      "torque_kgfm": 52.0,
+      "zero_a_cem_s": 9.4,
+      "velocidade_max_kmh": 180,
+      "cambio": "Automático de 8 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 9.5,
+      "rodoviario_gasolina_kml": 11.4,
+      "porta_malas_l": 1061,
+      "tanque_l": 76
+    },
+    "media": { "imagem_principal": "s10_hc.jpg" }
+  },
+  {
+    "id": "fiat-mobi-trekking-2024",
+    "marca": "Fiat",
+    "modelo": "Mobi",
+    "versao": "Trekking 1.0 Fire",
+    "ano": 2024,
+    "preco_estimado": 74990,
+    "categoria": "Hatch",
+    "desempenho": {
+      "potencia_cv": 74,
+      "torque_kgfm": 9.7,
+      "zero_a_cem_s": 14.0,
+      "velocidade_max_kmh": 152,
+      "cambio": "Manual de 5 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 13.5,
+      "rodoviario_gasolina_kml": 15.0,
+      "porta_malas_l": 200,
+      "tanque_l": 47
+    },
+    "media": { "imagem_principal": "mobi_trekking.jpg" }
+  },
+  {
+    "id": "fiat-argo-drive-2024",
+    "marca": "Fiat",
+    "modelo": "Argo",
+    "versao": "Drive 1.3 CVT",
+    "ano": 2024,
+    "preco_estimado": 96490,
+    "categoria": "Hatch",
+    "desempenho": {
+      "potencia_cv": 107,
+      "torque_kgfm": 13.7,
+      "zero_a_cem_s": 11.2,
+      "velocidade_max_kmh": 173,
+      "cambio": "CVT de 7 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 12.6,
+      "rodoviario_gasolina_kml": 13.9,
+      "porta_malas_l": 300,
+      "tanque_l": 47
+    },
+    "media": { "imagem_principal": "argo_drive.jpg" }
+  },
+  {
+    "id": "fiat-cronos-precision-2024",
+    "marca": "Fiat",
+    "modelo": "Cronos",
+    "versao": "Precision 1.3 CVT",
+    "ano": 2024,
+    "preco_estimado": 111990,
+    "categoria": "Sedan",
+    "desempenho": {
+      "potencia_cv": 107,
+      "torque_kgfm": 13.7,
+      "zero_a_cem_s": 11.5,
+      "velocidade_max_kmh": 183,
+      "cambio": "CVT de 7 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 13.3,
+      "rodoviario_gasolina_kml": 15.0,
+      "porta_malas_l": 525,
+      "tanque_l": 48
+    },
+    "media": { "imagem_principal": "cronos_precision.jpg" }
+  },
+  {
+    "id": "fiat-pulse-impetus-2024",
+    "marca": "Fiat",
+    "modelo": "Pulse",
+    "versao": "Impetus Turbo 200 CVT",
+    "ano": 2024,
+    "preco_estimado": 134990,
+    "categoria": "SUV",
+    "desempenho": {
+      "potencia_cv": 130,
+      "torque_kgfm": 20.4,
+      "zero_a_cem_s": 9.4,
+      "velocidade_max_kmh": 189,
+      "cambio": "CVT de 7 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 12.0,
+      "rodoviario_gasolina_kml": 14.6,
+      "porta_malas_l": 370,
+      "tanque_l": 47
+    },
+    "media": { "imagem_principal": "pulse_impetus.jpg" }
+  },
+  {
+    "id": "fiat-fastback-impetus-2024",
+    "marca": "Fiat",
+    "modelo": "Fastback",
+    "versao": "Impetus Turbo 200 AT",
+    "ano": 2024,
+    "preco_estimado": 147000,
+    "categoria": "SUV Cupê",
+    "desempenho": {
+      "potencia_cv": 130,
+      "torque_kgfm": 20.4,
+      "zero_a_cem_s": 9.4,
+      "velocidade_max_kmh": 193,
+      "cambio": "CVT de 7 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 11.9,
+      "rodoviario_gasolina_kml": 14.6,
+      "porta_malas_l": 600,
+      "tanque_l": 47
+    },
+    "media": { "imagem_principal": "fastback_impetus.jpg" }
+  },
+  {
+    "id": "fiat-strada-ranch-2024",
+    "marca": "Fiat",
+    "modelo": "Strada",
+    "versao": "Ranch Turbo 200 CVT",
+    "ano": 2024,
+    "preco_estimado": 135990,
+    "categoria": "Picape",
+    "desempenho": {
+      "potencia_cv": 130,
+      "torque_kgfm": 20.4,
+      "zero_a_cem_s": 9.5,
+      "velocidade_max_kmh": 180,
+      "cambio": "CVT de 7 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 12.1,
+      "rodoviario_gasolina_kml": 13.2,
+      "porta_malas_l": 844,
+      "tanque_l": 55
+    },
+    "media": { "imagem_principal": "strada_ranch.jpg" }
+  },
+  {
+    "id": "fiat-toro-ranch-2024",
+    "marca": "Fiat",
+    "modelo": "Toro",
+    "versao": "Ranch 2.0 Turbo Diesel 4x4",
+    "ano": 2024,
+    "preco_estimado": 212990,
+    "categoria": "Picape",
+    "desempenho": {
+      "potencia_cv": 170,
+      "torque_kgfm": 35.7,
+      "zero_a_cem_s": 10.0,
+      "velocidade_max_kmh": 193,
+      "cambio": "Automático de 9 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 10.5,
+      "rodoviario_gasolina_kml": 13.0,
+      "porta_malas_l": 937,
+      "tanque_l": 60
+    },
+    "media": { "imagem_principal": "toro_ranch.jpg" }
+  },
+  {
+    "id": "hyundai-hb20-platinum-2024",
+    "marca": "Hyundai",
+    "modelo": "HB20",
+    "versao": "Platinum Plus 1.0 TGDI AT",
+    "ano": 2024,
+    "preco_estimado": 120190,
+    "categoria": "Hatch",
+    "desempenho": {
+      "potencia_cv": 120,
+      "torque_kgfm": 17.5,
+      "zero_a_cem_s": 10.7,
+      "velocidade_max_kmh": 190,
+      "cambio": "Automático de 6 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 12.2,
+      "rodoviario_gasolina_kml": 14.3,
+      "porta_malas_l": 300,
+      "tanque_l": 50
+    },
+    "media": { "imagem_principal": "hb20_platinum.jpg" }
+  },
+  {
+    "id": "hyundai-hb20s-platinum-2024",
+    "marca": "Hyundai",
+    "modelo": "HB20S",
+    "versao": "Platinum Plus 1.0 TGDI AT",
+    "ano": 2024,
+    "preco_estimado": 126590,
+    "categoria": "Sedan",
+    "desempenho": {
+      "potencia_cv": 120,
+      "torque_kgfm": 17.5,
+      "zero_a_cem_s": 10.7,
+      "velocidade_max_kmh": 191,
+      "cambio": "Automático de 6 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 12.3,
+      "rodoviario_gasolina_kml": 14.9,
+      "porta_malas_l": 475,
+      "tanque_l": 50
+    },
+    "media": { "imagem_principal": "hb20s_platinum.jpg" }
+  },
+  {
+    "id": "hyundai-creta-platinum-2024",
+    "marca": "Hyundai",
+    "modelo": "Creta",
+    "versao": "Platinum 1.0 TGDI AT",
+    "ano": 2024,
+    "preco_estimado": 158000,
+    "categoria": "SUV",
+    "desempenho": {
+      "potencia_cv": 120,
+      "torque_kgfm": 17.5,
+      "zero_a_cem_s": 11.5,
+      "velocidade_max_kmh": 180,
+      "cambio": "Automático de 6 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 11.6,
+      "rodoviario_gasolina_kml": 12.0,
+      "porta_malas_l": 422,
+      "tanque_l": 50
+    },
+    "media": { "imagem_principal": "creta_platinum.jpg" }
+  },
+  {
+    "id": "toyota-yaris-xls-2024",
+    "marca": "Toyota",
+    "modelo": "Yaris",
+    "versao": "Hatch XLS 1.5 CVT",
+    "ano": 2024,
+    "preco_estimado": 122090,
+    "categoria": "Hatch",
+    "desempenho": {
+      "potencia_cv": 110,
+      "torque_kgfm": 14.9,
+      "zero_a_cem_s": 11.8,
+      "velocidade_max_kmh": 180,
+      "cambio": "CVT de 7 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 12.6,
+      "rodoviario_gasolina_kml": 13.8,
+      "porta_malas_l": 310,
+      "tanque_l": 45
+    },
+    "media": { "imagem_principal": "yaris_xls.jpg" }
+  },
+  {
+    "id": "toyota-corolla-xei-2024",
+    "marca": "Toyota",
+    "modelo": "Corolla",
+    "versao": "XEi 2.0 Direct Shift",
+    "ano": 2024,
+    "preco_estimado": 160000,
+    "categoria": "Sedan",
+    "desempenho": {
+      "potencia_cv": 177,
+      "torque_kgfm": 21.4,
+      "zero_a_cem_s": 9.2,
+      "velocidade_max_kmh": 205,
+      "cambio": "CVT de 10 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 11.9,
+      "rodoviario_gasolina_kml": 14.2,
+      "porta_malas_l": 470,
+      "tanque_l": 50
+    },
+    "media": { "imagem_principal": "corolla_xei.jpg" }
+  },
+  {
+    "id": "toyota-corolla-altis-hybrid-2024",
+    "marca": "Toyota",
+    "modelo": "Corolla",
+    "versao": "Altis Hybrid Premium 1.8",
+    "ano": 2024,
+    "preco_estimado": 198990,
+    "categoria": "Sedan Híbrido",
+    "desempenho": {
+      "potencia_cv": 122,
+      "torque_kgfm": 16.6,
+      "zero_a_cem_s": 11.0,
+      "velocidade_max_kmh": 170,
+      "cambio": "CVT Transaxle"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 17.9,
+      "rodoviario_gasolina_kml": 15.4,
+      "porta_malas_l": 470,
+      "tanque_l": 43
+    },
+    "media": { "imagem_principal": "corolla_hybrid.jpg" }
+  },
+  {
+    "id": "toyota-corolla-cross-xre-2024",
+    "marca": "Toyota",
+    "modelo": "Corolla Cross",
+    "versao": "XRE 2.0 Direct Shift",
+    "ano": 2024,
+    "preco_estimado": 178590,
+    "categoria": "SUV",
+    "desempenho": {
+      "potencia_cv": 177,
+      "torque_kgfm": 21.4,
+      "zero_a_cem_s": 9.8,
+      "velocidade_max_kmh": 195,
+      "cambio": "CVT de 10 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 11.6,
+      "rodoviario_gasolina_kml": 13.3,
+      "porta_malas_l": 440,
+      "tanque_l": 47
+    },
+    "media": { "imagem_principal": "corolla_cross.jpg" }
+  },
+  {
+    "id": "toyota-hilux-srx-2024",
+    "marca": "Toyota",
+    "modelo": "Hilux",
+    "versao": "SRX Plus 2.8 Diesel 4x4",
+    "ano": 2024,
+    "preco_estimado": 334890,
+    "categoria": "Picape",
+    "desempenho": {
+      "potencia_cv": 204,
+      "torque_kgfm": 50.9,
+      "zero_a_cem_s": 12.0,
+      "velocidade_max_kmh": 180,
+      "cambio": "Automático de 6 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 10.1,
+      "rodoviario_gasolina_kml": 11.3,
+      "porta_malas_l": 1000,
+      "tanque_l": 80
+    },
+    "media": { "imagem_principal": "hilux_srx.jpg" }
+  },
+  {
+    "id": "honda-city-hatch-touring-2024",
+    "marca": "Honda",
+    "modelo": "City",
+    "versao": "Hatchback Touring 1.5",
+    "ano": 2024,
+    "preco_estimado": 138000,
+    "categoria": "Hatch",
+    "desempenho": {
+      "potencia_cv": 126,
+      "torque_kgfm": 15.8,
+      "zero_a_cem_s": 10.6,
+      "velocidade_max_kmh": 175,
+      "cambio": "CVT de 7 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 13.3,
+      "rodoviario_gasolina_kml": 14.8,
+      "porta_malas_l": 268,
+      "tanque_l": 44
+    },
+    "media": { "imagem_principal": "city_hatchback.jpg" }
+  },
+  {
+    "id": "honda-city-sedan-touring-2024",
+    "marca": "Honda",
+    "modelo": "City",
+    "versao": "Sedan Touring 1.5",
+    "ano": 2024,
+    "preco_estimado": 140500,
+    "categoria": "Sedan",
+    "desempenho": {
+      "potencia_cv": 126,
+      "torque_kgfm": 15.8,
+      "zero_a_cem_s": 10.7,
+      "velocidade_max_kmh": 175,
+      "cambio": "CVT de 7 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 13.1,
+      "rodoviario_gasolina_kml": 15.2,
+      "porta_malas_l": 519,
+      "tanque_l": 44
+    },
+    "media": { "imagem_principal": "city_sedan.jpg" }
+  },
+  {
+    "id": "honda-hrv-touring-2024",
+    "marca": "Honda",
+    "modelo": "HR-V",
+    "versao": "Touring 1.5 Turbo Flex",
+    "ano": 2024,
+    "preco_estimado": 199800,
+    "categoria": "SUV",
+    "desempenho": {
+      "potencia_cv": 177,
+      "torque_kgfm": 24.5,
+      "zero_a_cem_s": 8.9,
+      "velocidade_max_kmh": 200,
+      "cambio": "CVT de 7 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 11.3,
+      "rodoviario_gasolina_kml": 12.6,
+      "porta_malas_l": 354,
+      "tanque_l": 50
+    },
+    "media": { "imagem_principal": "hrv_touring.jpg" }
+  },
+  {
+    "id": "honda-civic-hybrid-2024",
+    "marca": "Honda",
+    "modelo": "Civic",
+    "versao": "Advanced Hybrid 2.0 e:HEV",
+    "ano": 2024,
+    "preco_estimado": 265900,
+    "categoria": "Sedan Híbrido",
+    "desempenho": {
+      "potencia_cv": 184,
+      "torque_kgfm": 32.1,
+      "zero_a_cem_s": 7.8,
+      "velocidade_max_kmh": 180,
+      "cambio": "e-CVT"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 18.3,
+      "rodoviario_gasolina_kml": 15.9,
+      "porta_malas_l": 495,
+      "tanque_l": 40
+    },
+    "media": { "imagem_principal": "civic_hybrid.jpg" }
+  },
+  {
+    "id": "jeep-renegade-longitude-2024",
+    "marca": "Jeep",
+    "modelo": "Renegade",
+    "versao": "Longitude 1.3 Turbo AT",
+    "ano": 2024,
+    "preco_estimado": 162990,
+    "categoria": "SUV",
+    "desempenho": {
+      "potencia_cv": 185,
+      "torque_kgfm": 27.5,
+      "zero_a_cem_s": 8.8,
+      "velocidade_max_kmh": 210,
+      "cambio": "Automático de 6 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 11.0,
+      "rodoviario_gasolina_kml": 12.8,
+      "porta_malas_l": 320,
+      "tanque_l": 55
+    },
+    "media": { "imagem_principal": "renegade_longitude.jpg" }
+  },
+  {
+    "id": "jeep-compass-limited-2024",
+    "marca": "Jeep",
+    "modelo": "Compass",
+    "versao": "Limited 1.3 Turbo AT",
+    "ano": 2024,
+    "preco_estimado": 217990,
+    "categoria": "SUV",
+    "desempenho": {
+      "potencia_cv": 185,
+      "torque_kgfm": 27.5,
+      "zero_a_cem_s": 8.8,
+      "velocidade_max_kmh": 207,
+      "cambio": "Automático de 6 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 10.5,
+      "rodoviario_gasolina_kml": 12.2,
+      "porta_malas_l": 410,
+      "tanque_l": 60
+    },
+    "media": { "imagem_principal": "compass_limited.jpg" }
+  },
+  {
+    "id": "jeep-commander-overland-2024",
+    "marca": "Jeep",
+    "modelo": "Commander",
+    "versao": "Overland 2.0 Turbo Diesel 4x4",
+    "ano": 2024,
+    "preco_estimado": 298990,
+    "categoria": "SUV 7 Lugares",
+    "desempenho": {
+      "potencia_cv": 170,
+      "torque_kgfm": 38.7,
+      "zero_a_cem_s": 11.6,
+      "velocidade_max_kmh": 197,
+      "cambio": "Automático de 9 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 10.2,
+      "rodoviario_gasolina_kml": 13.2,
+      "porta_malas_l": 661,
+      "tanque_l": 61
+    },
+    "media": { "imagem_principal": "commander_overland.jpg" }
+  },
+  {
+    "id": "nissan-versa-exclusive-2024",
+    "marca": "Nissan",
+    "modelo": "Versa",
+    "versao": "Exclusive 1.6 CVT",
+    "ano": 2024,
+    "preco_estimado": 132190,
+    "categoria": "Sedan",
+    "desempenho": {
+      "potencia_cv": 113,
+      "torque_kgfm": 15.3,
+      "zero_a_cem_s": 10.7,
+      "velocidade_max_kmh": 180,
+      "cambio": "CVT de 6 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 11.8,
+      "rodoviario_gasolina_kml": 15.0,
+      "porta_malas_l": 482,
+      "tanque_l": 41
+    },
+    "media": { "imagem_principal": "versa_exclusive.jpg" }
+  },
+  {
+    "id": "nissan-kicks-exclusive-2024",
+    "marca": "Nissan",
+    "modelo": "Kicks",
+    "versao": "Exclusive 1.6 CVT",
+    "ano": 2024,
+    "preco_estimado": 150290,
+    "categoria": "SUV",
+    "desempenho": {
+      "potencia_cv": 113,
+      "torque_kgfm": 15.3,
+      "zero_a_cem_s": 11.8,
+      "velocidade_max_kmh": 175,
+      "cambio": "CVT de 6 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 11.4,
+      "rodoviario_gasolina_kml": 13.9,
+      "porta_malas_l": 432,
+      "tanque_l": 41
+    },
+    "media": { "imagem_principal": "kicks_exclusive.jpg" }
+  },
+  {
+    "id": "renault-kwid-intense-2024",
+    "marca": "Renault",
+    "modelo": "Kwid",
+    "versao": "Intense 1.0 Flex",
+    "ano": 2024,
+    "preco_estimado": 74000,
+    "categoria": "Hatch",
+    "desempenho": {
+      "potencia_cv": 71,
+      "torque_kgfm": 10.0,
+      "zero_a_cem_s": 13.2,
+      "velocidade_max_kmh": 156,
+      "cambio": "Manual de 5 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 15.3,
+      "rodoviario_gasolina_kml": 15.7,
+      "porta_malas_l": 290,
+      "tanque_l": 38
+    },
+    "media": { "imagem_principal": "kwid_intense.jpg" }
+  },
+  {
+    "id": "renault-duster-iconic-2024",
+    "marca": "Renault",
+    "modelo": "Duster",
+    "versao": "Iconic 1.3 Turbo CVT",
+    "ano": 2024,
+    "preco_estimado": 153890,
+    "categoria": "SUV",
+    "desempenho": {
+      "potencia_cv": 170,
+      "torque_kgfm": 27.5,
+      "zero_a_cem_s": 9.2,
+      "velocidade_max_kmh": 190,
+      "cambio": "CVT de 8 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 10.8,
+      "rodoviario_gasolina_kml": 13.2,
+      "porta_malas_l": 475,
+      "tanque_l": 50
+    },
+    "media": { "imagem_principal": "duster_iconic.jpg" }
+  },
+  {
+    "id": "renault-kardian-premiere-2024",
+    "marca": "Renault",
+    "modelo": "Kardian",
+    "versao": "Premiere Edition 1.0 Turbo",
+    "ano": 2024,
+    "preco_estimado": 132790,
+    "categoria": "SUV",
+    "desempenho": {
+      "potencia_cv": 125,
+      "torque_kgfm": 22.4,
+      "zero_a_cem_s": 9.9,
+      "velocidade_max_kmh": 180,
+      "cambio": "Automatizado EDC de 6 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 13.1,
+      "rodoviario_gasolina_kml": 13.9,
+      "porta_malas_l": 358,
+      "tanque_l": 50
+    },
+    "media": { "imagem_principal": "kardian_premiere.jpg" }
+  },
+  {
+    "id": "byd-dolphin-mini-2024",
+    "marca": "BYD",
+    "modelo": "Dolphin Mini",
+    "versao": "EV 38kWh",
+    "ano": 2024,
+    "preco_estimado": 115800,
+    "categoria": "Elétrico",
+    "desempenho": {
+      "potencia_cv": 75,
+      "torque_kgfm": 13.8,
+      "zero_a_cem_s": 14.9,
+      "velocidade_max_kmh": 130,
+      "cambio": "Automático (1 marcha)"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 38.0,
+      "rodoviario_gasolina_kml": 32.0,
+      "porta_malas_l": 230,
+      "tanque_l": 0
+    },
+    "media": { "imagem_principal": "byd_dolphin_mini.jpg" }
+  },
+  {
+    "id": "byd-dolphin-gs-2024",
+    "marca": "BYD",
+    "modelo": "Dolphin",
+    "versao": "GS Electric 44.9kWh",
+    "ano": 2024,
+    "preco_estimado": 149800,
+    "categoria": "Elétrico",
+    "desempenho": {
+      "potencia_cv": 95,
+      "torque_kgfm": 18.3,
+      "zero_a_cem_s": 10.9,
+      "velocidade_max_kmh": 160,
+      "cambio": "Automático (1 marcha)"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 35.0,
+      "rodoviario_gasolina_kml": 30.0,
+      "porta_malas_l": 345,
+      "tanque_l": 0
+    },
+    "media": { "imagem_principal": "byd_dolphin.jpg" }
+  },
+  {
+    "id": "byd-song-plus-2024",
+    "marca": "BYD",
+    "modelo": "Song Plus",
+    "versao": "DM-i 1.5 Plug-in Hybrid",
+    "ano": 2024,
+    "preco_estimado": 229800,
+    "categoria": "SUV Híbrido",
+    "desempenho": {
+      "potencia_cv": 235,
+      "torque_kgfm": 40.8,
+      "zero_a_cem_s": 8.3,
+      "velocidade_max_kmh": 170,
+      "cambio": "e-CVT"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 21.5,
+      "rodoviario_gasolina_kml": 18.2,
+      "porta_malas_l": 574,
+      "tanque_l": 60
+    },
+    "media": { "imagem_principal": "byd_song_plus.jpg" }
+  },
+  {
+    "id": "byd-yuan-plus-2024",
+    "marca": "BYD",
+    "modelo": "Yuan Plus",
+    "versao": "EV 60.5kWh",
+    "ano": 2024,
+    "preco_estimado": 229800,
+    "categoria": "Elétrico",
+    "desempenho": {
+      "potencia_cv": 204,
+      "torque_kgfm": 31.6,
+      "zero_a_cem_s": 7.3,
+      "velocidade_max_kmh": 160,
+      "cambio": "Automático (1 marcha)"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 33.0,
+      "rodoviario_gasolina_kml": 28.0,
+      "porta_malas_l": 440,
+      "tanque_l": 0
+    },
+    "media": { "imagem_principal": "byd_yuan_plus.jpg" }
+  },
+  {
+    "id": "gwm-ora-03-skin-2024",
+    "marca": "GWM",
+    "modelo": "Ora 03",
+    "versao": "Skin EV 48kWh",
+    "ano": 2024,
+    "preco_estimado": 150000,
+    "categoria": "Elétrico",
+    "desempenho": {
+      "potencia_cv": 171,
+      "torque_kgfm": 25.5,
+      "zero_a_cem_s": 8.2,
+      "velocidade_max_kmh": 160,
+      "cambio": "Automático (1 marcha)"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 34.0,
+      "rodoviario_gasolina_kml": 29.0,
+      "porta_malas_l": 228,
+      "tanque_l": 0
+    },
+    "media": { "imagem_principal": "ora_03_skin.jpg" }
+  },
+  {
+    "id": "gwm-haval-h6-hev-2024",
+    "marca": "GWM",
+    "modelo": "Haval H6",
+    "versao": "HEV 1.5 Turbo Hybrid",
+    "ano": 2024,
+    "preco_estimado": 214000,
+    "categoria": "SUV Híbrido",
+    "desempenho": {
+      "potencia_cv": 243,
+      "torque_kgfm": 54.0,
+      "zero_a_cem_s": 7.9,
+      "velocidade_max_kmh": 175,
+      "cambio": "DHT de 2 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 13.8,
+      "rodoviario_gasolina_kml": 12.0,
+      "porta_malas_l": 560,
+      "tanque_l": 60
+    },
+    "media": { "imagem_principal": "haval_h6_hev.jpg" }
+  },
+  {
+    "id": "caoa-chery-tiggo-5x-pro-2024",
+    "marca": "Caoa Chery",
+    "modelo": "Tiggo 5X",
+    "versao": "Pro Hybrid Max Drive 1.5T",
+    "ano": 2024,
+    "preco_estimado": 144990,
+    "categoria": "SUV Híbrido",
+    "desempenho": {
+      "potencia_cv": 160,
+      "torque_kgfm": 25.5,
+      "zero_a_cem_s": 9.9,
+      "velocidade_max_kmh": 180,
+      "cambio": "CVT de 9 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 11.8,
+      "rodoviario_gasolina_kml": 12.3,
+      "porta_malas_l": 340,
+      "tanque_l": 51
+    },
+    "media": { "imagem_principal": "tiggo_5x_pro.jpg" }
+  },
+  {
+    "id": "caoa-chery-tiggo-7-pro-2024",
+    "marca": "Caoa Chery",
+    "modelo": "Tiggo 7",
+    "versao": "Pro Max Drive 1.6 Turbo",
+    "ano": 2024,
+    "preco_estimado": 169990,
+    "categoria": "SUV",
+    "desempenho": {
+      "potencia_cv": 187,
+      "torque_kgfm": 28.0,
+      "zero_a_cem_s": 8.0,
+      "velocidade_max_kmh": 180,
+      "cambio": "Automatizado de 7 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 10.0,
+      "rodoviario_gasolina_kml": 11.7,
+      "porta_malas_l": 475,
+      "tanque_l": 51
+    },
+    "media": { "imagem_principal": "tiggo_7x_pro.jpg" }
+  },
+  {
+    "id": "peugeot-208-style-2024",
+    "marca": "Peugeot",
+    "modelo": "208",
+    "versao": "Style 1.0 Firefly",
+    "ano": 2024,
+    "preco_estimado": 89990,
+    "categoria": "Hatch",
+    "desempenho": {
+      "potencia_cv": 75,
+      "torque_kgfm": 10.7,
+      "zero_a_cem_s": 13.4,
+      "velocidade_max_kmh": 162,
+      "cambio": "Manual de 5 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 13.3,
+      "rodoviario_gasolina_kml": 15.8,
+      "porta_malas_l": 265,
+      "tanque_l": 47
+    },
+    "media": { "imagem_principal": "peugeot_208_style.jpg" }
+  },
+  {
+    "id": "ford-ranger-limited-2024",
+    "marca": "Ford",
+    "modelo": "Ranger",
+    "versao": "Limited 3.0 V6 Diesel 4WD",
+    "ano": 2024,
+    "preco_estimado": 319990,
+    "categoria": "Picape",
+    "desempenho": {
+      "potencia_cv": 250,
+      "torque_kgfm": 61.2,
+      "zero_a_cem_s": 8.4,
+      "velocidade_max_kmh": 180,
+      "cambio": "Automático de 10 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 8.9,
+      "rodoviario_gasolina_kml": 10.2,
+      "porta_malas_l": 1250,
+      "tanque_l": 80
+    },
+    "media": { "imagem_principal": "ranger_limited.jpg" }
+  },
+  {
+    "id": "vw-gol-trendline-2015",
+    "marca": "Volkswagen",
+    "modelo": "Gol",
+    "versao": "Trendline 1.0 Flex",
+    "ano": 2015,
+    "preco_estimado": 38500,
+    "categoria": "Hatch",
+    "desempenho": {
+      "potencia_cv": 76,
+      "torque_kgfm": 10.6,
+      "zero_a_cem_s": 12.9,
+      "velocidade_max_kmh": 169,
+      "cambio": "Manual de 5 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 11.6,
+      "rodoviario_gasolina_kml": 13.8,
+      "porta_malas_l": 285,
+      "tanque_l": 55
+    },
+    "media": { "imagem_principal": "gol_2015.jpg" }
+  },
+  {
+    "id": "renault-sandero-rs-2019",
+    "marca": "Renault",
+    "modelo": "Sandero",
+    "versao": "R.S. 2.0 Flex",
+    "ano": 2019,
+    "preco_estimado": 65000,
+    "categoria": "Hatch Esportivo",
+    "desempenho": {
+      "potencia_cv": 150,
+      "torque_kgfm": 20.9,
+      "zero_a_cem_s": 8.0,
+      "velocidade_max_kmh": 202,
+      "cambio": "Manual de 6 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 9.9,
+      "rodoviario_gasolina_kml": 11.2,
+      "porta_malas_l": 320,
+      "tanque_l": 50
+    },
+    "media": { "imagem_principal": "sandero_rs.jpg" }
+  },
+  {
+    "id": "renault-kwid-zen-2023",
+    "marca": "Renault",
+    "modelo": "Kwid",
+    "versao": "Zen 1.0 Flex",
+    "ano": 2023,
+    "preco_estimado": 52000,
+    "categoria": "Hatch",
+    "desempenho": {
+      "potencia_cv": 71,
+      "torque_kgfm": 10.0,
+      "zero_a_cem_s": 13.2,
+      "velocidade_max_kmh": 156,
+      "cambio": "Manual de 5 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 15.3,
+      "rodoviario_gasolina_kml": 15.7,
+      "porta_malas_l": 290,
+      "tanque_l": 38
+    },
+    "media": { "imagem_principal": "kwid_2023.jpg" }
+  },
+  {
+    "id": "ford-ecosport-freestyle-2018",
+    "marca": "Ford",
+    "modelo": "EcoSport",
+    "versao": "Freestyle 1.5 Ti-VCT AT",
+    "ano": 2018,
+    "preco_estimado": 68000,
+    "categoria": "SUV",
+    "desempenho": {
+      "potencia_cv": 137,
+      "torque_kgfm": 16.2,
+      "zero_a_cem_s": 11.8,
+      "velocidade_max_kmh": 180,
+      "cambio": "Automático de 6 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 10.4,
+      "rodoviario_gasolina_kml": 12.8,
+      "porta_malas_l": 356,
+      "tanque_l": 52
+    },
+    "media": { "imagem_principal": "ecosport_2018.jpg" }
+  },
+  {
+    "id": "hyundai-tucson-gls-2014",
+    "marca": "Hyundai",
+    "modelo": "Tucson",
+    "versao": "GLS 2.0 16V AT",
+    "ano": 2014,
+    "preco_estimado": 45000,
+    "categoria": "SUV",
+    "desempenho": {
+      "potencia_cv": 146,
+      "torque_kgfm": 19.6,
+      "zero_a_cem_s": 11.3,
+      "velocidade_max_kmh": 180,
+      "cambio": "Automático de 4 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 8.2,
+      "rodoviario_gasolina_kml": 10.1,
+      "porta_malas_l": 644,
+      "tanque_l": 65
+    },
+    "media": { "imagem_principal": "tucson_2014.jpg" }
+  },
+  {
+    "id": "fiat-uno-mille-fire-2005",
+    "marca": "Fiat",
+    "modelo": "Uno",
+    "versao": "Mille Fire 1.0",
+    "ano": 2005,
+    "preco_estimado": 15500,
+    "categoria": "Hatch",
+    "desempenho": {
+      "potencia_cv": 55,
+      "torque_kgfm": 8.5,
+      "zero_a_cem_s": 15.2,
+      "velocidade_max_kmh": 153,
+      "cambio": "Manual de 5 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 13.8,
+      "rodoviario_gasolina_kml": 18.2,
+      "porta_malas_l": 290,
+      "tanque_l": 50
+    },
+    "media": { "imagem_principal": "uno_mille_2005.jpg" }
+  },
+  {
+    "id": "chevrolet-cruze-premier-2022",
+    "marca": "Chevrolet",
+    "modelo": "Cruze",
+    "versao": "Premier 1.4 Turbo AT",
+    "ano": 2022,
+    "preco_estimado": 115000,
+    "categoria": "Sedan",
+    "desempenho": {
+      "potencia_cv": 153,
+      "torque_kgfm": 24.5,
+      "zero_a_cem_s": 9.0,
+      "velocidade_max_kmh": 214,
+      "cambio": "Automático de 6 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 11.1,
+      "rodoviario_gasolina_kml": 14.2,
+      "porta_malas_l": 440,
+      "tanque_l": 52
+    },
+    "media": { "imagem_principal": "cruze_2022.jpg" }
+  },
+  {
+    "id": "toyota-rav4-hybrid-2023",
+    "marca": "Toyota",
+    "modelo": "RAV4",
+    "versao": "SX Connect Hybrid 2.5 4x4",
+    "ano": 2023,
+    "preco_estimado": 320000,
+    "categoria": "SUV Híbrido",
+    "desempenho": {
+      "potencia_cv": 222,
+      "torque_kgfm": 22.5,
+      "zero_a_cem_s": 8.1,
+      "velocidade_max_kmh": 180,
+      "cambio": "CVT Transaxle"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 17.1,
+      "rodoviario_gasolina_kml": 14.5,
+      "porta_malas_l": 580,
+      "tanque_l": 55
+    },
+    "media": { "imagem_principal": "rav4_hybrid.jpg" }
+  }
+]

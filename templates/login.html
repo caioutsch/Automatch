@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoMatch - Entrar na Conta</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="auth-container">
+        
+        <!-- Fundo de Partículas de Letras -->
+        <div class="particles-bg" id="particlesBg"></div>
+
+        <div class="auth-card">
+            
+            <!-- Botão Amarelo de Voltar -->
+            <div style="margin-bottom: 20px;">
+                <a href="{{ url_for('visao_geral') }}" class="btn-yellow-cta" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 8px 16px; font-size: 0.85rem; border-radius: 8px; width: fit-content;">
+                    <i class="ph ph-arrow-left" style="font-size: 1.1rem;"></i> Voltar à página inicial
+                </a>
+            </div>
+
+            <div class="auth-header" style="text-align: left;">
+                <h2>Bem-vindo de volta!</h2>
+                <p>Acesse sua conta para ver suas análises e garagem.</p>
+            </div>
+
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <div class="auth-alert">
+                  {{ messages[0] }}
+                </div>
+              {% endif %}
+            {% endwith %}
+
+            <form action="{{ url_for('login') }}" method="POST">
+                <div class="auth-form-group">
+                    <label>E-mail</label>
+                    <input type="email" name="email" class="auth-input" placeholder="seuemail@exemplo.com" required>
+                </div>
+
+                <div class="auth-form-group">
+                    <label>Senha</label>
+                    <input type="password" name="senha" class="auth-input" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="auth-btn">Entrar na conta</button>
+            </form>
+
+            <div class="auth-footer">
+                Ainda não tem uma conta? <a href="{{ url_for('cadastro') }}">Cadastre-se grátis</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gerador Dinâmico de Partículas Contínuas -->
+    <script>
+        function gerarParticulas() {
+            const container = document.getElementById('particlesBg');
+            if (!container) return;
+            const palavra = "AUTOMATCH";
+            const total = 45;
+
+            for (let i = 0; i < total; i++) {
+                const span = document.createElement('span');
+                span.className = 'particle-letter';
+                span.innerText = palavra[Math.floor(Math.random() * palavra.length)];
+                
+                const size = Math.random() * 24 + 14; // 14px a 38px
+                const left = Math.random() * 100;
+                const duration = Math.random() * 8 + 6; // Duração do ciclo entre 6s e 14s
+                
+                // O delay negativo faz a animação 'começar no meio do ciclo', evitando o acúmulo no topo
+                const delayNegativo = -(Math.random() * duration);
+
+                span.style.fontSize = `${size}px`;
+                span.style.left = `${left}%`;
+                span.style.animationDuration = `${duration}s`;
+                span.style.animationDelay = `${delayNegativo}s`;
+
+                container.appendChild(span);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', gerarParticulas);
+    </script>
+    <!-- Modal do AutoMatch AI -->
+<div id="aiModal" class="ai-modal-overlay">
+    <div class="ai-modal">
+        <div class="ai-modal-header">
+            <div class="ai-title">
+                <i class="ph-fill ph-sparkle" style="color: var(--primary-yellow); font-size: 1.5rem;"></i>
+                <div class="ai-info">
+                    <h3>AutoMatch AI</h3>
+                    <span class="ai-status">Online e pronto para analisar o catálogo</span>
+                </div>
+            </div>
+            <button class="btn-close-modal" onclick="fecharModalAI()"><i class="ph ph-x"></i></button>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <div class="message ai-message">
+                <div class="message-content">
+                    Olá! Sou o assistente inteligente do AutoMatch. Como posso ajudar com os veículos do catálogo hoje?
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="userInput" placeholder="Ex: Qual o carro com menor consumo até 100 mil?..." onkeypress="lidarComEnter(event)">
+            <button class="btn-send" onclick="enviarMensagem()"><i class="ph-fill ph-paper-plane-right"></i></button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function abrirModalAI() {
+        const modal = document.getElementById('aiModal');
+        if (modal) {
+            modal.classList.add('active');
+            document.getElementById('userInput').focus();
+        }
+    }
+
+    function fecharModalAI() {
+        const modal = document.getElementById('aiModal');
+        if (modal) modal.classList.remove('active');
+    }
+
+    function lidarComEnter(event) {
+        if (event.key === 'Enter') enviarMensagem();
+    }
+
+    function enviarMensagem() {
+        const input = document.getElementById('userInput');
+        const mensagem = input.value.trim();
+        if (mensagem === '') return;
+
+        const chatMessages = document.getElementById('chatMessages');
+
+        const userDiv = document.createElement('div');
+        userDiv.className = 'message user-message';
+        userDiv.innerHTML = `<div class="message-content">${mensagem}</div>`;
+        chatMessages.appendChild(userDiv);
+
+        input.value = '';
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        const loadingDiv = document.createElement('div');
+        loadingDiv.className = 'message ai-message';
+        loadingDiv.id = 'aiLoadingMessage';
+        loadingDiv.innerHTML = `
+            <div class="message-content" style="color: var(--text-gray); display: flex; align-items: center; gap: 8px;">
+                <i class="ph ph-spinner" style="animation: spin 1s linear infinite;"></i> 
+                Analisando o catálogo e gerando recomendação...
+            </div>`;
+        chatMessages.appendChild(loadingDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ mensagem: mensagem })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const loading = document.getElementById('aiLoadingMessage');
+            if (loading) loading.remove();
+
+            const aiDiv = document.createElement('div');
+            aiDiv.className = 'message ai-message';
+            aiDiv.innerHTML = `<div class="message-content">${data.resposta.replace(/\n/g, '<br>')}</div>`;
+            chatMessages.appendChild(aiDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        })
+        .catch(err => {
+            console.error('Erro na comunicação com a IA:', err);
+            const loading = document.getElementById('aiLoadingMessage');
+            if (loading) loading.remove();
+
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'message ai-message';
+            errorDiv.innerHTML = `<div class="message-content" style="color: #E11D48;">Não foi possível obter resposta do AutoMatch AI. Tente novamente em instantes.</div>`;
+            chatMessages.appendChild(errorDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
+    }
+</script>
+</body>
+</html>
