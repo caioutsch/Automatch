@@ -7,9 +7,215 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .profile-container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 28px;
+            align-items: start;
+        }
+
+        @media (max-width: 820px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Card do Avatar / Resumo */
+        .avatar-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color, #E5E7EB);
+            border-radius: 20px;
+            padding: 28px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
+        }
+
+        .avatar-preview-wrapper {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 16px auto;
+        }
+
+        .avatar-img-big {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid var(--primary-yellow, #FACC15);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .avatar-fallback-big {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #0F1319;
+            color: var(--primary-yellow, #FACC15);
+            font-size: 2.2rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid var(--primary-yellow, #FACC15);
+        }
+
+        .btn-upload-badge {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            background: #0F1319;
+            color: #FFFFFF;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1rem;
+            border: 2px solid #FFFFFF;
+            transition: all 0.2s ease;
+        }
+
+        .btn-upload-badge:hover {
+            background: var(--primary-yellow, #FACC15);
+            color: #111;
+        }
+
+        /* Card de Formulário */
+        .form-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color, #E5E7EB);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
+        }
+
+        .form-section-title {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #111827;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #F3F4F6;
+        }
+
+        .form-section-title i {
+            color: #0F1319;
+            font-size: 1.2rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        /* Estilização Clean dos Inputs */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-group label {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #374151;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 14px;
+            color: #9CA3AF;
+            font-size: 1.1rem;
+            pointer-events: none;
+            transition: color 0.2s ease;
+        }
+
+        .clean-input {
+            width: 100%;
+            padding: 12px 14px 12px 42px;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            color: #111827;
+            background: #F9FAFB;
+            outline: none;
+            font-family: inherit;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .clean-input:focus {
+            border-color: #0F1319;
+            background: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(15, 19, 25, 0.06);
+        }
+
+        .clean-input:focus + i, .input-wrapper:focus-within i {
+            color: #0F1319;
+        }
+
+        .clean-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%206B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 16px;
+            padding-right: 38px;
+        }
+
+        /* Alertas de Feedback */
+        .alert-box {
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-success {
+            background: #ECFDF5;
+            color: #065F46;
+            border: 1px solid #A7F3D0;
+        }
+
+        .alert-danger {
+            background: #FEF2F2;
+            color: #991B1B;
+            border: 1px solid #FECACA;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
+        
+        <!-- Menu Lateral Slim -->
         <aside class="sidebar">
             <div>
                 <a href="{{ url_for('visao_geral') }}" class="logo-link">
@@ -18,6 +224,7 @@
                         <h2>AutoMatch</h2>
                     </div>
                 </a>
+
                 <div class="menu-section">
                     <p class="menu-label">ÁREA DE TRABALHO</p>
                     <nav>
@@ -47,6 +254,7 @@
                     </nav>
                 </div>
             </div>
+
             <div>
                 {% if usuario %}
                 <div class="user-profile" style="display: flex; align-items: center; justify-content: space-between; padding: 10px; background: #F9FAFB; border-radius: 12px; border: 1px solid var(--border-color);">
@@ -69,255 +277,303 @@
             </div>
         </aside>
 
+        <!-- Conteúdo Principal -->
         <main class="main-content">
             <header class="top-bar">
-    <div class="search-bar" style="visibility: hidden;"></div>
-    <div class="top-actions">
-        <!-- Botão Global do AutoMatch AI -->
-        <button onclick="abrirModalAI()" class="btn-yellow-cta" style="padding: 6px 14px; font-size: 0.82rem; gap: 6px; cursor: pointer; border: none; display: flex; align-items: center;">
-            <i class="ph-fill ph-sparkle"></i> AutoMatch AI
-        </button>
-
-        <span class="region">Brasil - BRL</span>
-        <i class="ph ph-bell"></i>
-        <span class="pro-tag">PRO</span>
-        
-        {% if usuario %}
-        <a href="{{ url_for('perfil') }}" title="Ir para o Meu Perfil" style="text-decoration: none; display: flex; align-items: center;">
-            {% if usuario.foto_perfil %}
-            <img src="/static/uploads/{{ usuario.foto_perfil }}" alt="{{ usuario.nome }}" class="avatar-small" style="width: 34px; height: 34px; object-fit: cover; border-radius: 50%; border: 2px solid var(--primary-yellow);">
-            {% else %}
-            <div class="avatar-small">{{ usuario.iniciais }}</div>
-            {% endif %}
-        </a>
-        {% endif %}
-    </div>
-</header>
-
-            <div class="content-area" style="max-width: 900px;">
-                <div class="page-header" style="margin-bottom: 24px;">
-                    <span class="subheading">MINHA CONTA</span>
-                    <h1>Perfil do Usuário</h1>
-                    <p>Gerencie sua imagem de perfil, nome, veículos atuais e credenciais de acesso.</p>
-                </div>
-
-                {% with messages = get_flashed_messages() %}
-                  {% if messages %}
-                    <div class="auth-alert" style="margin-bottom: 24px; text-align: left; background: #FFFDE7; border-color: var(--primary-yellow); color: #111; padding: 12px 16px; border-radius: 8px;">
-                      <i class="ph ph-check-circle" style="font-size: 1.1rem;"></i> {{ messages[0] }}
-                    </div>
-                  {% endif %}
-                {% endwith %}
-
-                <div style="background: #0F1319; color: #FFF; border-radius: 16px; padding: 28px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px;">
-                    <div style="display: flex; align-items: center; gap: 20px;">
+                <div class="search-bar" style="visibility: hidden;"></div>
+                <div class="top-actions">
+                    <button onclick="abrirModalAI()" class="btn-yellow-cta" style="padding: 6px 14px; font-size: 0.82rem; gap: 6px; cursor: pointer; border: none; display: flex; align-items: center;">
+                        <i class="ph-fill ph-sparkle"></i> AutoMatch AI
+                    </button>
+                    <span class="region">Brasil - BRL</span>
+                    <i class="ph ph-bell"></i>
+                    <span class="pro-tag">PRO</span>
+                    {% if usuario %}
+                    <a href="{{ url_for('perfil') }}" title="Ir para o Meu Perfil" style="text-decoration: none; display: flex; align-items: center;">
                         {% if usuario.foto_perfil %}
-                        <img src="/static/uploads/{{ usuario.foto_perfil }}" alt="{{ usuario.nome }}" style="width: 72px; height: 72px; object-fit: cover; border-radius: 50%; border: 3px solid var(--primary-yellow);">
+                        <img src="/static/uploads/{{ usuario.foto_perfil }}" alt="{{ usuario.nome }}" class="avatar-small" style="width: 34px; height: 34px; object-fit: cover; border-radius: 50%; border: 2px solid var(--primary-yellow);">
                         {% else %}
-                        <div class="avatar" style="width: 72px; height: 72px; font-size: 1.8rem; font-weight: 800; background: var(--primary-yellow); color: #111;">
-                            {{ usuario.iniciais }}
-                        </div>
+                        <div class="avatar-small">{{ usuario.iniciais }}</div>
                         {% endif %}
-                        <div>
-                            <h2 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 4px;">{{ usuario.nome }}</h2>
-                            <p style="color: #9CA3AF; font-size: 0.9rem;">{{ usuario.email }}</p>
-                        </div>
-                    </div>
-                    <div style="display: flex; gap: 16px;">
-                        <div style="background: rgba(255,255,255,0.06); padding: 12px 20px; border-radius: 12px; text-align: center;">
-                            <span style="font-size: 1.2rem; font-weight: 800; display: block; color: var(--primary-yellow);">{{ carros_atuais|length }}</span>
-                            <span style="font-size: 0.75rem; color: #9CA3AF;">Carro(s) Atual(is)</span>
-                        </div>
-                        <div style="background: rgba(255,255,255,0.06); padding: 12px 20px; border-radius: 12px; text-align: center;">
-                            <span style="font-size: 1.2rem; font-weight: 800; display: block; color: var(--primary-yellow);">{{ favoritos_ids|length if favoritos_ids else 0 }}</span>
-                            <span style="font-size: 0.75rem; color: #9CA3AF;">Favoritos</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div style="background: #FFFFFF; border-radius: 16px; border: 1px solid var(--border-color); padding: 28px; margin-bottom: 32px;">
-                    <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-bottom: 4px;">Qual carro você possui atualmente?</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-gray); margin-bottom: 20px;">Defina seu veículo atual para usá-lo como base de comparação.</p>
-
-                    <form action="{{ url_for('perfil') }}" method="POST" style="display: flex; gap: 12px; margin-bottom: 24px;">
-                        <input type="hidden" name="acao" value="adicionar_carro_atual">
-                        <select name="carro_id" class="auth-input" style="flex: 1;" required>
-                            <option value="">Selecione um veículo do catálogo...</option>
-                            {% for c in todos_carros %}
-                            <option value="{{ c.id }}">{{ c.marca }} {{ c.modelo }} {{ c.versao }} ({{ c.ano }})</option>
-                            {% endfor %}
-                        </select>
-                        <button type="submit" class="btn-yellow-cta" style="white-space: nowrap; padding: 0 20px;">
-                            <i class="ph ph-plus-circle"></i> Definir como meu carro
-                        </button>
-                    </form>
-
-                    {% if carros_atuais|length > 0 %}
-                    <div style="display: flex; flex-direction: column; gap: 12px;">
-                        {% for c_atual in carros_atuais %}
-                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: #F9FAFB; border-radius: 12px; border: 1px solid var(--border-color);">
-                            <div style="display: flex; align-items: center; gap: 16px;">
-                                <img src="/static/images/{{ c_atual.media.imagem_principal }}" alt="{{ c_atual.modelo }}" style="width: 60px; height: 40px; object-fit: contain; border-radius: 6px; background: #FFF; padding: 4px; border: 1px solid #E5E7EB;">
-                                <div>
-                                    <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--text-dark);">{{ c_atual.marca }} {{ c_atual.modelo }}</h4>
-                                    <span style="font-size: 0.8rem; color: var(--text-gray);">{{ c_atual.versao }} · {{ c_atual.ano }}</span>
-                                </div>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <a href="{{ url_for('comparador', carro1=c_atual.id) }}" class="btn-yellow-cta" style="padding: 8px 14px; font-size: 0.82rem; text-decoration: none;">Comparar com este</a>
-                                <form action="{{ url_for('perfil') }}" method="POST" style="margin: 0;">
-                                    <input type="hidden" name="acao" value="remover_carro_atual">
-                                    <input type="hidden" name="carro_id" value="{{ c_atual.id }}">
-                                    <button type="submit" class="btn-outline-cta" style="padding: 8px 12px; font-size: 0.82rem; color: #E11D48; border-color: #FECDD3;"><i class="ph ph-trash"></i></button>
-                                </form>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
+                    </a>
                     {% endif %}
                 </div>
+            </header>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 40px;">
-                    <div style="background: #FFFFFF; border-radius: 16px; border: 1px solid var(--border-color); padding: 28px;">
-                        <h3 style="font-size: 1.05rem; font-weight: 800; margin-bottom: 6px;">Dados Pessoais & Foto</h3>
-                        <form action="{{ url_for('perfil') }}" method="POST" enctype="multipart/form-data">
-                            <input type="hidden" name="acao" value="atualizar_dados">
-                            <div class="auth-form-group">
-                                <label>Foto de Perfil</label>
-                                <input type="file" name="foto_perfil" class="auth-input" accept="image/*" style="padding: 8px;">
-                            </div>
-                            <div class="auth-form-group">
-                                <label>Nome Completo</label>
-                                <input type="text" name="nome" class="auth-input" value="{{ usuario.nome }}" required>
-                            </div>
-                            <div class="auth-form-group">
-                                <label>Endereço de E-mail</label>
-                                <input type="email" name="email" class="auth-input" value="{{ usuario.email }}" required>
-                            </div>
-                            <button type="submit" class="btn-yellow-cta" style="width: 100%; justify-content: center; margin-top: 10px;">Salvar Alterações</button>
-                        </form>
+            <div class="content-area">
+                <div class="profile-container">
+                    
+                    <div class="page-header" style="margin-bottom: 28px;">
+                        <span class="subheading">CONFIGURAÇÕES DA CONTA</span>
+                        <h1>Meu Perfil</h1>
+                        <p>Gerencie suas informações pessoais, foto de perfil, dados de acesso e preferências da garagem.</p>
                     </div>
 
-                    <div style="background: #FFFFFF; border-radius: 16px; border: 1px solid var(--border-color); padding: 28px;">
-                        <h3 style="font-size: 1.05rem; font-weight: 800; margin-bottom: 6px;">Segurança e Senha</h3>
-                        <form action="{{ url_for('perfil') }}" method="POST">
-                            <input type="hidden" name="acao" value="alterar_senha">
-                            <div class="auth-form-group">
-                                <label>Senha Atual</label>
-                                <input type="password" name="senha_atual" class="auth-input" placeholder="••••••••" required>
+                    <!-- Exibição de Mensagens Flash -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert-box alert-{{ 'success' if category == 'success' else 'danger' }}">
+                                    <i class="ph {{ 'ph-check-circle' if category == 'success' else 'ph-warning-circle' }}" style="font-size: 1.2rem;"></i>
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <form action="{{ url_for('perfil') }}" method="POST" enctype="multipart/form-data">
+                        
+                        <div class="profile-grid">
+                            
+                            <!-- Coluna da Esquerda: Avatar e Resumo -->
+                            <div class="avatar-card">
+                                <div class="avatar-preview-wrapper">
+                                    {% if usuario.foto_perfil %}
+                                        <img id="imgPreview" src="/static/uploads/{{ usuario.foto_perfil }}" alt="{{ usuario.nome }}" class="avatar-img-big">
+                                    {% else %}
+                                        <div id="fallbackPreview" class="avatar-fallback-big">{{ usuario.iniciais }}</div>
+                                        <img id="imgPreview" src="" alt="Preview" class="avatar-img-big" style="display: none;">
+                                    {% endif %}
+                                    <label for="inputFoto" class="btn-upload-badge" title="Alterar Foto">
+                                        <i class="ph ph-camera"></i>
+                                    </label>
+                                    <input type="file" id="inputFoto" name="foto" accept="image/*" style="display: none;" onchange="previewImagem(event)">
+                                </div>
+
+                                <h3 style="font-size: 1.1rem; font-weight: 800; color: #111; margin: 0 0 2px 0;">{{ usuario.nome }}</h3>
+                                <p style="font-size: 0.8rem; color: #6B7280; margin: 0 0 16px 0;">{{ usuario.email }}</p>
+
+                                <span style="display: inline-flex; align-items: center; gap: 6px; background: #FFFDE7; color: #111; border: 1px solid #FACC15; padding: 4px 12px; border-radius: 99px; font-weight: 700; font-size: 0.75rem;">
+                                    <i class="ph-fill ph-crown"></i> Membro PRO
+                                </span>
+
+                                <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #F3F4F6; text-align: left;">
+                                    <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #6B7280; margin-bottom: 8px;">
+                                        <span>Garagem Favoritos:</span>
+                                        <strong style="color: #111;">{{ favoritos_ids|length if favoritos_ids else 0 }} veículos</strong>
+                                    </div>
+                                    <a href="{{ url_for('garagem') }}" style="font-size: 0.8rem; font-weight: 700; color: #0F1319; text-decoration: none; display: flex; align-items: center; gap: 4px;">
+                                        Ver minha garagem <i class="ph ph-arrow-right"></i>
+                                    </a>
+                                </div>
                             </div>
-                            <div class="auth-form-group">
-                                <label>Nova Senha</label>
-                                <input type="password" name="nova_senha" class="auth-input" placeholder="Mínimo 6 caracteres" minlength="6" required>
+
+                            <!-- Coluna da Direita: Caixas de Edição -->
+                            <div class="form-card">
+                                
+                                <!-- Seção 1: Dados Pessoais -->
+                                <div class="form-section-title">
+                                    <i class="ph ph-user"></i> Informações Pessoais
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="input-group">
+                                        <label for="nome">Nome Completo</label>
+                                        <div class="input-wrapper">
+                                            <input type="text" id="nome" name="nome" class="clean-input" value="{{ usuario.nome }}" required placeholder="Seu nome completo">
+                                            <i class="ph ph-user-circle"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="input-group">
+                                        <label for="email">Endereço de E-mail</label>
+                                        <div class="input-wrapper">
+                                            <input type="email" id="email" name="email" class="clean-input" value="{{ usuario.email }}" required placeholder="seuemail@exemplo.com">
+                                            <i class="ph ph-envelope"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Seção 2: Preferências Automotivas -->
+                                <div class="form-section-title" style="margin-top: 12px;">
+                                    <i class="ph ph-car"></i> Garagem & Preferência
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="input-group" style="grid-column: 1 / -1;">
+                                        <label for="carro_atual_id">Seu Veículo Atual na Garagem</label>
+                                        <div class="input-wrapper">
+                                            <select id="carro_atual_id" name="carro_atual_id" class="clean-input clean-select">
+                                                <option value="">-- Nenhum veículo selecionado --</option>
+                                                {% if carros %}
+                                                    {% for c in carros %}
+                                                        <option value="{{ c.id }}" {% if usuario.carro_atual_id == c.id %}selected{% endif %}>
+                                                            {{ c.marca }} {{ c.modelo }} {{ c.versao }} ({{ c.ano }})
+                                                        </option>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </select>
+                                            <i class="ph ph-steering-wheel"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Seção 3: Alterar Senha -->
+                                <div class="form-section-title" style="margin-top: 12px;">
+                                    <i class="ph ph-lock-key"></i> Segurança da Conta
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="input-group">
+                                        <label for="senha_atual">Senha Atual</label>
+                                        <div class="input-wrapper">
+                                            <input type="password" id="senha_atual" name="senha_atual" class="clean-input" placeholder="Digite para alterar">
+                                            <i class="ph ph-lock-simple"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="input-group">
+                                        <label for="nova_senha">Nova Senha</label>
+                                        <div class="input-wrapper">
+                                            <input type="password" id="nova_senha" name="nova_senha" class="clean-input" placeholder="Mínimo 6 caracteres">
+                                            <i class="ph ph-key"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Botões de Ação -->
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 32px; padding-top: 20px; border-top: 1px solid #F3F4F6;">
+                                    <a href="{{ url_for('logout') }}" style="color: #EF4444; font-weight: 700; font-size: 0.88rem; text-decoration: none; display: flex; align-items: center; gap: 6px;">
+                                        <i class="ph ph-sign-out"></i> Sair da conta
+                                    </a>
+
+                                    <button type="submit" class="btn-yellow-cta" style="padding: 12px 28px; font-size: 0.9rem; cursor: pointer; border: none; font-weight: 700;">
+                                        <i class="ph ph-check-bold"></i> Salvar Alterações
+                                    </button>
+                                </div>
+
                             </div>
-                            <button type="submit" class="auth-btn" style="margin-top: 10px;">Atualizar Senha</button>
-                        </form>
-                    </div>
+
+                        </div>
+
+                    </form>
+
                 </div>
             </div>
         </main>
     </div>
+
     <!-- Modal do AutoMatch AI -->
-<div id="aiModal" class="ai-modal-overlay">
-    <div class="ai-modal">
-        <div class="ai-modal-header">
-            <div class="ai-title">
-                <i class="ph-fill ph-sparkle" style="color: var(--primary-yellow); font-size: 1.5rem;"></i>
-                <div class="ai-info">
-                    <h3>AutoMatch AI</h3>
-                    <span class="ai-status">Online e pronto para analisar o catálogo</span>
+    <div id="aiModal" class="ai-modal-overlay">
+        <div class="ai-modal">
+            <div class="ai-modal-header">
+                <div class="ai-title">
+                    <i class="ph-fill ph-sparkle" style="color: var(--primary-yellow); font-size: 1.5rem;"></i>
+                    <div class="ai-info">
+                        <h3>AutoMatch AI</h3>
+                        <span class="ai-status">Online e pronto para analisar o catálogo</span>
+                    </div>
+                </div>
+                <button class="btn-close-modal" onclick="fecharModalAI()"><i class="ph ph-x"></i></button>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai-message">
+                    <div class="message-content">
+                        Olá! Sou o assistente do AutoMatch. Como posso ajudar nas configurações do seu perfil ou nas buscas do catálogo?
+                    </div>
                 </div>
             </div>
-            <button class="btn-close-modal" onclick="fecharModalAI()"><i class="ph ph-x"></i></button>
-        </div>
 
-        <div class="chat-messages" id="chatMessages">
-            <div class="message ai-message">
-                <div class="message-content">
-                    Olá! Sou o assistente inteligente do AutoMatch. Como posso ajudar com os veículos do catálogo hoje?
-                </div>
+            <div class="chat-input-area">
+                <input type="text" id="userInput" placeholder="Ex: Qual o melhor carro para trocar meu atual?..." onkeypress="lidarComEnter(event)">
+                <button class="btn-send" onclick="enviarMensagem()"><i class="ph-fill ph-paper-plane-right"></i></button>
             </div>
-        </div>
-
-        <div class="chat-input-area">
-            <input type="text" id="userInput" placeholder="Ex: Qual o carro com menor consumo até 100 mil?..." onkeypress="lidarComEnter(event)">
-            <button class="btn-send" onclick="enviarMensagem()"><i class="ph-fill ph-paper-plane-right"></i></button>
         </div>
     </div>
-</div>
 
-<script>
-    function abrirModalAI() {
-        const modal = document.getElementById('aiModal');
-        if (modal) {
-            modal.classList.add('active');
-            document.getElementById('userInput').focus();
+    <script>
+        function previewImagem(event) {
+            const input = event.target;
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgPreview = document.getElementById('imgPreview');
+                    const fallbackPreview = document.getElementById('fallbackPreview');
+
+                    imgPreview.src = e.target.result;
+                    imgPreview.style.display = 'block';
+
+                    if (fallbackPreview) {
+                        fallbackPreview.style.display = 'none';
+                    }
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
         }
-    }
 
-    function fecharModalAI() {
-        const modal = document.getElementById('aiModal');
-        if (modal) modal.classList.remove('active');
-    }
+        // Funções do Modal do AutoMatch AI
+        function abrirModalAI() {
+            const modal = document.getElementById('aiModal');
+            if (modal) {
+                modal.classList.add('active');
+                document.getElementById('userInput').focus();
+            }
+        }
 
-    function lidarComEnter(event) {
-        if (event.key === 'Enter') enviarMensagem();
-    }
+        function fecharModalAI() {
+            const modal = document.getElementById('aiModal');
+            if (modal) modal.classList.remove('active');
+        }
 
-    function enviarMensagem() {
-        const input = document.getElementById('userInput');
-        const mensagem = input.value.trim();
-        if (mensagem === '') return;
+        function lidarComEnter(event) {
+            if (event.key === 'Enter') enviarMensagem();
+        }
 
-        const chatMessages = document.getElementById('chatMessages');
+        function enviarMensagem() {
+            const input = document.getElementById('userInput');
+            const mensagem = input.value.trim();
+            if (mensagem === '') return;
 
-        const userDiv = document.createElement('div');
-        userDiv.className = 'message user-message';
-        userDiv.innerHTML = `<div class="message-content">${mensagem}</div>`;
-        chatMessages.appendChild(userDiv);
+            const chatMessages = document.getElementById('chatMessages');
 
-        input.value = '';
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+            const userDiv = document.createElement('div');
+            userDiv.className = 'message user-message';
+            userDiv.innerHTML = `<div class="message-content">${mensagem}</div>`;
+            chatMessages.appendChild(userDiv);
 
-        const loadingDiv = document.createElement('div');
-        loadingDiv.className = 'message ai-message';
-        loadingDiv.id = 'aiLoadingMessage';
-        loadingDiv.innerHTML = `
-            <div class="message-content" style="color: var(--text-gray); display: flex; align-items: center; gap: 8px;">
-                <i class="ph ph-spinner" style="animation: spin 1s linear infinite;"></i> 
-                Analisando o catálogo e gerando recomendação...
-            </div>`;
-        chatMessages.appendChild(loadingDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-
-        fetch('/api/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ mensagem: mensagem })
-        })
-        .then(response => response.json())
-        .then(data => {
-            const loading = document.getElementById('aiLoadingMessage');
-            if (loading) loading.remove();
-
-            const aiDiv = document.createElement('div');
-            aiDiv.className = 'message ai-message';
-            aiDiv.innerHTML = `<div class="message-content">${data.resposta.replace(/\n/g, '<br>')}</div>`;
-            chatMessages.appendChild(aiDiv);
+            input.value = '';
             chatMessages.scrollTop = chatMessages.scrollHeight;
-        })
-        .catch(err => {
-            console.error('Erro na comunicação com a IA:', err);
-            const loading = document.getElementById('aiLoadingMessage');
-            if (loading) loading.remove();
 
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'message ai-message';
-            errorDiv.innerHTML = `<div class="message-content" style="color: #E11D48;">Não foi possível obter resposta do AutoMatch AI. Tente novamente em instantes.</div>`;
-            chatMessages.appendChild(errorDiv);
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'message ai-message';
+            loadingDiv.id = 'aiLoadingMessage';
+            loadingDiv.innerHTML = `
+                <div class="message-content" style="color: var(--text-gray); display: flex; align-items: center; gap: 8px;">
+                    <i class="ph ph-spinner" style="animation: spin 1s linear infinite;"></i> 
+                    Analisando o catálogo e gerando recomendação...
+                </div>`;
+            chatMessages.appendChild(loadingDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
-        });
-    }
-</script>
+
+            fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mensagem: mensagem })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const loading = document.getElementById('aiLoadingMessage');
+                if (loading) loading.remove();
+
+                const aiDiv = document.createElement('div');
+                aiDiv.className = 'message ai-message';
+                aiDiv.innerHTML = `<div class="message-content">${data.resposta.replace(/\n/g, '<br>')}</div>`;
+                chatMessages.appendChild(aiDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            })
+            .catch(err => {
+                console.error('Erro na comunicação com a IA:', err);
+                const loading = document.getElementById('aiLoadingMessage');
+                if (loading) loading.remove();
+
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'message ai-message';
+                errorDiv.innerHTML = `<div class="message-content" style="color: #E11D48;">Não foi possível obter resposta do AutoMatch AI. Tente novamente em instantes.</div>`;
+                chatMessages.appendChild(errorDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            });
+        }
+    </script>
 </body>
 </html>
