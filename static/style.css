@@ -2885,3 +2885,29 @@ html, body {
         height: auto;
     }
 }
+
+/* Correção global para telemóveis */
+@media (max-width: 768px) {
+    /* Força o corpo da página a empilhar os elementos em coluna */
+    body, .app-container, .wrapper {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        overflow-x: hidden !important;
+    }
+
+    /* Transforma a barra lateral numa barra superior compacta no telemóvel */
+    aside, .sidebar, .menu-lateral {
+        width: 100% !important;
+        height: auto !important;
+        position: relative !important;
+        box-shadow: none !important;
+    }
+
+    /* Garante que o conteúdo ocupa a largura total do ecrã */
+    main, .main-content, .conteudo-principal {
+        width: 100% !important;
+        margin-left: 0 !important;
+        padding: 10px !important;
+    }
+}
