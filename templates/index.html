@@ -36,7 +36,7 @@
                         <a href="{{ url_for('visao_geral') }}" class="menu-item {% if request.endpoint == 'visao_geral' %}active{% endif %}">
                             <i class="ph ph-squares-four"></i> Visão geral
                         </a>
-                        <a href="{{ url_for('catalogo') }}" class="menu-item {% if request.endpoint == 'catalogo' %}active{% endif %}">
+                        <a href="{{ url_for('catalogo') }}" class="menu-item {% if request.endpoint == 'catalogo' or request.endpoint == 'index' %}active{% endif %}">
                             <i class="ph ph-car-profile"></i> Catálogo
                         </a>
                         <a href="{{ url_for('comparador') }}" class="menu-item {% if request.endpoint == 'comparador' %}active{% endif %}">
@@ -120,7 +120,7 @@
                 <!-- Banner do AutoMatch AI -->
                 <div class="ai-banner" style="margin-bottom: 28px;">
                     <button class="btn-ai-chat" onclick="abrirModalAI()">
-                        <i class="ph-fill ph-sparkle"></i> 
+                        <i class="ph-fill ph-sparkle"></i>
                         Dúvidas sobre qual modelo escolher? Converse com o AutoMatch AI!
                     </button>
                 </div>
@@ -130,22 +130,19 @@
                     {% for carro in carros %}
                     {% set eh_favorito = favoritos_ids and (carro.id in favoritos_ids) %}
                     <div class="car-card" onclick="irParaDetalhes('{{ carro.id }}')">
-                        <div class="car-card-header">
-                            <span class="tag-match">Match {{ carro.match_score if carro.match_score else '95%' }}</span>
-                            <button class="btn-favorite {{ 'favorito-ativo' if eh_favorito else '' }}" 
+                        <div class="car-card-header" style="justify-content: flex-end;">
+                            <button class="btn-favorite {{ 'favorito-ativo' if eh_favorito else '' }}"
                                     onclick="event.stopPropagation(); toggleFavorito('{{ carro.id }}', this)">
                                 <i class="{{ 'ph-fill ph-heart' if eh_favorito else 'ph ph-heart' }}"></i>
                             </button>
                         </div>
 
                         <div class="car-image-container">
-                            <img src="/static/images/{{ carro.media.imagem_principal }}" 
-                                 alt="{{ carro.modelo }}" 
+                            <img src="/static/images/{{ carro.media.imagem_principal if carro.media and carro.media.imagem_principal else '' }}"
+                                 alt="{{ carro.modelo }}"
                                  class="car-thumbnail"
                                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div class="car-image-placeholder" style="display: none;">
-                                <i class="ph ph-car"></i>
-                            </div>
+                            <div class="car-image-placeholder" style="display: none;"><i class="ph ph-car"></i></div>
                         </div>
 
                         <div class="car-card-body">
@@ -162,7 +159,7 @@
                             <div class="car-card-footer">
                                 <div class="price-container">
                                     <span class="price-label">Preço estimado</span>
-                                    <span class="price-value">R$ {{ "{:,.0f}".format(carro.preco_estimado).replace(',', '.') }}</span>
+                                    <span class="price-value">R$ {{ carro.preco_estimado | formata_preco }}</span>
                                 </div>
                                 <span class="btn-add" title="Ver Detalhes"><i class="ph ph-arrow-right"></i></span>
                             </div>
@@ -174,7 +171,7 @@
         </main>
     </div>
 
-    <!-- Modal do AutoMatch AI (Design Original) -->
+    <!-- Modal do AutoMatch AI -->
     <div id="aiModal" class="ai-modal-overlay">
         <div class="ai-modal">
             <div class="ai-modal-header">
@@ -230,7 +227,6 @@
                         icone.className = 'ph ph-heart';
                         btn.classList.remove('favorito-ativo');
                     }
-
                     const badge = document.getElementById('garagemBadge');
                     if (badge) {
                         badge.innerText = data.total_favoritos;
@@ -263,7 +259,6 @@
 
             const chatMessages = document.getElementById('chatMessages');
 
-            // 1. Mensagem do Usuário
             const userDiv = document.createElement('div');
             userDiv.className = 'message user-message';
             userDiv.innerHTML = `<div class="message-content">${mensagem}</div>`;
@@ -272,19 +267,17 @@
             input.value = '';
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
-            // 2. Indicador de Carregamento
             const loadingDiv = document.createElement('div');
             loadingDiv.className = 'message ai-message';
             loadingDiv.id = 'aiLoadingMessage';
             loadingDiv.innerHTML = `
                 <div class="message-content" style="color: var(--text-gray); display: flex; align-items: center; gap: 8px;">
-                    <i class="ph ph-spinner" style="animation: spin 1s linear infinite;"></i> 
+                    <i class="ph ph-spinner" style="animation: spin 1s linear infinite;"></i>
                     Analisando o catálogo e gerando recomendação...
                 </div>`;
             chatMessages.appendChild(loadingDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
-            // 3. Comunicação Backend com API do Gemini
             fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

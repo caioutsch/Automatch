@@ -1,40 +1,33 @@
-import json
 import os
+import json
 import sqlite3
-import time
+import random
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session, flash
+from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
-from google import genai
-from werkzeug.security import generate_password_hash, check_password_hash
 
-# Carrega as variáveis do arquivo .env
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = 'automatch_chave_secreta_super_segura'
+app.secret_key = os.getenv('SECRET_KEY', 'automatch-chave-secreta-dev-2026')
 
-# Configuração da API do Gemini via SDK google-genai
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-ai_client = genai.Client(api_key=GEMINI_API_KEY) if GEMINI_API_KEY else None
-
-# Configuração de uploads de mídia de perfil
-UPLOAD_FOLDER = os.path.join(app.root_path, 'static', 'uploads')
+UPLOAD_FOLDER = os.path.join('static', 'uploads')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 
-DATABASE = os.path.join(app.root_path, 'automatch.db')
+try:
+    from google import genai
+    gemini_api_key = os.getenv("GEMINI_API_KEY")
+    client = genai.Client(api_key=gemini_api_key) if gemini_api_key else None
+except Exception as e:
+    client = None
 
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
+DB_PATH = 'automatch.db'
 
 def get_db():
-    conn = sqlite3.connect(DATABASE)
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
-
 
 def init_db():
     with get_db() as conn:
@@ -43,16 +36,11 @@ def init_db():
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 nome TEXT NOT NULL,
                 email TEXT UNIQUE NOT NULL,
-                senha_hash TEXT NOT NULL,
-                foto_perfil TEXT
+                senha TEXT NOT NULL,
+                foto_perfil TEXT,
+                carro_atual_id TEXT
             )
         ''')
-        # Garante a existência da coluna foto_perfil em bancos criados anteriormente
-        try:
-            conn.execute('ALTER TABLE usuarios ADD COLUMN foto_perfil TEXT')
-        except sqlite3.OperationalError:
-            pass
-
         conn.execute('''
             CREATE TABLE IF NOT EXISTS favoritos (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -62,399 +50,280 @@ def init_db():
                 UNIQUE(usuario_id, carro_id)
             )
         ''')
-        conn.execute('''
-            CREATE TABLE IF NOT EXISTS carros_atuais (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                usuario_id INTEGER NOT NULL,
-                carro_id TEXT NOT NULL,
-                FOREIGN KEY (usuario_id) REFERENCES usuarios (id),
-                UNIQUE(usuario_id, carro_id)
-            )
-        ''')
         conn.commit()
-
 
 init_db()
 
+# Registra o filtro customizado no Jinja2 para substituir o .format() que quebrava a página
+@app.template_filter('formata_preco')
+def formata_preco(valor):
+    try:
+        val = float(valor)
+        return f"{val:,.0f}".replace(',', '.')
+    except (ValueError, TypeError):
+        return "0"
 
 def carregar_carros():
-    caminho_json = os.path.join(app.root_path, 'data', 'carros.json')
-    with open(caminho_json, 'r', encoding='utf-8') as arquivo:
-        return json.load(arquivo)
+    json_path = os.path.join('data', 'carros.json')
+    if not os.path.exists(json_path):
+        return []
+    
+    try:
+        with open(json_path, 'r', encoding='utf-8') as f:
+            carros = json.load(f)
+    except Exception as e:
+        print(f"Erro ao carregar JSON: {e}")
+        return []
 
+    # Sanitiza os dados garantindo que o Jinja2 nunca encontre valores None
+    if isinstance(carros, list):
+        for c in carros:
+            if not isinstance(c, dict):
+                continue
+            c.setdefault('preco_estimado', 0)
+            if 'desempenho' not in c or not isinstance(c['desempenho'], dict):
+                c['desempenho'] = {}
+            c['desempenho'].setdefault('potencia_cv', 'N/I')
+            
+            if 'consumo_praticidade' not in c or not isinstance(c['consumo_praticidade'], dict):
+                c['consumo_praticidade'] = {}
+            c['consumo_praticidade'].setdefault('urbano_gasolina_kml', 'N/I')
+            
+            if 'media' not in c or not isinstance(c['media'], dict):
+                c['media'] = {}
+            c['media'].setdefault('imagem_principal', '')
+
+    return carros
 
 def get_usuario_logado():
-    if 'usuario_id' in session:
-        with get_db() as conn:
-            user = conn.execute('SELECT * FROM usuarios WHERE id = ?', (session['usuario_id'],)).fetchone()
-            if user:
-                return {
-                    'id': user['id'],
-                    'nome': user['nome'],
-                    'email': user['email'],
-                    'foto_perfil': user['foto_perfil'] if 'foto_perfil' in user.keys() else None,
-                    'iniciais': ''.join([n[0].upper() for n in user['nome'].split()[:2]])
-                }
+    user_id = session.get('usuario_id')
+    if not user_id:
+        return None
+    with get_db() as conn:
+        user = conn.execute('SELECT * FROM usuarios WHERE id = ?', (user_id,)).fetchone()
+        if user:
+            u_dict = dict(user)
+            partes = u_dict.get('nome', 'Usuário').split()
+            iniciais = partes[0][0].upper() if partes else 'U'
+            if len(partes) > 1:
+                iniciais += partes[-1][0].upper()
+            u_dict['iniciais'] = iniciais
+            return u_dict
     return None
 
-
 def get_favoritos_usuario():
-    if 'usuario_id' in session:
-        with get_db() as conn:
-            rows = conn.execute(
-                'SELECT carro_id FROM favoritos WHERE usuario_id = ?', 
-                (session['usuario_id'],)
-            ).fetchall()
-            return [r['carro_id'] for r in rows]
-    else:
-        return session.get('favoritos_anonimos', [])
-
-
-def get_carros_atuais_usuario():
-    if 'usuario_id' in session:
-        with get_db() as conn:
-            rows = conn.execute(
-                'SELECT carro_id FROM carros_atuais WHERE usuario_id = ?', 
-                (session['usuario_id'],)
-            ).fetchall()
-            return [r['carro_id'] for r in rows]
-    return []
-
-
-# ================== ROTAS DE AUTENTICAÇÃO ==================
-
-@app.route('/cadastro', methods=['GET', 'POST'])
-def cadastro():
-    if request.method == 'POST':
-        nome = request.form.get('nome')
-        email = request.form.get('email')
-        senha = request.form.get('senha')
-
-        senha_hash = generate_password_hash(senha)
-
-        try:
-            with get_db() as conn:
-                cursor = conn.cursor()
-                cursor.execute(
-                    'INSERT INTO usuarios (nome, email, senha_hash) VALUES (?, ?, ?)',
-                    (nome, email, senha_hash)
-                )
-                conn.commit()
-                novo_id = cursor.lastrowid
-            
-            session['usuario_id'] = novo_id
-            session['usuario_nome'] = nome
-            session['usuario_email'] = email
-
-            favs_anonimos = session.get('favoritos_anonimos', [])
-            if favs_anonimos:
-                with get_db() as conn:
-                    for c_id in favs_anonimos:
-                        conn.execute(
-                            'INSERT OR IGNORE INTO favoritos (usuario_id, carro_id) VALUES (?, ?)',
-                            (novo_id, c_id)
-                        )
-                    conn.commit()
-                session.pop('favoritos_anonimos', None)
-
-            return redirect(url_for('visao_geral'))
-        except sqlite3.IntegrityError:
-            flash('Este e-mail já está cadastrado!')
-            return render_template('cadastro.html')
-
-    return render_template('cadastro.html')
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        email = request.form.get('email')
-        senha = request.form.get('senha')
-
-        with get_db() as conn:
-            user = conn.execute('SELECT * FROM usuarios WHERE email = ?', (email,)).fetchone()
-
-        if user and check_password_hash(user['senha_hash'], senha):
-            session['usuario_id'] = user['id']
-            session['usuario_nome'] = user['nome']
-            session['usuario_email'] = user['email']
-
-            favs_anonimos = session.get('favoritos_anonimos', [])
-            if favs_anonimos:
-                with get_db() as conn:
-                    for c_id in favs_anonimos:
-                        conn.execute(
-                            'INSERT OR IGNORE INTO favoritos (usuario_id, carro_id) VALUES (?, ?)',
-                            (user['id'], c_id)
-                        )
-                    conn.commit()
-                session.pop('favoritos_anonimos', None)
-
-            return redirect(url_for('visao_geral'))
-        else:
-            flash('E-mail ou senha incorretos.')
-            return render_template('login.html')
-
-    return render_template('login.html')
-
-
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('visao_geral'))
-
-
-# ================== APIS E INTEGRAÇÃO IA ==================
-
-@app.route('/api/favorito/<id_carro>', methods=['POST'])
-def toggle_favorito(id_carro):
-    # Bloqueia a ação caso o usuário não esteja logado
-    if 'usuario_id' not in session:
-        return jsonify({
-            'status': 'nao_autenticado',
-            'mensagem': 'Você precisa estar logado para salvar veículos na garagem.',
-            'redirect': url_for('login')
-        }), 401
-
-    uid = session['usuario_id']
+    user_id = session.get('usuario_id')
+    if not user_id:
+        return []
     with get_db() as conn:
-        existe = conn.execute(
-            'SELECT id FROM favoritos WHERE usuario_id = ? AND carro_id = ?',
-            (uid, id_carro)
-        ).fetchone()
+        rows = conn.execute('SELECT carro_id FROM favoritos WHERE usuario_id = ?', (user_id,)).fetchall()
+        return [r['carro_id'] for r in rows]
 
-        if existe:
-            conn.execute('DELETE FROM favoritos WHERE usuario_id = ? AND carro_id = ?', (uid, id_carro))
-            status = "removido"
-        else:
-            conn.execute('INSERT INTO favoritos (usuario_id, carro_id) VALUES (?, ?)', (uid, id_carro))
-            status = "adicionado"
-        conn.commit()
-
-    novos_favoritos = get_favoritos_usuario()
-
-    return jsonify({
-        'status': status,
-        'carro_id': id_carro,
-        'total_favoritos': len(novos_favoritos)
-    })
-
-    return jsonify({
-        'status': status,
-        'carro_id': id_carro,
-        'total_favoritos': len(novos_favoritos)
-    })
-
-
-@app.route('/api/chat', methods=['POST'])
-def api_chat():
-    dados = request.get_json() or {}
-    mensagem_usuario = dados.get('mensagem', '').strip()
-
-    if not mensagem_usuario:
-        return jsonify({'resposta': 'Por favor, digite uma mensagem.'}), 400
-
+@app.route('/', endpoint='index')
+@app.route('/catalogo', endpoint='catalogo')
+def index():
     carros = carregar_carros()
-    resumo_catalogo = []
+    if carros:
+        random.shuffle(carros)
     
-    for c in carros:
-        potencia = c.get('desempenho', {}).get('potencia_cv', 'N/I')
-        consumo = c.get('consumo_praticidade', {}).get('urbano_gasolina_kml', 'N/I')
-        preco = c.get('preco_estimado', 0)
-        
-        resumo_catalogo.append(
-            f"- {c['marca']} {c['modelo']} {c['versao']} ({c['ano']}): R$ {preco:,.0f} | "
-            f"Potência: {potencia} cv | Consumo Urbano: {consumo} km/l | ID: {c['id']}"
-        )
-
-    instrucao_sistema = (
-        "Você é o AutoMatch AI, assistente virtual inteligente especialista no catálogo do AutoMatch. "
-        "Sua função é recomendar e comparar os carros com base na necessidade do usuário.\n\n"
-        "REGRAS IMPORTANTES:\n"
-        "1. Responda em Português do Brasil de forma clara, amigável e objetiva.\n"
-        "2. Baseie suas sugestões PRIORITARIAMENTE nos carros do catálogo listados abaixo.\n"
-        "3. Quando recomendar um carro, mencione o nome completo (Marca e Modelo) e o motivo da escolha.\n\n"
-        "CATÁLOGO DE VEÍCULOS DISPONÍVEIS:\n" + "\n".join(resumo_catalogo)
+    usuario = get_usuario_logado()
+    favoritos_ids = get_favoritos_usuario()
+    
+    return render_template(
+        'index.html', 
+        carros=carros, 
+        usuario=usuario, 
+        favoritos_ids=favoritos_ids
     )
 
-    if not ai_client:
-        return jsonify({
-            'resposta': 'Chave da API do Gemini não configurada. Adicione GEMINI_API_KEY no arquivo .env.'
-        })
-
-    try:
-        response = ai_client.models.generate_content(
-            model='gemini-3.8-flash',
-            contents=mensagem_usuario,
-            config={
-                'system_instruction': instrucao_sistema,
-                'temperature': 0.7,
-            }
-        )
-        return jsonify({'resposta': response.text})
-    except Exception as e:
-        print(f"Erro ao consultar Gemini: {e}")
-        return jsonify({
-            'resposta': 'Ocorreu um erro ao consultar o AutoMatch AI. Verifique a conexão ou tente novamente.'
-        }), 500
-
-
-# ================== ROTAS PRINCIPAIS ==================
-
-@app.route('/')
-@app.route('/visao-geral')
+@app.route('/visao_geral')
 def visao_geral():
-    carros = carregar_carros()
     usuario = get_usuario_logado()
     favoritos_ids = get_favoritos_usuario()
-    return render_template('visao_geral.html', carros=carros, usuario=usuario, favoritos_ids=favoritos_ids)
-
-
-@app.route('/catalogo')
-def catalogo():
     carros = carregar_carros()
+    return render_template('visao_geral.html', usuario=usuario, favoritos_ids=favoritos_ids, carros=carros)
+
+@app.route('/carro/<carro_id>')
+def detalhes_carro(carro_id):
+    carros = carregar_carros()
+    carro = next((c for c in carros if c['id'] == carro_id), None)
+    if not carro:
+        return redirect(url_for('index'))
+    
     usuario = get_usuario_logado()
     favoritos_ids = get_favoritos_usuario()
-    return render_template('index.html', carros=carros, usuario=usuario, favoritos_ids=favoritos_ids)
-
-
-@app.route('/carro/<id_carro>')
-def detalhes(id_carro):
-    carros = carregar_carros()
-    usuario = get_usuario_logado()
-    favoritos_ids = get_favoritos_usuario()
-    carro_selecionado = next((c for c in carros if c['id'] == id_carro), None)
-    if carro_selecionado:
-        return render_template('detalhes.html', carro=carro_selecionado, usuario=usuario, favoritos_ids=favoritos_ids)
-    return "Veículo não encontrado", 404
-
+    return render_template('detalhes.html', carro=carro, usuario=usuario, favoritos_ids=favoritos_ids)
 
 @app.route('/comparador')
 def comparador():
     carros = carregar_carros()
+    carro1_id = request.args.get('carro1', '')
     usuario = get_usuario_logado()
     favoritos_ids = get_favoritos_usuario()
-    carro1_id = request.args.get('carro1', '')
-    return render_template('comparador.html', carros=carros, usuario=usuario, favoritos_ids=favoritos_ids, carro1_id=carro1_id)
-
+    return render_template('comparador.html', carros=carros, carro1_id=carro1_id, usuario=usuario, favoritos_ids=favoritos_ids)
 
 @app.route('/financeiro')
 def financeiro():
-    carros = carregar_carros()
     usuario = get_usuario_logado()
     favoritos_ids = get_favoritos_usuario()
-    return render_template('financeiro.html', carros=carros, usuario=usuario, favoritos_ids=favoritos_ids)
-
+    carros = carregar_carros()
+    return render_template('financeiro.html', usuario=usuario, favoritos_ids=favoritos_ids, carros=carros)
 
 @app.route('/formulario')
 def formulario():
-    carros = carregar_carros()
     usuario = get_usuario_logado()
     favoritos_ids = get_favoritos_usuario()
-    return render_template('formulario.html', carros=carros, usuario=usuario, favoritos_ids=favoritos_ids)
-
+    carros = carregar_carros()
+    return render_template('formulario.html', usuario=usuario, favoritos_ids=favoritos_ids, carros=carros)
 
 @app.route('/garagem')
 def garagem():
-    todos_carros = carregar_carros()
     usuario = get_usuario_logado()
+    if not usuario:
+        return redirect(url_for('login'))
+    
     favoritos_ids = get_favoritos_usuario()
+    todos_carros = carregar_carros()
     carros_favoritos = [c for c in todos_carros if c['id'] in favoritos_ids]
-    return render_template('garagem.html', carros=carros_favoritos, usuario=usuario, favoritos_ids=favoritos_ids)
+    
+    return render_template('garagem.html', usuario=usuario, favoritos_ids=favoritos_ids, carros=carros_favoritos)
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form.get('email', '').strip()
+        senha = request.form.get('senha', '').strip()
+        
+        with get_db() as conn:
+            user = conn.execute('SELECT * FROM usuarios WHERE email = ? AND senha = ?', (email, senha)).fetchone()
+            if user:
+                session['usuario_id'] = user['id']
+                flash('Login realizado com sucesso!', 'success')
+                return redirect(url_for('index'))
+            else:
+                flash('E-mail ou senha incorretos.', 'danger')
+                
+    return render_template('login.html')
+
+@app.route('/cadastro', methods=['GET', 'POST'])
+def cadastro():
+    if request.method == 'POST':
+        nome = request.form.get('nome', '').strip()
+        email = request.form.get('email', '').strip()
+        senha = request.form.get('senha', '').strip()
+        
+        with get_db() as conn:
+            user_exist = conn.execute('SELECT id FROM usuarios WHERE email = ?', (email,)).fetchone()
+            if user_exist:
+                flash('Este e-mail já está cadastrado.', 'danger')
+            else:
+                cursor = conn.execute('INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)', (nome, email, senha))
+                conn.commit()
+                session['usuario_id'] = cursor.lastrowid
+                flash('Conta criada com sucesso!', 'success')
+                return redirect(url_for('index'))
+                
+    return render_template('cadastro.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
 
 @app.route('/perfil', methods=['GET', 'POST'])
 def perfil():
-    if 'usuario_id' not in session:
-        return redirect(url_for('login'))
-
     usuario = get_usuario_logado()
+    if not usuario:
+        return redirect(url_for('login'))
+        
+    carros = carregar_carros()
     favoritos_ids = get_favoritos_usuario()
-    carros_atuais_ids = get_carros_atuais_usuario()
-    todos_carros = carregar_carros()
 
     if request.method == 'POST':
-        acao = request.form.get('acao')
+        nome = request.form.get('nome', '').strip()
+        email = request.form.get('email', '').strip()
+        carro_atual_id = request.form.get('carro_atual_id', '').strip()
+        nova_senha = request.form.get('nova_senha', '').strip()
 
-        if acao == 'atualizar_dados':
-            novo_nome = request.form.get('nome')
-            novo_email = request.form.get('email')
-            foto_file = request.files.get('foto_perfil')
-            nome_foto = usuario['foto_perfil']
+        foto_filename = usuario.get('foto_perfil')
+        if 'foto' in request.files:
+            file = request.files['foto']
+            if file and file.filename != '':
+                filename = secure_filename(f"user_{usuario['id']}_{file.filename}")
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                foto_filename = filename
 
-            if foto_file and foto_file.filename != '' and allowed_file(foto_file.filename):
-                ext = foto_file.filename.rsplit('.', 1)[1].lower()
-                nome_foto = f"avatar_user_{session['usuario_id']}_{int(time.time())}.{ext}"
-                caminho = os.path.join(app.config['UPLOAD_FOLDER'], nome_foto)
-                foto_file.save(caminho)
+        with get_db() as conn:
+            if nova_senha:
+                conn.execute('''
+                    UPDATE usuarios 
+                    SET nome = ?, email = ?, carro_atual_id = ?, foto_perfil = ?, senha = ?
+                    WHERE id = ?
+                ''', (nome, email, carro_atual_id, foto_filename, nova_senha, usuario['id']))
+            else:
+                conn.execute('''
+                    UPDATE usuarios 
+                    SET nome = ?, email = ?, carro_atual_id = ?, foto_perfil = ?
+                    WHERE id = ?
+                ''', (nome, email, carro_atual_id, foto_filename, usuario['id']))
+            conn.commit()
 
-            try:
-                with get_db() as conn:
-                    conn.execute(
-                        'UPDATE usuarios SET nome = ?, email = ?, foto_perfil = ? WHERE id = ?',
-                        (novo_nome, novo_email, nome_foto, session['usuario_id'])
-                    )
-                    conn.commit()
-                session['usuario_nome'] = novo_nome
-                session['usuario_email'] = novo_email
-                flash('Perfil atualizado com sucesso!')
-            except sqlite3.IntegrityError:
-                flash('Este e-mail já está em uso por outra conta.')
-
-        elif acao == 'alterar_senha':
-            senha_atual = request.form.get('senha_atual')
-            nova_senha = request.form.get('nova_senha')
-            with get_db() as conn:
-                user = conn.execute(
-                    'SELECT senha_hash FROM usuarios WHERE id = ?',
-                    (session['usuario_id'],)
-                ).fetchone()
-
-                if user and check_password_hash(user['senha_hash'], senha_atual):
-                    nova_hash = generate_password_hash(nova_senha)
-                    conn.execute(
-                        'UPDATE usuarios SET senha_hash = ? WHERE id = ?',
-                        (nova_hash, session['usuario_id'])
-                    )
-                    conn.commit()
-                    flash('Senha alterada com sucesso!')
-                else:
-                    flash('A senha atual informada está incorreta.')
-
-        elif acao == 'adicionar_carro_atual':
-            carro_id = request.form.get('carro_id')
-            if carro_id:
-                with get_db() as conn:
-                    conn.execute(
-                        'INSERT OR IGNORE INTO carros_atuais (usuario_id, carro_id) VALUES (?, ?)',
-                        (session['usuario_id'], carro_id)
-                    )
-                    conn.commit()
-                flash('Carro atual adicionado com sucesso!')
-
-        elif acao == 'remover_carro_atual':
-            carro_id = request.form.get('carro_id')
-            if carro_id:
-                with get_db() as conn:
-                    conn.execute(
-                        'DELETE FROM carros_atuais WHERE usuario_id = ? AND carro_id = ?',
-                        (session['usuario_id'], carro_id)
-                    )
-                    conn.commit()
-                flash('Carro removido com sucesso.')
-
+        flash('Perfil atualizado com sucesso!', 'success')
         return redirect(url_for('perfil'))
 
-    objetos_carros_atuais = [c for c in todos_carros if c['id'] in carros_atuais_ids]
+    return render_template('perfil.html', usuario=usuario, carros=carros, favoritos_ids=favoritos_ids)
 
-    return render_template(
-        'perfil.html', 
-        usuario=usuario, 
-        favoritos_ids=favoritos_ids,
-        carros_atuais=objetos_carros_atuais,
-        todos_carros=todos_carros
-    )
+@app.route('/api/favorito/<carro_id>', methods=['POST'])
+def toggle_favorito(carro_id):
+    user_id = session.get('usuario_id')
+    if not user_id:
+        return jsonify({'error': 'Não autenticado'}), 401
+        
+    with get_db() as conn:
+        fav = conn.execute('SELECT id FROM favoritos WHERE usuario_id = ? AND carro_id = ?', (user_id, carro_id)).fetchone()
+        if fav:
+            conn.execute('DELETE FROM favoritos WHERE id = ?', (fav['id'],))
+            status = 'removido'
+        else:
+            conn.execute('INSERT INTO favoritos (usuario_id, carro_id) VALUES (?, ?)', (user_id, carro_id))
+            status = 'adicionado'
+        conn.commit()
+        
+        total = conn.execute('SELECT COUNT(*) as count FROM favoritos WHERE usuario_id = ?', (user_id,)).fetchone()['count']
 
+    return jsonify({'status': status, 'total_favoritos': total})
+
+@app.route('/api/chat', methods=['POST'])
+def api_chat():
+    data = request.get_json() or {}
+    mensagem_usuario = data.get('mensagem', '').strip()
+    
+    if not mensagem_usuario:
+        return jsonify({'resposta': 'Por favor, digite uma mensagem.'})
+
+    if not client:
+        return jsonify({'resposta': 'Erro: A chave GEMINI_API_KEY não foi configurada no servidor.'})
+
+    carros = carregar_carros()
+    contexto_carros = json.dumps(carros[:25], ensure_ascii=False)
+
+    system_prompt = f"""
+    Você é o AutoMatch AI, um assistente especializado em recomendação automotiva do sistema AutoMatch.
+    Responda de forma clara, amigável, direta e em português do Brasil.
+    Utilize os seguintes dados de veículos do catálogo como referência:
+    {contexto_carros}
+    """
+
+    try:
+        response = client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=f"{system_prompt}\n\nUsuário: {mensagem_usuario}"
+        )
+        resposta_texto = response.text if response.text else "Não consegui processar sua solicitação no momento."
+        return jsonify({'resposta': resposta_texto})
+    except Exception as e:
+        print("Erro na API Gemini:", e)
+        return jsonify({'resposta': 'Desculpe, ocorreu um erro ao consultar o assistente de IA. Tente novamente em instantes.'})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5000)
