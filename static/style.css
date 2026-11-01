@@ -2852,3 +2852,36 @@ html, body {
     cursor: pointer;
     font-size: 1.1rem;
 }
+
+@media (max-width: 768px) {
+    /* Faz com que o container principal ocupe a largura toda do telemóvel */
+    body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Ajusta a barra lateral para não esmagar o site */
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    /* Liberta o conteúdo principal para fluir abaixo do menu */
+    .main-content {
+        width: 100%;
+        margin-left: 0;
+        padding: 15px;
+    }
+
+    /* Corrige o tamanho dos textos e banners gigantes no mobile */
+    .hero-banner {
+        flex-direction: column;
+        padding: 20px;
+    }
+    
+    .hero-car-img {
+        max-width: 100%;
+        height: auto;
+    }
+}
