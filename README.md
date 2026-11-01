@@ -10,6 +10,23 @@ O **AutoMatch** é uma plataforma web para auxílio na tomada de decisão na com
 
 ---
 
+## 📸 Pré-visualização da Aplicação
+
+<div align="center">
+  <img src="static/images/print_visao_geral.png" alt="Visão Geral AutoMatch" width="800px">
+  <p><em>Página principal de visão geral</em></p>
+</div>
+
+<div align="center">
+  <img src="static/images/print_catalogo.png" alt="Catálogo AutoMatch" width="800px">
+  <p><em>Catálogo dinâmico de veículos</em></p>
+</div>
+
+<div align="center">
+  <img src="static/images/print_comparador.png" alt="Comparador AutoMatch" width="800px">
+  <p><em>Ferramenta de comparação lado a lado</em></p>
+</div>
+
 ## ✨ Funcionalidades Principais
 
 - **🚗 Catálogo Dinâmico:** Exibição aleatória a cada acesso com +50 veículos populares e seminovos do mercado brasileiro.
