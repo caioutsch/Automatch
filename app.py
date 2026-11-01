@@ -325,5 +325,8 @@ def api_chat():
         print("Erro na API Gemini:", e)
         return jsonify({'resposta': 'Desculpe, ocorreu um erro ao consultar o assistente de IA. Tente novamente em instantes.'})
 
+import os
+
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
