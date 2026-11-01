@@ -1332,5 +1332,373 @@
       "tanque_l": 55
     },
     "media": { "imagem_principal": "rav4_hybrid.jpg" }
+  },
+  {
+    "id": "honda-civic-lxs-2010",
+    "marca": "Honda",
+    "modelo": "Civic",
+    "versao": "LXS 1.8 16V Flex",
+    "ano": 2010,
+    "preco_estimado": 42000,
+    "categoria": "Sedan",
+    "desempenho": {
+      "potencia_cv": 140,
+      "torque_kgfm": 17.7,
+      "zero_a_cem_s": 10.2,
+      "velocidade_max_kmh": 195,
+      "cambio": "Manual de 5 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 9.2,
+      "rodoviario_gasolina_kml": 12.8,
+      "porta_malas_l": 340,
+      "tanque_l": 50
+    },
+    "media": { "imagem_principal": "civic_2010.jpg" }
+  },
+  {
+    "id": "fiat-punto-tjet-2013",
+    "marca": "Fiat",
+    "modelo": "Punto",
+    "versao": "T-Jet 1.4 Turbo 16V",
+    "ano": 2013,
+    "preco_estimado": 48500,
+    "categoria": "Hatch Esportivo",
+    "desempenho": {
+      "potencia_cv": 152,
+      "torque_kgfm": 21.1,
+      "zero_a_cem_s": 8.3,
+      "velocidade_max_kmh": 203,
+      "cambio": "Manual de 5 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 9.5,
+      "rodoviario_gasolina_kml": 12.6,
+      "porta_malas_l": 280,
+      "tanque_l": 60
+    },
+    "media": { "imagem_principal": "punto_tjet.jpg" }
+  },
+  {
+    "id": "honda-civic-lxr-2015",
+    "marca": "Honda",
+    "modelo": "Civic",
+    "versao": "LXR 2.0 16V Flex AT",
+    "ano": 2015,
+    "preco_estimado": 68000,
+    "categoria": "Sedan",
+    "desempenho": {
+      "potencia_cv": 155,
+      "torque_kgfm": 19.5,
+      "zero_a_cem_s": 9.6,
+      "velocidade_max_kmh": 190,
+      "cambio": "Automático de 5 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 9.7,
+      "rodoviario_gasolina_kml": 13.8,
+      "porta_malas_l": 449,
+      "tanque_l": 57
+    },
+    "media": { "imagem_principal": "civic_2015.jpg" }
+  },
+  {
+    "id": "chevrolet-celta-spirit-2010",
+    "marca": "Chevrolet",
+    "modelo": "Celta",
+    "versao": "Spirit 1.0 MPFI Flex",
+    "ano": 2010,
+    "preco_estimado": 22500,
+    "categoria": "Hatch",
+    "desempenho": {
+      "potencia_cv": 78,
+      "torque_kgfm": 9.7,
+      "zero_a_cem_s": 13.4,
+      "velocidade_max_kmh": 161,
+      "cambio": "Manual de 5 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 12.1,
+      "rodoviario_gasolina_kml": 15.6,
+      "porta_malas_l": 260,
+      "tanque_l": 54
+    },
+    "media": { "imagem_principal": "celta_2010.jpg" }
+  },
+  {
+    "id": "vw-voyage-trendline-2016",
+    "marca": "Volkswagen",
+    "modelo": "Voyage",
+    "versao": "Trendline 1.6 MSI Flex",
+    "ano": 2016,
+    "preco_estimado": 43000,
+    "categoria": "Sedan",
+    "desempenho": {
+      "potencia_cv": 104,
+      "torque_kgfm": 15.6,
+      "zero_a_cem_s": 10.1,
+      "velocidade_max_kmh": 191,
+      "cambio": "Manual de 5 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 11.6,
+      "rodoviario_gasolina_kml": 14.1,
+      "porta_malas_l": 480,
+      "tanque_l": 55
+    },
+    "media": { "imagem_principal": "voyage_2016.jpg" }
+  },
+  {
+    "id": "ford-ka-se-2015",
+    "marca": "Ford",
+    "modelo": "Ka",
+    "versao": "SE 1.0 TiVCT Flex",
+    "ano": 2015,
+    "preco_estimado": 38000,
+    "categoria": "Hatch",
+    "desempenho": {
+      "potencia_cv": 85,
+      "torque_kgfm": 10.7,
+      "zero_a_cem_s": 13.9,
+      "velocidade_max_kmh": 166,
+      "cambio": "Manual de 5 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 13.0,
+      "rodoviario_gasolina_kml": 15.1,
+      "porta_malas_l": 257,
+      "tanque_l": 51
+    },
+    "media": { "imagem_principal": "ford_ka_2015.jpg" }
+  },
+  {
+    "id": "toyota-etios-xls-2013",
+    "marca": "Toyota",
+    "modelo": "Etios",
+    "versao": "XLS 1.5 16V Flex",
+    "ano": 2013,
+    "preco_estimado": 34500,
+    "categoria": "Hatch",
+    "desempenho": {
+      "potencia_cv": 96,
+      "torque_kgfm": 13.9,
+      "zero_a_cem_s": 11.3,
+      "velocidade_max_kmh": 173,
+      "cambio": "Manual de 5 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 12.5,
+      "rodoviario_gasolina_kml": 14.0,
+      "porta_malas_l": 270,
+      "tanque_l": 45
+    },
+    "media": { "imagem_principal": "etios_2013.jpg" }
+  },
+  {
+    "id": "vw-up-move-mpi-2016",
+    "marca": "Volkswagen",
+    "modelo": "Up!",
+    "versao": "Move 1.0 MPI Flex",
+    "ano": 2016,
+    "preco_estimado": 42000,
+    "categoria": "Hatch",
+    "desempenho": {
+      "potencia_cv": 82,
+      "torque_kgfm": 10.4,
+      "zero_a_cem_s": 12.4,
+      "velocidade_max_kmh": 171,
+      "cambio": "Manual de 5 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 13.5,
+      "rodoviario_gasolina_kml": 14.6,
+      "porta_malas_l": 285,
+      "tanque_l": 50
+    },
+    "media": { "imagem_principal": "up_mpi_2016.jpg" }
+  },
+  {
+    "id": "vw-polo-sedan-comfortline-2007",
+    "marca": "Volkswagen",
+    "modelo": "Polo Sedan",
+    "versao": "Comfortline 1.6 Flex",
+    "ano": 2007,
+    "preco_estimado": 27000,
+    "categoria": "Sedan",
+    "desempenho": {
+      "potencia_cv": 103,
+      "torque_kgfm": 14.5,
+      "zero_a_cem_s": 11.2,
+      "velocidade_max_kmh": 189,
+      "cambio": "Manual de 5 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 10.8,
+      "rodoviario_gasolina_kml": 13.5,
+      "porta_malas_l": 432,
+      "tanque_l": 50
+    },
+    "media": { "imagem_principal": "polo_sedan_2007.jpg" }
+  },
+  {
+    "id": "fiat-palio-attractive-2013",
+    "marca": "Fiat",
+    "modelo": "Palio",
+    "versao": "Attractive 1.0 Fire Flex",
+    "ano": 2013,
+    "preco_estimado": 29500,
+    "categoria": "Hatch",
+    "desempenho": {
+      "potencia_cv": 75,
+      "torque_kgfm": 9.9,
+      "zero_a_cem_s": 13.4,
+      "velocidade_max_kmh": 157,
+      "cambio": "Manual de 5 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 12.3,
+      "rodoviario_gasolina_kml": 15.0,
+      "porta_malas_l": 280,
+      "tanque_l": 48
+    },
+    "media": { "imagem_principal": "palio_2013.jpg" }
+  },
+  {
+    "id": "fiat-siena-el-2014",
+    "marca": "Fiat",
+    "modelo": "Siena",
+    "versao": "EL 1.0 Fire Flex",
+    "ano": 2014,
+    "preco_estimado": 31000,
+    "categoria": "Sedan",
+    "desempenho": {
+      "potencia_cv": 75,
+      "torque_kgfm": 9.9,
+      "zero_a_cem_s": 13.4,
+      "velocidade_max_kmh": 157,
+      "cambio": "Manual de 5 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 11.9,
+      "rodoviario_gasolina_kml": 14.4,
+      "porta_malas_l": 500,
+      "tanque_l": 48
+    },
+    "media": { "imagem_principal": "siena_2014.jpg" }
+  },
+  {
+    "id": "fiat-punto-attractive-2014",
+    "marca": "Fiat",
+    "modelo": "Punto",
+    "versao": "Attractive 1.4 Fire Flex",
+    "ano": 2014,
+    "preco_estimado": 36500,
+    "categoria": "Hatch",
+    "desempenho": {
+      "potencia_cv": 88,
+      "torque_kgfm": 12.5,
+      "zero_a_cem_s": 12.6,
+      "velocidade_max_kmh": 170,
+      "cambio": "Manual de 5 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 10.8,
+      "rodoviario_gasolina_kml": 13.2,
+      "porta_malas_l": 280,
+      "tanque_l": 60
+    },
+    "media": { "imagem_principal": "punto_2014.jpg" }
+  },
+  {
+    "id": "chevrolet-classic-ls-2014",
+    "marca": "Chevrolet",
+    "modelo": "Classic",
+    "versao": "LS 1.0 VHC-E Flex",
+    "ano": 2014,
+    "preco_estimado": 28500,
+    "categoria": "Sedan",
+    "desempenho": {
+      "potencia_cv": 78,
+      "torque_kgfm": 9.7,
+      "zero_a_cem_s": 13.2,
+      "velocidade_max_kmh": 166,
+      "cambio": "Manual de 5 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 12.0,
+      "rodoviario_gasolina_kml": 14.6,
+      "porta_malas_l": 390,
+      "tanque_l": 54
+    },
+    "media": { "imagem_principal": "classic_2014.jpg" }
+  },
+  {
+    "id": "ford-fiesta-se-2015",
+    "marca": "Ford",
+    "modelo": "Fiesta",
+    "versao": "SE 1.5 16V Flex",
+    "ano": 2015,
+    "preco_estimado": 41000,
+    "categoria": "Hatch",
+    "desempenho": {
+      "potencia_cv": 111,
+      "torque_kgfm": 14.9,
+      "zero_a_cem_s": 11.2,
+      "velocidade_max_kmh": 180,
+      "cambio": "Manual de 5 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 11.7,
+      "rodoviario_gasolina_kml": 13.9,
+      "porta_malas_l": 281,
+      "tanque_l": 51
+    },
+    "media": { "imagem_principal": "fiesta_2015.jpg" }
+  },
+  {
+    "id": "renault-logan-expression-2016",
+    "marca": "Renault",
+    "modelo": "Logan",
+    "versao": "Expression 1.0 16V Flex",
+    "ano": 2016,
+    "preco_estimado": 37500,
+    "categoria": "Sedan",
+    "desempenho": {
+      "potencia_cv": 80,
+      "torque_kgfm": 10.7,
+      "zero_a_cem_s": 13.0,
+      "velocidade_max_kmh": 163,
+      "cambio": "Manual de 5 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 11.9,
+      "rodoviario_gasolina_kml": 13.4,
+      "porta_malas_l": 510,
+      "tanque_l": 50
+    },
+    "media": { "imagem_principal": "logan_2016.jpg" }
+  },
+  {
+    "id": "hyundai-hb20s-comfort-2018",
+    "marca": "Hyundai",
+    "modelo": "HB20S",
+    "versao": "Comfort Plus 1.6 16V Flex",
+    "ano": 2018,
+    "preco_estimado": 58900,
+    "categoria": "Sedan",
+    "desempenho": {
+      "potencia_cv": 128,
+      "torque_kgfm": 16.5,
+      "zero_a_cem_s": 9.3,
+      "velocidade_max_kmh": 190,
+      "cambio": "Manual de 6 marchas"
+    },
+    "consumo_praticidade": {
+      "urbano_gasolina_kml": 11.6,
+      "rodoviario_gasolina_kml": 13.8,
+      "porta_malas_l": 450,
+      "tanque_l": 50
+    },
+    "media": { "imagem_principal": "hb20s_2018.jpg" }
   }
 ]
