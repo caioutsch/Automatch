@@ -8,6 +8,12 @@
 
 O **AutoMatch** é uma plataforma web para auxílio na tomada de decisão na compra de veículos populares e seminovos no mercado brasileiro. O sistema conta com um formulário de diagnóstico inteligente em 7 etapas, cálculo estimado de IPVA por estado, comparador lado a lado e assistente interativo alimentado pela API do Google Gemini.
 
+<div align="center">
+  <a href="https://automatch-xg5m.onrender.com/comparador" target="_blank">
+    <img src="https://img.shields.io/badge/🚀_Acessar_AutoMatch-Online-brightgreen?style=for-the-badge" alt="Acessar AutoMatch">
+  </a>
+</div>
+
 ---
 
 ## 📸 Pré-visualização da Aplicação
