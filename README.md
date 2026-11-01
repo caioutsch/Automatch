@@ -1,5 +1,11 @@
 # 🚗 AutoMatch — Recomendador e Gestão Automotiva
 
+<div align="center">
+  <img src="static/images/automatch-gif.gif" alt="Demonstração do AutoMatch" width="100%">
+</div>
+
+[![Deploy to Render](https://img.shields.io/badge/Render-Live%20Demo-brightgreen?logo=render&logoColor=white)](https://automatch-xg5m.onrender.com/visao_geral)
+
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![Flask](https://img.shields.io/badge/Framework-Flask-000000?logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
 [![SQLite](https://img.shields.io/badge/Database-SQLite-003B57?logo=sqlite&logoColor=white)](https://www.sqlite.org/)
