@@ -2901,3 +2901,41 @@ html, body {
         display: none !important;
     }
 }
+
+/* Ajustes de proporção e escala para dispositivos móveis */
+@media (max-width: 768px) {
+    /* Reduz o tamanho geral dos títulos principais para não ficarem gigantescos */
+    h1 {
+        font-size: 1.8rem !important;
+        line-height: 1.2 !important;
+    }
+
+    h2 {
+        font-size: 1.4rem !important;
+    }
+
+    p {
+        font-size: 0.95rem !important;
+    }
+
+    /* Compacta os espaçamentos e margens das caixas/containers */
+    .hero-banner, .main-content, .card, container {
+        padding: 12px !important;
+        margin: 6px 0 !important;
+    }
+
+    /* Garante que imagens e pré-visualizações respeitem a largura do ecrã */
+    img, .hero-car-img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+    /* Ajusta botões para terem um tamanho proporcional e fácil de tocar */
+    button, .btn-yellow-cta, .btn-outline-cta {
+        width: 100% !important;
+        padding: 12px !important;
+        font-size: 0.95rem !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+}
