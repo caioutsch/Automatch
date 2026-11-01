@@ -12,6 +12,8 @@
     </style>
 </head>
 <body>
+    <!-- Botão de Menu para Telemóvel -->
+<button class="mobile-menu-btn" onclick="toggleMenu()">☰ Menu</button>
     <div class="app-container">
         <aside class="sidebar">
             <div>
@@ -167,6 +169,14 @@
                 });
         }
     </script>
+    <script>
+    function toggleMenu() {
+        const sidebar = document.querySelector('.sidebar, aside, .menu-lateral');
+        if (sidebar) {
+            sidebar.classList.toggle('active');
+        }
+    }
+</script>
 </body>
 <!-- Modal do AutoMatch AI -->
 <div id="aiModal" class="ai-modal-overlay">

@@ -74,6 +74,8 @@
     </style>
 </head>
 <body>
+    <!-- Botão de Menu para Telemóvel -->
+<button class="mobile-menu-btn" onclick="toggleMenu()">☰ Menu</button>
     <div class="app-container">
         
         <!-- Menu Lateral Fino -->
@@ -452,5 +454,13 @@
             });
         }
     </script>
+    <script>
+    function toggleMenu() {
+        const sidebar = document.querySelector('.sidebar, aside, .menu-lateral');
+        if (sidebar) {
+            sidebar.classList.toggle('active');
+        }
+    }
+</script>
 </body>
 </html>

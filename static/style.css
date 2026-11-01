@@ -2854,60 +2854,50 @@ html, body {
 }
 
 @media (max-width: 768px) {
-    /* Faz com que o container principal ocupe a largura toda do telemóvel */
-    body {
-        display: flex;
-        flex-direction: column;
+    /* Esconde o menu lateral por padrão em dispositivos móveis */
+    .sidebar, aside, .menu-lateral {
+        display: none !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 280px;
+        height: 100vh;
+        z-index: 1000;
+        background-color: #fff; /* ou a cor de fundo do seu menu */
+        box-shadow: 4px 0 15px rgba(0,0,0,0.2);
     }
 
-    /* Ajusta a barra lateral para não esmagar o site */
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
+    /* Quando o menu for ativado via clique, ele aparece por cima */
+    .sidebar.active, aside.active, .menu-lateral.active {
+        display: block !important;
     }
 
-    /* Liberta o conteúdo principal para fluir abaixo do menu */
-    .main-content {
-        width: 100%;
-        margin-left: 0;
-        padding: 15px;
+    /* O conteúdo principal ganha a largura toda do ecrã */
+    .main-content, main, .conteudo-principal {
+        width: 100% !important;
+        margin-left: 0 !important;
+        padding: 15px !important;
     }
 
-    /* Corrige o tamanho dos textos e banners gigantes no mobile */
-    .hero-banner {
-        flex-direction: column;
-        padding: 20px;
-    }
-    
-    .hero-car-img {
-        max-width: 100%;
-        height: auto;
+    /* Mostra o botão de menu (hamburguer) apenas no telemóvel */
+    .mobile-menu-btn {
+        display: block !important;
+        position: fixed;
+        top: 15px;
+        right: 15px;
+        z-index: 1001;
+        background: #FFD200;
+        border: none;
+        padding: 10px 12px;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
     }
 }
 
-/* Correção global para telemóveis */
-@media (max-width: 768px) {
-    /* Força o corpo da página a empilhar os elementos em coluna */
-    body, .app-container, .wrapper {
-        display: flex !important;
-        flex-direction: column !important;
-        width: 100% !important;
-        overflow-x: hidden !important;
-    }
-
-    /* Transforma a barra lateral numa barra superior compacta no telemóvel */
-    aside, .sidebar, .menu-lateral {
-        width: 100% !important;
-        height: auto !important;
-        position: relative !important;
-        box-shadow: none !important;
-    }
-
-    /* Garante que o conteúdo ocupa a largura total do ecrã */
-    main, .main-content, .conteudo-principal {
-        width: 100% !important;
-        margin-left: 0 !important;
-        padding: 10px !important;
+/* Esconde o botão de menu em computadores */
+@media (min-width: 769px) {
+    .mobile-menu-btn {
+        display: none !important;
     }
 }

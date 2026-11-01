@@ -10,6 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Botão de Menu para Telemóvel -->
+<button class="mobile-menu-btn" onclick="toggleMenu()">☰ Menu</button>
     <div class="app-container">
         <!-- Menu Lateral -->
         <aside class="sidebar">
@@ -455,6 +457,14 @@
 
         document.addEventListener('DOMContentLoaded', carregarOpcoesCarros);
     </script>
+    <script>
+    function toggleMenu() {
+        const sidebar = document.querySelector('.sidebar, aside, .menu-lateral');
+        if (sidebar) {
+            sidebar.classList.toggle('active');
+        }
+    }
+</script>
 </body>
 <!-- Modal do AutoMatch AI -->
 <div id="aiModal" class="ai-modal-overlay">
